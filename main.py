@@ -1,5 +1,6 @@
-import spacy
+from components import *
 
-print('hello world')
-
-
+db.dbFunc()
+EntityLinker.entitylinkerFunc()
+GetSpacyData.getspacydataFunc()
+TokenHandler.tokenhandlerFunc()
