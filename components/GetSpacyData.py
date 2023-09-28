@@ -1,2 +1,11 @@
-def getspacydataFunc():
-    print("hello from GetSpacyData.py")
+import spacy
+
+nlp = spacy.load("da_core_news_cstm")
+
+
+
+def getspacydataFunc(string):
+    doc = nlp(string)
+    return doc
+    
+    
