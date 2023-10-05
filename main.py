@@ -4,7 +4,7 @@ import time
 def main():
     doc = GetSpacyData.GetTokens("Lars Løkke Rasmussen var statsminister i Danmark. Han er politiker for det Venstre orienterede parti.")
     ents = GetSpacyData.GetEntities(doc)
-    let longtime = 0
+    longtime = 0
 
     print(ents)
     while(longtime < 1000):
