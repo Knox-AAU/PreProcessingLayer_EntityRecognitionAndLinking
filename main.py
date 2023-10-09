@@ -8,17 +8,21 @@ app = FastAPI()
 
 @app.on_event("startup")
 async def startEvent():
-    main()
+    await main()
 
 @app.get('/entitymentions')
-def getJson():
+async def getJson():
+    await main()
     with open('entity_mentions.json', 'r') as entityJson:
-        return(json.load(entityJson))
+        entityMentions = json.load(entityJson)
+        return(entityMentions)
     
 
-def main():
+async def main():
     doc = GetSpacyData.GetTokens("Lars Løkke Rasmussen var statsminister i Danmark. Han er politiker for det Venstre orienterede parti.")
-    ents = GetSpacyData.GetEntities(doc)
-    print(ents)
+    ents = GetSpacyData.GetEntities(doc) 
+    with open('entity_mentions.json', 'w') as entityJson:
+        json.dump(ents, entityJson)
+
 if __name__ == '__main__':
     sys.exit(main())

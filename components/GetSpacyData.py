@@ -12,7 +12,7 @@ def GetEntities(doc):
     ents = []
     for entity in doc.ents: 
         ent = Entity(entity.text, (entity.start_char, entity.end_char))
-        ents.append(ent)
+        ents.append(ent.serialize())
     return ents
 
 
