@@ -2,11 +2,14 @@ from components import *
 import sys
 import time
 def main():
-    doc = GetSpacyData.GetTokens("Lars Løkke Rasmussen var statsminister i Danmark. Han er politiker for det Venstre orienterede parti.")
-    ents = GetSpacyData.GetEntities(doc)
+    text = GetSpacyData.GetText("Artikel.txt") #Takes in title of article. Gets article text in string format
+    doc = GetSpacyData.GetTokens(text) #finds entities in text, returns entities in doc object
+    ents = GetSpacyData.GetEntities(doc, "Artikel.txt") #appends entities in list
+    entMentions= GetSpacyData.entityMentionJson(ents)  #Returns JSON object containing an array of entity mentions
     longtime = 0
 
-    print(ents)
+    print(entMentions)
+    
     while(longtime < 1000):
         time.sleep(5)
         longtime = longtime + 1

@@ -1,4 +1,10 @@
+import json
 class Entity:
-    def __init__(self, name, index):
+    def __init__(self, name, startIndex, endIndex, fileName):
         self.name = name
-        self.index = index
+        self.startIndex = startIndex
+        self.endIndex = endIndex
+        self.fileName = fileName
+    
+    def getEntity(self):
+        return {"name": self.name, "startIndex": self.startIndex, "endIndex": self.endIndex, "fileName": self.fileName}
