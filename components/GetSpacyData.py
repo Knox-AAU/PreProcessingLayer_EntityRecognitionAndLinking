@@ -28,6 +28,5 @@ def entityMentionJson(ents):
     entityMentions = []
     for ent in ents:
         entityMentions.append(ent.getEntity())
-    json_string = json.dumps(entityMentions)
-    return json_string
+    return entityMentions
 

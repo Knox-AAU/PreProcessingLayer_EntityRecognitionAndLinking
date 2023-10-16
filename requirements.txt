@@ -1,0 +1,6 @@
+fastapi==0.103.2
+setuptools
+wheel
+spacy==2.3.9
+uvicorn
+--extra-index-url https://repos.knox.cs.aau.dk da_core_news_cstm
