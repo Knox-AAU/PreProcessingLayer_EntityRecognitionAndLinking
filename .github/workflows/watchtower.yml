@@ -9,6 +9,8 @@ on:
   push:
     # Publish /semver tags as releases.
     tags: [ '*.*.*' ]
+  pull_request:
+    branches: [ main ]
   workflow_dispatch:
 
 env:
