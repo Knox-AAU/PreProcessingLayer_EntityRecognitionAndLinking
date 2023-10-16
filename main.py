@@ -1,6 +1,5 @@
 from components import *
-import sys
-import json
+import sys, json
 
 from fastapi import FastAPI
 
@@ -19,10 +18,14 @@ async def getJson():
     
 
 async def main():
-    doc = GetSpacyData.GetTokens("Lars Løkke Rasmussen var statsminister i Danmark. Han er politiker for det Venstre orienterede parti.")
-    ents = GetSpacyData.GetEntities(doc) 
+    text = GetSpacyData.GetText("Artikel.txt") #Takes in title of article. Gets article text in string format
+    doc = GetSpacyData.GetTokens(text) #finds entities in text, returns entities in doc object
+    ents = GetSpacyData.GetEntities(doc, "Artikel.txt") #appends entities in list
+    entMentions= GetSpacyData.entityMentionJson(ents)  #Returns JSON object containing an array of entity mentions
+    
+    print(entMentions)
     with open('entity_mentions.json', 'w') as entityJson:
-        json.dump(ents, entityJson)
+        json.dump(entMentions, entityJson)
 
 if __name__ == '__main__':
     sys.exit(main())
