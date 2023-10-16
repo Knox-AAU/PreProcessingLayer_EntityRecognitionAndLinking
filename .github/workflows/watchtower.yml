@@ -7,11 +7,8 @@ on:
   schedule:
     - cron: '15 23 * * *'
   push:
-    branches: [ main ]
     # Publish /semver tags as releases.
     tags: [ '*.*.*' ]
-  pull_request:
-    branches: [ main ]
   workflow_dispatch:
 
 env:
