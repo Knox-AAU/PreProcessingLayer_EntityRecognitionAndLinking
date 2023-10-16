@@ -1,17 +1,31 @@
 from components import *
-import sys
-import time
-def main():
+import sys, json
+
+from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.on_event("startup")
+async def startEvent():
+    await main()
+
+@app.get('/entitymentions')
+async def getJson():
+    await main()
+    with open('entity_mentions.json', 'r') as entityJson:
+        entityMentions = json.load(entityJson)
+        return(entityMentions)
+    
+
+async def main():
     text = GetSpacyData.GetText("Artikel.txt") #Takes in title of article. Gets article text in string format
     doc = GetSpacyData.GetTokens(text) #finds entities in text, returns entities in doc object
     ents = GetSpacyData.GetEntities(doc, "Artikel.txt") #appends entities in list
     entMentions= GetSpacyData.entityMentionJson(ents)  #Returns JSON object containing an array of entity mentions
-    longtime = 0
-
-    print(entMentions)
     
-    while(longtime < 1000):
-        time.sleep(5)
-        longtime = longtime + 1
+    print(entMentions)
+    with open('entity_mentions.json', 'w') as entityJson:
+        json.dump(entMentions, entityJson)
+
 if __name__ == '__main__':
     sys.exit(main())
