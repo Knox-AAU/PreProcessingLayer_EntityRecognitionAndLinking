@@ -8,15 +8,18 @@ This subsection will guide you through both setting up to work on the repository
 
 ### Development
 
-#### Requirements
+> #### **Requirements**
+>
+> - Python3
+> - Uvicorn
+> - FastAPI
+> - SpaCy
+> - Wheel
+> - Setuptools
+>
+> <br>
 
-- Python3
-- Uvicorn
-- FastAPI
-- SpaCy
-- Wheel
-- Setuptools
-  <br><br>
+<br>
 
 To get started developing on the code for this part of the pipeline, simply clone the repository to where you want using
 
