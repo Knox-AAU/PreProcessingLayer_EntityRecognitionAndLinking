@@ -59,7 +59,7 @@ This CMD starts the `uvicorn` server but also adds the parameters **host** and *
 It is possible to get access to the `uvicorn` server running the Entity Recognition and Linking layer locally using SSH. This is done by forwarding the port the server is running on using the SSH. If the `uvicorn` server is ran on port `3000`, you can access the server locally by doing the following SSH command:
 
 ```BASH
-ssh *USERNAME@student.aau.dk*@knox-preproc01.srv.aau.dk -L 3000:localhost:3000
+SSH *AAU-MAIL*@knox-preproc01.srv.aau.dk -L 3000:localhost:3000
 ```
 
 This forwards what is running on port `3000` on the KNOX server to your local machine. You should now be able to access the `uvicorn` server from your own browser at
