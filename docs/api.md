@@ -2,7 +2,7 @@
 
 ## /entitymentions <sup><span style="color:lightgreen">GET</span></sup>
 
-The `/entitymentions` endpoint is a <span style="color:lightgreen">**GET**</span> endpoint. When doing a GET request to the endpoint, a JSON Array is returned containing all the currently known entitymentions, their indexes and the file they originate from. The format of the JSON array is formatted as follows:
+The `/entitymentions` endpoint is a <span style="color:lightgreen">**GET**</span> endpoint. When doing a <span style="color:lightgreen">**GET**</span> request to the endpoint, a JSON Array is returned containing all the currently known entitymentions, their indexes and the file they originate from. The format of the JSON array is formatted as follows:
 
 ```JSON
 [

@@ -44,7 +44,7 @@ uvicorn main:app
 
 ### Running on the server
 
-The server uses Docker and watchtower to maintain the up to date code on the github repository you can read more on this [here](LINK TO DOCS ON WATCHTOWER).
+The server uses Docker and watchtower to maintain the up to date code on the github repository you can read more on this [here](/using-docker-and-watchtower).
 
 Inside the Dockerfile in the repository, we have the following CMD specified for running the server:
 
