@@ -5,5 +5,5 @@ wheel
 spacy==2.3.9
 uvicorn
 da_core_news_cstm
-pytest
-pytest_sugar
+pytest==7.4.2
+pytest_sugar==0.9.7
