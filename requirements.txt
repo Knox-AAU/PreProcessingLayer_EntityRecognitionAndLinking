@@ -6,4 +6,4 @@ spacy==2.3.9
 uvicorn
 da_core_news_cstm
 pytest
-py_sugar
+pytest_sugar
