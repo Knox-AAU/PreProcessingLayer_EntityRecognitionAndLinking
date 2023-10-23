@@ -4,4 +4,5 @@ setuptools
 wheel
 spacy==2.3.9
 uvicorn
+levenshtein
 da_core_news_cstm
