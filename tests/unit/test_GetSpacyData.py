@@ -4,6 +4,7 @@ from components import GetSpacyData
 import pytest
 import spacy
 import os
+from lib.ent import Entity
 
 
 # Test that GetText returns the correct text from the file
@@ -62,5 +63,34 @@ def test_GetEntities():
     assert entities[1].startIndex == 6
     assert entities[1].endIndex == 14
     assert entities[1].fileName == "Nordjyske"
-    
-    
+
+# test that entityMentionsJson is correctly creating JSON array
+def test_entityMentionJson():
+    ents = [
+            Entity(
+                "Drake",
+                0,
+                5,
+                "Nordjyske"
+            ),
+                        Entity(
+                "Buddyguy",
+                6,
+                14,
+                "Nordjyske"
+            )
+        ]
+    JSONArray = GetSpacyData.entityMentionJson(ents)
+    assert JSONArray == [
+        {
+                "name": "Drake",
+                "startIndex": 0,
+                "endIndex": 5,
+                "fileName": "Nordjyske"
+            },
+        {
+                "name": "Buddyguy",
+                "startIndex": 6,
+                "endIndex": 14,
+                "fileName": "Nordjyske"
+            },]
