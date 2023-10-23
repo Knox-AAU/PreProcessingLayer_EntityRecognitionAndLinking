@@ -1,4 +1,5 @@
 from components import *
+from components.EntityLinker import entitylinkerFunc
 import sys, json
 from lib.FileWatcher import FileWatcher
 
@@ -23,8 +24,12 @@ async def main():
     doc = GetSpacyData.GetTokens(text) #finds entities in text, returns entities in doc object
     ents = GetSpacyData.GetEntities(doc, "Artikel.txt") #appends entities in list
     entMentions= GetSpacyData.entityMentionJson(ents)  #Returns JSON object containing an array of entity mentions
+
     FileWatcher(filename = "Artikel.txt", interval = 5.0, callback=lambda :print("whatever")).start() #Starts fileWatcher
     
+
+    entLinks= entitylinkerFunc(entMentions) #Returns JSON object containing an array of entity links
+
     print(entMentions)
     with open('entity_mentions.json', 'w') as entityJson:
         json.dump(entMentions, entityJson)
