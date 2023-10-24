@@ -1,8 +1,10 @@
 import sqlite3
+import sys
+sys.path.append('.')
 
-async def InitializeIndexDB():
+async def InitializeIndexDB(dbPath):
     # Connect to sqlite database
-    conn = sqlite3.connect('DB.db')
+    conn = sqlite3.connect(dbPath)
     # cursor object
     cursor = conn.cursor()
     # # drop query
@@ -19,9 +21,9 @@ async def InitializeIndexDB():
     conn.commit()
     conn.close()
 
-def Insert(tableName,entity):
+async def Insert(dbPath, tableName,entity):
     # Connect to sqlite database
-    conn = sqlite3.connect('DB.db')
+    conn = sqlite3.connect(dbPath)
     # cursor object
     cursor = conn.cursor()
     # stuff that does query
@@ -30,7 +32,6 @@ def Insert(tableName,entity):
     params = {
         'NAME': entity
     }
-    print("The query to run: ", query)
 
     cursor.execute(query, params)
 
@@ -38,9 +39,9 @@ def Insert(tableName,entity):
     conn.commit()
     conn.close()
 
-def Read(tableName):
+async def Read(dbPath, tableName):
         # Connect to sqlite database
-    conn = sqlite3.connect('DB.db')
+    conn = sqlite3.connect(dbPath)
     # cursor object
     cursor = conn.cursor()
     # fetches all entries in table
@@ -51,9 +52,9 @@ def Read(tableName):
     conn.close()
     return rowsInTable
 
-def Update(tableName, indexID, updatedName):
+async def Update(dbPath, tableName, indexID, updatedName):
     # Connect to sqlite database
-    conn = sqlite3.connect('DB.db')
+    conn = sqlite3.connect(dbPath)
     # cursor object
     cursor = conn.cursor()
     # updates row in table
@@ -62,9 +63,9 @@ def Update(tableName, indexID, updatedName):
     conn.commit()
     conn.close()
 
-def Delete(tableName, indexID):
+async def Delete(dbPath, tableName, indexID):
     # Connect to sqlite database
-    conn = sqlite3.connect('DB.db')
+    conn = sqlite3.connect(dbPath)
     # cursor object
     cursor = conn.cursor()
     # deletes row from table

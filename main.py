@@ -27,12 +27,12 @@ async def main():
     ents = GetSpacyData.GetEntities(doc, "Artikel.txt") #appends entities in list
     entMentions= GetSpacyData.entityMentionJson(ents)  #Returns JSON object containing an array of entity mentions
 
-    await Db.InitializeIndexDB()#makes the DB containing the entities of KG
+    await Db.InitializeIndexDB('./Database/DB.db')#makes the DB containing the entities of KG
     # just to try out the CRUD below
-    Db.Insert("EntityIndex", "Martin Kjærs") #Inserts entity into "INDEX" table
-    Db.Update("EntityIndex", 2, "Alija Cerimagic")
-    Db.Delete("EntityIndex", 1)
-    entsFromDB = Db.Read("EntityIndex") #Read returns array of tuples of each row of the table
+    Db.Insert('./Database/DB.db',"EntityIndex", "Martin Kjærs") #Inserts entity into "INDEX" table
+    Db.Update('./Database/DB.db',"EntityIndex", 2, "Alija Cerimagic")
+    Db.Delete('./Database/DB.db',"EntityIndex", 1)
+    entsFromDB = Db.Read('./Database/DB.db',"EntityIndex") #Read returns array of tuples of each row of the table
     
     print(entsFromDB)
 
