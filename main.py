@@ -38,8 +38,6 @@ async def main():
 
     entLinks = entitylinkerFunc(entMentions) #Returns JSON object containing an array of entity links
 
-    print(entMentions)
-
     with open('entity_mentions.json', 'w') as entityJson:
         json.dump(entMentions, entityJson)
 
