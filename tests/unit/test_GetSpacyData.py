@@ -4,7 +4,7 @@ from components import GetSpacyData
 import pytest
 import spacy
 import os
-from lib.ent import Entity
+from lib.Entity import Entity
 
 
 # Test that GetText returns the correct text from the file
