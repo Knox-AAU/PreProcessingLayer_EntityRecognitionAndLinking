@@ -2,8 +2,6 @@ import sys
 sys.path.append('.')
 from components import GetSpacyData
 import pytest
-import spacy
-import os
 from lib.Entity import Entity
 
 
