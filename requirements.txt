@@ -4,6 +4,7 @@ setuptools==68.2.0
 wheel==0.41.2
 spacy==2.3.9
 uvicorn==0.23.2
+levenshtein
 da_core_news_cstm
 pytest==7.4.2
 pytest_sugar==0.9.7
