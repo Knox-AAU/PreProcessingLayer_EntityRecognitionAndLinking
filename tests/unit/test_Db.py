@@ -1,32 +1,45 @@
 import sys, sqlite3, pytest, os
-
 sys.path.append(".")
-
 from components import Db
+
+
+dbFolder = "tests/unit/temp"
+
+dbPath = dbFolder + "/testdb.db"
+
+
+async def DBFolderInit():
+    os.mkdir(dbFolder)
+    await Db.InitializeIndexDB(dbPath)
+
+
+def rmDB():
+    os.remove(dbPath)
+    os.rmdir(dbFolder)
 
 
 @pytest.mark.asyncio
 async def test_InitializeIndexDB():
     # Arrange
-    dbPath = "tests/unit/TestDatabases/testdb.db"
+    dbFolder = "tests/unit/temp"
+    os.mkdir(dbFolder)
+    dbPath = dbFolder + "/testdb.db"
     # Act
     await Db.InitializeIndexDB(dbPath)
-    print("THIS IS THE CURRENT DIRECTORY: ", os.path.curdir)
     # Assert
-    assert os.path.isfile("tests/unit/TestDatabases/testdb.db") == True
+    assert os.path.isfile(dbPath) == True
     # delete the file again
-    os.remove("tests/unit/TestDatabases/testdb.db")
+    rmDB()
 
 
 @pytest.mark.asyncio
 async def test_Insert():
     # Arrange
-    dbPath = "tests/unit/TestDatabases/testdb.db"
-    await Db.InitializeIndexDB(dbPath)
-    conn = sqlite3.connect("tests/unit/TestDatabases/testdb.db")
+    await DBFolderInit()
+    conn = sqlite3.connect(dbPath)
     cursor = conn.cursor()
     # Act
-    await Db.Insert("tests/unit/TestDatabases/testdb.db", "EntityIndex", "Morten")
+    await Db.Insert(dbPath, "EntityIndex", "Morten")
     cursor = conn.execute("SELECT * from EntityIndex")
     rowForComparison = cursor.fetchall()
     conn.commit()
@@ -34,30 +47,28 @@ async def test_Insert():
     # Assert
     assert rowForComparison[0][1] == "Morten"
     # delete the file again
-    os.remove("tests/unit/TestDatabases/testdb.db")
+    rmDB()
 
 
 @pytest.mark.asyncio
 async def test_Read():
-    # Arrange
-    dbPath = "tests/unit/TestDatabases/testdb.db"
-    await Db.InitializeIndexDB(dbPath)
-    await Db.Insert("tests/unit/TestDatabases/testdb.db", "EntityIndex", "Morten")
+    # Arrrange
+    await DBFolderInit()
+    await Db.Insert(dbPath, "EntityIndex", "Morten")
     # Act
     testRead = await Db.Read(dbPath, "EntityIndex")
     # Assert
     assert testRead[0][0] == 1
     assert testRead[0][1] == "Morten"
     # delete the file again
-    os.remove("tests/unit/TestDatabases/testdb.db")
+    rmDB()
 
 
 @pytest.mark.asyncio
 async def test_Update():
     # Arrange
-    dbPath = "tests/unit/TestDatabases/testdb.db"
-    await Db.InitializeIndexDB(dbPath)
-    await Db.Insert("tests/unit/TestDatabases/testdb.db", "EntityIndex", "Morten")
+    await DBFolderInit()
+    await Db.Insert(dbPath, "EntityIndex", "Morten")
     conn = sqlite3.connect(dbPath)
     cursor = conn.cursor()
     cursor = conn.execute("SELECT * from EntityIndex")
@@ -74,17 +85,16 @@ async def test_Update():
     conn.commit()
     conn.close()
     # delete the file again
-    os.remove("tests/unit/TestDatabases/testdb.db")
+    rmDB()
 
 
 @pytest.mark.asyncio
 async def test_Delete():
     # Arrange
-    dbPath = "tests/unit/TestDatabases/testdb.db"
-    await Db.InitializeIndexDB(dbPath)
-    await Db.Insert("tests/unit/TestDatabases/testdb.db", "EntityIndex", "Morten")
-    await Db.Insert("tests/unit/TestDatabases/testdb.db", "EntityIndex", "Alija")
-    await Db.Insert("tests/unit/TestDatabases/testdb.db", "EntityIndex", "Peter")
+    await DBFolderInit()
+    await Db.Insert(dbPath, "EntityIndex", "Morten")
+    await Db.Insert(dbPath, "EntityIndex", "Alija")
+    await Db.Insert(dbPath, "EntityIndex", "Peter")
     conn = sqlite3.connect(dbPath)
     cursor = conn.cursor()
     cursor = conn.execute("SELECT * from EntityIndex")
@@ -105,4 +115,4 @@ async def test_Delete():
     conn.commit()
     conn.close()
     # delete the file again
-    os.remove("tests/unit/TestDatabases/testdb.db")
+    rmDB()
