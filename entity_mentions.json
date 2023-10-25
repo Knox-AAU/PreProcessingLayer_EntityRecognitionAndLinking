@@ -1,1 +1,140 @@
-[{"name": "Martin Kj\u00e6rs", "startIndex": 28, "endIndex": 40, "fileName": "Artikel.txt"}, {"name": "Region Nordjylland", "startIndex": 100, "endIndex": 118, "fileName": "Artikel.txt"}, {"name": "Aalborg", "startIndex": 285, "endIndex": 292, "fileName": "Artikel.txt"}, {"name": "Martin Kj\u00e6r", "startIndex": 521, "endIndex": 532, "fileName": "Artikel.txt"}, {"name": "Arbejdstilsynet", "startIndex": 596, "endIndex": 611, "fileName": "Artikel.txt"}, {"name": "juli", "startIndex": 614, "endIndex": 618, "fileName": "Artikel.txt"}, {"name": "Martin Kj\u00e6r", "startIndex": 981, "endIndex": 992, "fileName": "Artikel.txt"}, {"name": "Nordjyske", "startIndex": 1212, "endIndex": 1221, "fileName": "Artikel.txt"}, {"name": "Martin Kj\u00e6r", "startIndex": 1225, "endIndex": 1236, "fileName": "Artikel.txt"}, {"name": "Region Nordjylland", "startIndex": 1408, "endIndex": 1426, "fileName": "Artikel.txt"}, {"name": "Arbejdstilsynet", "startIndex": 1478, "endIndex": 1493, "fileName": "Artikel.txt"}, {"name": "Mariane Therkelsen", "startIndex": 1523, "endIndex": 1541, "fileName": "Artikel.txt"}, {"name": "Martin Kj\u00e6r", "startIndex": 1560, "endIndex": 1571, "fileName": "Artikel.txt"}, {"name": "direkt\u00f8rstol", "startIndex": 1756, "endIndex": 1768, "fileName": "Artikel.txt"}, {"name": "Martin Kj\u00e6r", "startIndex": 1961, "endIndex": 1972, "fileName": "Artikel.txt"}, {"name": "Nordjyske", "startIndex": 2014, "endIndex": 2023, "fileName": "Artikel.txt"}, {"name": "september", "startIndex": 2041, "endIndex": 2050, "fileName": "Artikel.txt"}, {"name": "Nordjyske", "startIndex": 2275, "endIndex": 2284, "fileName": "Artikel.txt"}, {"name": "NAU", "startIndex": 2386, "endIndex": 2389, "fileName": "Artikel.txt"}, {"name": "Aalborg Universitetshospital", "startIndex": 2395, "endIndex": 2423, "fileName": "Artikel.txt"}, {"name": "Martin Kj\u00e6rs", "startIndex": 2613, "endIndex": 2625, "fileName": "Artikel.txt"}, {"name": "Nordjyske", "startIndex": 2639, "endIndex": 2648, "fileName": "Artikel.txt"}, {"name": "Martin Kj\u00e6r", "startIndex": 2890, "endIndex": 2901, "fileName": "Artikel.txt"}, {"name": "Martin Kj\u00e6r", "startIndex": 2981, "endIndex": 2992, "fileName": "Artikel.txt"}, {"name": "Nordjyskes", "startIndex": 3312, "endIndex": 3322, "fileName": "Artikel.txt"}, {"name": "Kim Mikkelsen", "startIndex": 3383, "endIndex": 3396, "fileName": "Artikel.txt"}, {"name": "barselshotel", "startIndex": 3613, "endIndex": 3625, "fileName": "Artikel.txt"}, {"name": "Aalborg Universitetshospital", "startIndex": 3634, "endIndex": 3662, "fileName": "Artikel.txt"}, {"name": "patienter", "startIndex": 3812, "endIndex": 3821, "fileName": "Artikel.txt"}, {"name": "Mads Duedahl", "startIndex": 4003, "endIndex": 4015, "fileName": "Artikel.txt"}, {"name": "Bredebro", "startIndex": 4063, "endIndex": 4071, "fileName": "Artikel.txt"}, {"name": "T\u00f8nder", "startIndex": 4076, "endIndex": 4082, "fileName": "Artikel.txt"}]
+{
+  "fileName": "Artikel.txt",
+  "sentences": [
+    {
+      "sentence": "Siden den omstridte topchef Martin Kj\u00e6rs pludselige exit i sidste uge har b\u00e5de han og direktionen i Region Nordjylland v\u00e6ret i flyverskjul. \n\n",
+      "entityMentions": [
+        { "name": "Martin Kj\u00e6rs", "startIndex": 28, "endIndex": 40 },
+        { "name": "Region Nordjylland", "startIndex": 100, "endIndex": 118 }
+      ]
+    },
+    {
+      "sentence": "Men nu \u00e5bner projektdirekt\u00f8ren for det skandaleramte byggeri af supersygehuset i Aalborg en smule op i et opslag p\u00e5 det sociale medie LinkedIn. \n\n",
+      "entityMentions": [
+        { "name": "Aalborg", "startIndex": 81, "endIndex": 88 }
+      ]
+    },
+    {
+      "sentence": "If\u00f8lge Martin Kj\u00e6r har det v\u00e6ret \"surrealistisk\" at se sig selv i medierne, efter Arbejdstilsynet i juli skred ind over for den afdeling, han stod i spidsen for. \n\n",
+      "entityMentions": [
+        { "name": "Martin Kj\u00e6r", "startIndex": 7, "endIndex": 18 },
+        { "name": "Arbejdstilsynet", "startIndex": 82, "endIndex": 97 },
+        { "name": "juli", "startIndex": 100, "endIndex": 104 }
+      ]
+    },
+    {
+      "sentence": "Region Nordjylland fik et p\u00e5bud for det psykiske arbejdsmilj\u00f8, hvor medarbejdere kritiserede Martin Kj\u00e6r for blandt andet overfusninger, og direkt\u00f8ren erkendte selv, at flere af hans ansatte bryder gr\u00e6dende sammen p\u00e5 jobbet. \n\n",
+      "entityMentions": [
+        { "name": "Martin Kj\u00e6r", "startIndex": 93, "endIndex": 104 }
+      ]
+    },
+    {
+      "sentence": "Efterf\u00f8lgende kom han under voldsomt pres internt efter flere h\u00f8jst opsigtsv\u00e6kkende udtalelser i Nordjyske. \n\n",
+      "entityMentions": [
+        { "name": "Nordjyske", "startIndex": 97, "endIndex": 106 }
+      ]
+    },
+    {
+      "sentence": "Martin Kj\u00e6r sagde blandt andet, at arbejdsmilj\u00f8et kunne blive endnu v\u00e6rre i takt med, at der kom flere byggeskandaler frem, og han startede et offentligt slagsm\u00e5l med HR-direkt\u00f8ren i Region Nordjylland, som han beskyldte for at afsk\u00e6re ham fra at svare Arbejdstilsynet. \n\n",
+      "entityMentions": [
+        { "name": "Martin Kj\u00e6r", "startIndex": 0, "endIndex": 11 },
+        { "name": "Region Nordjylland", "startIndex": 183, "endIndex": 201 },
+        { "name": "Arbejdstilsynet", "startIndex": 253, "endIndex": 268 }
+      ]
+    },
+    {
+      "sentence": "Anklager, som HR-direkt\u00f8r Mariane Therkelsen har afvist. \n\n",
+      "entityMentions": [
+        { "name": "Mariane Therkelsen", "startIndex": 26, "endIndex": 44 }
+      ]
+    },
+    {
+      "sentence": "Men Martin Kj\u00e6r mener, han er et offer.",
+      "entityMentions": [
+        { "name": "Martin Kj\u00e6r", "startIndex": 4, "endIndex": 15 }
+      ]
+    },
+    {
+      "sentence": "- Jeg har l\u00e6rt, at prisen for at s\u00e6tte sig i en direkt\u00f8rstol i det offentlige kan v\u00e6re rigtig h\u00f8j, skriver han.\n\n",
+      "entityMentions": [
+        { "name": "direkt\u00f8rstol", "startIndex": 48, "endIndex": 60 }
+      ]
+    },
+    {
+      "sentence": "F\u00e5 dage efter Martin Kj\u00e6r havde gennemf\u00f8rt et st\u00f8rre interview med Nordjyske i begyndelsen af september, skrev han i en mail til sine medarbejdere, at han var \"dybt personligt ber\u00f8rt\", og at det var det \"mest modbydelige, jeg nogensinde har pr\u00f8vet\". \n\n",
+      "entityMentions": [
+        { "name": "Martin Kj\u00e6r", "startIndex": 14, "endIndex": 25 },
+        { "name": "Nordjyske", "startIndex": 67, "endIndex": 76 },
+        { "name": "september", "startIndex": 94, "endIndex": 103 }
+      ]
+    },
+    {
+      "sentence": "- Flere dele af interviewet husker jeg slet ikke, skriver han i mailen, som Nordjyske har set.\n\n",
+      "entityMentions": [
+        { "name": "Nordjyske", "startIndex": 76, "endIndex": 85 }
+      ]
+    },
+    {
+      "sentence": "- NAU (Nyt Aalborg Universitetshospital, red.) st\u00e5r et godt sted i dag, og selvom der er massive udfordringer, s\u00e5 sidder der i dag et s\u00e6rdeles kompetent hold af egne/eksterne ressourcer. \n\n",
+      "entityMentions": [
+        { "name": "NAU", "startIndex": 2, "endIndex": 5 },
+        {
+          "name": "Aalborg Universitetshospital",
+          "startIndex": 11,
+          "endIndex": 39
+        }
+      ]
+    },
+    {
+      "sentence": "Den udmelding st\u00e5r i skarp kontrast til Martin Kj\u00e6rs udtalelser i Nordjyske tidligere p\u00e5 m\u00e5neden.\n\n",
+      "entityMentions": [
+        { "name": "Martin Kj\u00e6rs", "startIndex": 40, "endIndex": 52 },
+        { "name": "Nordjyske", "startIndex": 66, "endIndex": 75 }
+      ]
+    },
+    {
+      "sentence": "Nordjyske har fors\u00f8gt at f\u00e5 Martin Kj\u00e6r i tale, men han har ikke besvaret vores henvendelser.",
+      "entityMentions": [
+        { "name": "Martin Kj\u00e6r", "startIndex": 28, "endIndex": 39 }
+      ]
+    },
+    {
+      "sentence": "Det er fortsat uvist, om Martin Kj\u00e6r allerede har haft sidste arbejdsdag, eller om han skal arbejde i opsigelsesperioden. \n\n",
+      "entityMentions": [
+        { "name": "Martin Kj\u00e6r", "startIndex": 25, "endIndex": 36 }
+      ]
+    },
+    {
+      "sentence": "Opsigelsen kommer, if\u00f8lge Nordjyskes oplysninger, efter flere m\u00f8der med konstitueret koncernchef Kim Mikkelsen. \n\n",
+      "entityMentions": [
+        { "name": "Nordjyskes", "startIndex": 26, "endIndex": 36 },
+        { "name": "Kim Mikkelsen", "startIndex": 97, "endIndex": 110 }
+      ]
+    },
+    {
+      "sentence": "Der er fundet penge til at bygge et patient- og barselshotel ved Nyt Aalborg Universitetshospital.",
+      "entityMentions": [
+        { "name": "barselshotel", "startIndex": 48, "endIndex": 60 },
+        {
+          "name": "Aalborg Universitetshospital",
+          "startIndex": 69,
+          "endIndex": 97
+        }
+      ]
+    },
+    {
+      "sentence": "- Jeg er meget glad for, at det er lykkedes at finde en l\u00f8sning, s\u00e5 alvorligt syge patienter indlagt p\u00e5 patienthotellet og nybagte for\u00e6ldre ikke skal fragte sig p\u00e5 tv\u00e6rs af byen, n\u00e5r de har brug for ro, n\u00e6rhed og professionel hj\u00e6lp lige ved h\u00e5nden, siger regionsr\u00e5dsformand Mads Duedahl (V) i en pressemeddelelse. \n\n\n",
+      "entityMentions": [
+        { "name": "patienter", "startIndex": 83, "endIndex": 92 },
+        { "name": "Mads Duedahl", "startIndex": 274, "endIndex": 286 }
+      ]
+    },
+    {
+      "sentence": "980 indbyggere i Bredebro n\u00e6r T\u00f8nder kan snart se frem til at f\u00e5 et brev fra kommunen.",
+      "entityMentions": [
+        { "name": "Bredebro", "startIndex": 17, "endIndex": 25 },
+        { "name": "T\u00f8nder", "startIndex": 30, "endIndex": 36 }
+      ]
+    }
+  ]
+}
