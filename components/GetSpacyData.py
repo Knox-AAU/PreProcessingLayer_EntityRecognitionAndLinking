@@ -1,5 +1,7 @@
 import spacy, json
-from lib.ent import Entity
+import sys
+sys.path.append(".")
+from lib.Entity import Entity
 
 
 nlp = spacy.load("da_core_news_cstm")
@@ -15,6 +17,7 @@ def GetText(title):
 
 def GetTokens(text):
     doc = nlp(text)
+    print(type(doc))
     return doc
     
 def GetEntities(doc, fileName):

@@ -1,1 +1,1 @@
-__all__ = ["db", "EntityLinker", "GetSpacyData", "TokenHandler"]
+__all__ = ["Db", "EntityLinker", "GetSpacyData", "TokenHandler"]
