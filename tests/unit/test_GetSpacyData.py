@@ -1,8 +1,8 @@
 import sys
+import pytest
 
 sys.path.append(".")
 from components import GetSpacyData
-import pytest
 from lib.Entity import Entity
 
 

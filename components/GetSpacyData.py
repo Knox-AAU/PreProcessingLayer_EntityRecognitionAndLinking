@@ -1,8 +1,8 @@
 import spacy, json
 import sys
-from lib.Entity import Entity
 
 sys.path.append(".")
+from lib.Entity import Entity
 
 
 nlp = spacy.load("da_core_news_cstm")

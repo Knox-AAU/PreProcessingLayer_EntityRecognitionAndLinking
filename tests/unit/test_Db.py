@@ -1,7 +1,8 @@
 import sys, sqlite3, pytest, os
-from components import Db
 
 sys.path.append(".")
+
+from components import Db
 
 
 @pytest.mark.asyncio
