@@ -8,9 +8,6 @@ from fastapi import FastAPI
 
 app = FastAPI()
 
-fw = type(Process)
-
-
 @app.on_event("startup")
 async def startEvent():
     await main()
@@ -24,20 +21,7 @@ async def getJson():
         return entityMentions
 
 
-@app.on_event("shutdown")
-async def shutdown():
-    fw.close()
-
-
-async def startFilewatcher():
-    FileWatcher(
-        filename="Artikel.txt", interval=5.0, callback=lambda: print("whatever")
-    ).start()
-
-
 async def main():
-    global fw
-    fw = Process(target=startFilewatcher, daemon=True)
     text = GetSpacyData.GetText(
         "Artikel.txt"
     )  # Takes in title of article. Gets article text in string format
