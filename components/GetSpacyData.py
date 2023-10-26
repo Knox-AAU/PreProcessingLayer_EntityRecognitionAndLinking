@@ -22,8 +22,8 @@ def GetTokens(text):
 
 #Method to fully extract entity mentions, find the sentences and calculate indexes and finally create a final JSON
 def GetEntities(doc, fileName):
-    # Create a dictionary of sentences
-    sentence_entities = {}
+    # Create a list of sentences with their entities in the desired JSON format
+    sentences_json = []
 
     for entity in doc.ents:
         # Use the 'start' and 'end' indexes of the entity to get its index within its sentence
@@ -35,28 +35,27 @@ def GetEntities(doc, fileName):
         start_index = entity_start_char
         end_index = entity_end_char
 
-        entity = Entity(name, start_index, end_index, fileName)
+        entity_info = {
+            "name": name,
+            "startIndex": start_index,
+            "endIndex": end_index
+        }
 
-        if sentence in sentence_entities:
-            sentence_entities[sentence].append(entity)
-        else:
-            sentence_entities[sentence] = [entity]
+        found = False
+        for sentence_info in sentences_json:
+            if sentence_info["sentence"] == sentence:
+                sentence_info["entityMentions"].append(entity_info)
+                found = True
+                break
 
-    # Create a list of sentences with their entities in the desired JSON format
-    sentences_json = []
-    for sentence, entities in sentence_entities.items():
-        entity_mentions = []
-        for entity in entities:
-            entity_mentions.append({
-                "name": entity.name,
-                "startIndex": entity.startIndex,
-                "endIndex": entity.endIndex
+        if not found:
+            sentences_json.append({
+                "sentence": sentence,
+                "startIndex": entity.sent.start_char,
+                "endIndex": entity.sent.end_char,
+                "entityMentions": [entity_info]
             })
-        sentences_json.append({
-            "sentence": sentence,
-            "entityMentions": entity_mentions
-        })
-    
+
     # Create the final JSON structure
     final_json = {
         "fileName": fileName,
