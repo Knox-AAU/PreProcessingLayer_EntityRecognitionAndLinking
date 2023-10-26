@@ -8,6 +8,7 @@ from fastapi import FastAPI
 
 app = FastAPI()
 
+
 @app.on_event("startup")
 async def startEvent():
     await main()
@@ -22,6 +23,8 @@ async def getJson():
 
 
 async def main():
+    # FileWatcher(filename = "Artikel.txt", interval = 5.0, callback=lambda :print("whatever")).start() #Starts fileWatcher
+
     text = GetSpacyData.GetText(
         "Artikel.txt"
     )  # Takes in title of article. Gets article text in string format
@@ -37,17 +40,18 @@ async def main():
         "./Database/DB.db"
     )  # makes the DB containing the entities of KG
     # just to try out the CRUD below
-    await Db.Insert(
-        "./Database/DB.db", "EntityIndex", "Martin Kjærs"
-    )  # Inserts entity into "INDEX" table
-    await Db.Update("./Database/DB.db", "EntityIndex", 2, "Alija Cerimagic")
-    await Db.Delete("./Database/DB.db", "EntityIndex", 1)
+    # await Db.Insert('./Database/DB.db',"EntityIndex", "Martin Kjærs") #Inserts entity into "INDEX" table
+    # Db.Update('./Database/DB.db',"EntityIndex", 2, "Alija Cerimagic")
+    # Db.Delete('./Database/DB.db',"EntityIndex", 1)
     entsFromDB = await Db.Read(
         "./Database/DB.db", "EntityIndex"
     )  # Read returns array of tuples of each row of the table
 
-    entLinks = entitylinkerFunc(
-        entMentions
+    print("ENTS FROM DB")
+    print(entsFromDB)
+
+    entLinks = await entitylinkerFunc(
+        ents
     )  # Returns JSON object containing an array of entity links
 
     with open("entity_mentions.json", "w", encoding="utf8") as entityJson:
