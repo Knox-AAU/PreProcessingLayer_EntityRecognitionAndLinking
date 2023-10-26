@@ -5,7 +5,7 @@ sys.path.append(".")
 from lib.Entity import Entity
 
 
-nlp = spacy.load("da_core_news_cstm")
+nlp = spacy.load("en_core_web_md")
 
 
 # GetText skal få text fra pipeline del A
