@@ -1,11 +1,14 @@
 from components import *
 from components.EntityLinker import entitylinkerFunc
 import sys, json
+from multiprocessing import Process
 from lib.FileWatcher import FileWatcher
 
 from fastapi import FastAPI
 
 app = FastAPI()
+
+fw = type(Process)
 
 
 @app.on_event("startup")
@@ -21,11 +24,20 @@ async def getJson():
         return entityMentions
 
 
-async def main():
+@app.on_event("shutdown")
+async def shutdown():
+    fw.close()
+
+
+async def startFilewatcher():
     FileWatcher(
         filename="Artikel.txt", interval=5.0, callback=lambda: print("whatever")
-    ).start()  # Starts fileWatcher
+    ).start()
 
+
+async def main():
+    global fw
+    fw = Process(target=startFilewatcher, daemon=True)
     text = GetSpacyData.GetText(
         "Artikel.txt"
     )  # Takes in title of article. Gets article text in string format
@@ -50,15 +62,9 @@ async def main():
         "./Database/DB.db", "EntityIndex"
     )  # Read returns array of tuples of each row of the table
 
-    print(entsFromDB)
-
     entLinks = entitylinkerFunc(
         entMentions
     )  # Returns JSON object containing an array of entity links
 
     with open("entity_mentions.json", "w", encoding="utf8") as entityJson:
         json.dump(entMentions, entityJson, ensure_ascii=False)
-
-
-if __name__ == "__main__":
-    sys.exit(main())

@@ -1,24 +1,32 @@
-from multiprocessing import Process
+from email.mime import base
+from typing import AsyncIterator
+from fastapi import FastAPI
+from httpx import AsyncClient
+import pytest
+from fastapi.testclient import TestClient
+from asgi_lifespan import LifespanManager
 import sys
 
-from typing import Type
+import pytest_asyncio
 
 sys.path.append(".")
-import pytest, main, uvicorn, fastapi.testclient
-
-client = fastapi.testclient.TestClient(main.app)
+from main import app
 
 
-def run_server():
-    uvicorn.run(main.app)
+@pytest.mark.asyncio
+async def test_SlashEntityMentionsIsUp():
+    with TestClient(app) as client:
+        res = client.get("/entitymentions")
+        assert res.status_code == 200
+        client.__exit__
+        client.close()
 
 
-def test_SlashEntityMentionsIsUp():
-    res = client.get("/entitymentions")
-    assert res.status_code == 200
-
-
-def test_SlashEntityMentionsReturnsJsonArray():
-    res = client.get("/entitymentions")
-    assert type(res.json()) == list
-    assert type(res.json()[0]) == dict
+@pytest.mark.asyncio
+async def test_SlashEntityMentionsReturnsJsonArray():
+    with TestClient(app) as client:
+        res = client.get("/entitymentions")
+        assert type(res.json()) == list
+        assert type(res.json()[0]) == dict
+        client.__exit__
+        client.close()
