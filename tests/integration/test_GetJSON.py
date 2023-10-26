@@ -1,13 +1,6 @@
-from email.mime import base
-from typing import AsyncIterator
-from fastapi import FastAPI
-from httpx import AsyncClient
 import pytest
 from fastapi.testclient import TestClient
-from asgi_lifespan import LifespanManager
 import sys
-
-import pytest_asyncio
 
 sys.path.append(".")
 from main import app
