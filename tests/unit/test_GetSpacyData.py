@@ -18,7 +18,7 @@ def test_GetText_fileExists():
 # Test that GetText returns an error if the file does not exist
 def test_GetText_fileNonExistent():
     with pytest.raises(FileNotFoundError):
-        testTet = GetSpacyData.GetText("NonExistentFile.txt")
+        GetSpacyData.GetText("NonExistentFile.txt")
 
 
 # Testing that GetTokens returns the correct number of entities
@@ -54,7 +54,6 @@ def test_GetEntities():
             ]
         },
     )()
-    print(docFile.ents[0].text)
 
     filename = "Nordjyske"
 
