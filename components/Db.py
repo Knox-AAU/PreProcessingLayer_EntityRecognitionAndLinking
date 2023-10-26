@@ -35,9 +35,13 @@ async def Insert(dbPath, tableName, entity):
 
     cursor.execute(query, params)
 
+    last_inserted_id = cursor.lastrowid
+
     # commit and close
     conn.commit()
     conn.close()
+    
+    return last_inserted_id
 
 
 async def Read(dbPath, tableName):

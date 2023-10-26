@@ -20,7 +20,7 @@ async def getJson():
     
 
 async def main():
-    FileWatcher(filename = "Artikel.txt", interval = 5.0, callback=lambda :print("whatever")).start() #Starts fileWatcher
+    #FileWatcher(filename = "Artikel.txt", interval = 5.0, callback=lambda :print("whatever")).start() #Starts fileWatcher
     
     text = GetSpacyData.GetText("Artikel.txt") #Takes in title of article. Gets article text in string format
     doc = GetSpacyData.GetTokens(text) #finds entities in text, returns entities in doc object
@@ -29,14 +29,15 @@ async def main():
 
     await Db.InitializeIndexDB('./Database/DB.db')#makes the DB containing the entities of KG
     # just to try out the CRUD below
-    Db.Insert('./Database/DB.db',"EntityIndex", "Martin Kjærs") #Inserts entity into "INDEX" table
-    Db.Update('./Database/DB.db',"EntityIndex", 2, "Alija Cerimagic")
-    Db.Delete('./Database/DB.db',"EntityIndex", 1)
-    entsFromDB = Db.Read('./Database/DB.db',"EntityIndex") #Read returns array of tuples of each row of the table
+    # await Db.Insert('./Database/DB.db',"EntityIndex", "Martin Kjærs") #Inserts entity into "INDEX" table
+    # Db.Update('./Database/DB.db',"EntityIndex", 2, "Alija Cerimagic")
+    # Db.Delete('./Database/DB.db',"EntityIndex", 1)
+    entsFromDB = await Db.Read('./Database/DB.db',"EntityIndex") #Read returns array of tuples of each row of the table
     
+    print("ENTS FROM DB")
     print(entsFromDB)
 
-    entLinks = entitylinkerFunc(entMentions) #Returns JSON object containing an array of entity links
+    entLinks = await entitylinkerFunc(ents) #Returns JSON object containing an array of entity links
 
     with open('entity_mentions.json', 'w') as entityJson:
         json.dump(entMentions, entityJson)
