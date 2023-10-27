@@ -29,10 +29,13 @@ async def main():
 
     await Db.InitializeIndexDB('./Database/DB.db')#makes the DB containing the entities of KG
     # just to try out the CRUD below
-    Db.Insert('./Database/DB.db',"EntityIndex", "Martin Kjærs") #Inserts entity into "INDEX" table
-    Db.Update('./Database/DB.db',"EntityIndex", 2, "Alija Cerimagic")
-    Db.Delete('./Database/DB.db',"EntityIndex", 1)
-    entsFromDB = Db.Read('./Database/DB.db',"EntityIndex") #Read returns array of tuples of each row of the table
+    await Db.Insert('./Database/DB.db',"EntityIndex", "Martin Kjærs") #Inserts entity into "INDEX" table
+    await Db.Insert('./Database/DB.db',"EntityIndex", "Alija")
+    await Db.Insert('./Database/DB.db',"EntityIndex", "Bossmundur")
+    #Db.Update('./Database/DB.db',"EntityIndex", 2, "Alija Cerimagic")
+    #Db.Delete('./Database/DB.db',"EntityIndex", 1)
+    await Db.SortDB('./Database/DB.db', "EntityIndex") #Sorting DB
+    entsFromDB = await Db.Read('./Database/DB.db',"EntityIndex") #Read returns array of tuples of each row of the table
     
     print(entsFromDB)
 
