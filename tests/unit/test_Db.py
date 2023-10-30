@@ -95,3 +95,27 @@ async def test_Delete():
     conn.close()
     #delete the file again
     os.remove('tests/unit/TestDatabases/testdb.db')
+
+
+@pytest.mark.asyncio
+async def test_SortDB():
+    #Arrange
+    dbPath = 'tests/unit/TestDatabases/testdb.db'
+    await Db.InitializeIndexDB(dbPath)
+    await Db.Insert('tests/unit/TestDatabases/testdb.db', 'EntityIndex', 'Morten Kjær')
+    await Db.Insert('tests/unit/TestDatabases/testdb.db', 'EntityIndex', 'Alija')
+    await Db.Insert('tests/unit/TestDatabases/testdb.db', 'EntityIndex', 'Beter')
+    conn = sqlite3.connect(dbPath)
+    cursor = conn.cursor()
+    #Act
+    await Db.SortDB(dbPath, 'EntityIndex')
+    cursor = conn.execute("SELECT * from EntityIndex")
+    sortedTable = cursor.fetchall()
+    #Assert
+    assert sortedTable[0][1] == 'Alija'
+    assert sortedTable[1][1] == 'Beter'
+    assert sortedTable[2][1] == 'Morten Kjær'
+    conn.commit()
+    conn.close()
+    #delete the file again
+    os.remove('tests/unit/TestDatabases/testdb.db')
