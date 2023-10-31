@@ -21,9 +21,7 @@ def rmDB():
 @pytest.mark.asyncio
 async def test_InitializeIndexDB():
     # Arrange
-    dbFolder = "tests/unit/temp"
-    os.mkdir(dbFolder)
-    dbPath = dbFolder + "/testdb.db"
+    await DBFolderInit()
     # Act
     await Db.InitializeIndexDB(dbPath)
     # Assert
@@ -121,11 +119,10 @@ async def test_Delete():
 @pytest.mark.asyncio
 async def test_SortDB():
     #Arrange
-    dbPath = 'tests/unit/TestDatabases/testdb.db'
-    await Db.InitializeIndexDB(dbPath)
-    await Db.Insert('tests/unit/TestDatabases/testdb.db', 'EntityIndex', 'Morten Kjær')
-    await Db.Insert('tests/unit/TestDatabases/testdb.db', 'EntityIndex', 'Alija')
-    await Db.Insert('tests/unit/TestDatabases/testdb.db', 'EntityIndex', 'Beter')
+    await DBFolderInit()
+    await Db.Insert(dbPath, 'EntityIndex', 'Morten Kjær')
+    await Db.Insert(dbPath, 'EntityIndex', 'Alija')
+    await Db.Insert(dbPath, 'EntityIndex', 'Beter')
     conn = sqlite3.connect(dbPath)
     cursor = conn.cursor()
     #Act
