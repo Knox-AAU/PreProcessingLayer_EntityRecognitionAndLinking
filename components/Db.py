@@ -1,6 +1,8 @@
 import sqlite3
 import sys
-sys.path.append('.')
+
+sys.path.append(".")
+
 
 async def InitializeIndexDB(dbPath):
     # Connect to sqlite database
@@ -10,7 +12,7 @@ async def InitializeIndexDB(dbPath):
     # # drop query
     # cursor.execute("DROP TABLE IF EXISTS STUDENT")
     # create query
-    #IF NOT EXISTS checks whether table exists. Autoincrement increments the id of new rows automatically
+    # IF NOT EXISTS checks whether table exists. Autoincrement increments the id of new rows automatically
     query = """CREATE TABLE IF NOT EXISTS EntityIndex(
             ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
             NAME CHAR(20) NOT NULL
@@ -21,36 +23,42 @@ async def InitializeIndexDB(dbPath):
     conn.commit()
     conn.close()
 
-async def Insert(dbPath, tableName,entity):
+
+async def Insert(dbPath, tableName, entity):
     # Connect to sqlite database
     conn = sqlite3.connect(dbPath)
     # cursor object
     cursor = conn.cursor()
     # stuff that does query
-    query = ("INSERT INTO {} (NAME) "
-             "VALUES (:NAME)").format(tableName)
-    params = {
-        'NAME': entity
-    }
+    query = ("INSERT INTO {} (NAME) " "VALUES (:NAME)").format(tableName)
+    params = {"NAME": entity}
 
     cursor.execute(query, params)
+
+    last_inserted_id = cursor.lastrowid
 
     # commit and close
     conn.commit()
     conn.close()
+    
+    return last_inserted_id
+
 
 async def Read(dbPath, tableName):
-        # Connect to sqlite database
+    # Connect to sqlite database
     conn = sqlite3.connect(dbPath)
     # cursor object
     cursor = conn.cursor()
     # fetches all entries in table
     cursor = conn.execute(("SELECT * from {}").format(tableName))
-    rowsInTable = cursor.fetchall() #List of each row contained in tuples e.g. [(id, name), (id2, name2), ..., etc]
+    rowsInTable = (
+        cursor.fetchall()
+    )  # List of each row contained in tuples e.g. [(id, name), (id2, name2), ..., etc]
     # commit and close
     conn.commit()
     conn.close()
     return rowsInTable
+
 
 async def Update(dbPath, tableName, indexID, updatedName):
     # Connect to sqlite database
@@ -58,10 +66,15 @@ async def Update(dbPath, tableName, indexID, updatedName):
     # cursor object
     cursor = conn.cursor()
     # updates row in table
-    cursor = conn.execute(("UPDATE {} set NAME = '{}' where ID = '{}'").format(tableName, updatedName, indexID))
+    cursor = conn.execute(
+        ("UPDATE {} set NAME = '{}' where ID = '{}'").format(
+            tableName, updatedName, indexID
+        )
+    )
     # commit and close
     conn.commit()
     conn.close()
+
 
 async def Delete(dbPath, tableName, indexID):
     # Connect to sqlite database
@@ -120,4 +133,3 @@ async def SortDB(dbPath, tableName):
 #     except:
 #         print("empty")
 #     return contains
-    

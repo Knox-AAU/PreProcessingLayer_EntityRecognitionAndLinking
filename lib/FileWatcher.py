@@ -1,6 +1,7 @@
 import threading
 import os
-    
+
+
 class FileWatcher:
     def __init__(self, filename, interval, callback):
         self._cached_stamp = 0

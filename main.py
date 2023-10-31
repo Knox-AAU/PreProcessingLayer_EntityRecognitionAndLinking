@@ -20,7 +20,7 @@ async def getJson():
     
 
 async def main():
-    FileWatcher(filename = "Artikel.txt", interval = 5.0, callback=lambda :print("whatever")).start() #Starts fileWatcher
+    #FileWatcher(filename = "Artikel.txt", interval = 5.0, callback=lambda :print("whatever")).start() #Starts fileWatcher
     
     text = GetSpacyData.GetText("Artikel.txt") #Takes in title of article. Gets article text in string format
     doc = GetSpacyData.GetTokens(text) #finds entities in text, returns entities in doc object
@@ -37,12 +37,10 @@ async def main():
     await Db.SortDB('./Database/DB.db', "EntityIndex") #Sorting DB
     entsFromDB = await Db.Read('./Database/DB.db',"EntityIndex") #Read returns array of tuples of each row of the table
     
+    print("ENTS FROM DB")
     print(entsFromDB)
 
-    entLinks = entitylinkerFunc(entMentions) #Returns JSON object containing an array of entity links
+    entLinks = await entitylinkerFunc(ents) #Returns JSON object containing an array of entity links
 
     with open('entity_mentions.json', 'w') as entityJson:
         json.dump(entMentions, entityJson)
-
-if __name__ == '__main__':
-    sys.exit(main())
