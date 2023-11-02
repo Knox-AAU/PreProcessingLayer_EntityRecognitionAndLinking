@@ -1,11 +1,14 @@
 import sqlite3
 import sys
-
+import os
 sys.path.append(".")
 
 
 async def InitializeIndexDB(dbPath):
     # Connect to sqlite database
+    folder = os.path.dirname(dbPath)
+    if not os.path.exists(folder):
+        os.mkdir(folder)
     conn = sqlite3.connect(dbPath)
     # cursor object
     cursor = conn.cursor()
@@ -87,6 +90,31 @@ async def Delete(dbPath, tableName, indexID):
     conn.commit()
     conn.close()
 
+async def SortDB(dbPath, tableName):
+# Connect to sqlite database
+    conn = sqlite3.connect(dbPath)
+    # cursor object
+    cursor = conn.cursor()
+    
+    # Query to fetch data sorted by NAME
+    query = "SELECT * FROM {} ORDER BY NAME".format(tableName)
+    cursor.execute(query)
+    
+    # Fetch all rows
+    rows = cursor.fetchall()
+    
+    # Query to drop the old table if it exists
+    query = ("DROP TABLE IF EXISTS {}").format(tableName)
+    cursor.execute(query)
+    #Creates the table anew to keep incrementing from 1, 2, 3 etc in ID
+    await InitializeIndexDB(dbPath)
+    # commit and close
+    conn.commit()
+    conn.close()
+
+    # Insert the sorted rows back into the table
+    for row in rows:
+        await Insert(dbPath, tableName, row[1])  # assuming NAME is the second column
 
 # the following 15 lines of code can be replaced by "IF NOT EXISTS" in the sql query
 # def TableExists(tableName):

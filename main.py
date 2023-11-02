@@ -47,6 +47,13 @@ async def main():
         "./Database/DB.db", "EntityIndex"
     )  # Read returns array of tuples of each row of the table
 
+    await Db.Insert('./Database/DB.db',"EntityIndex", "Martin Kjærs") #Inserts entity into "INDEX" table
+    await Db.Insert('./Database/DB.db',"EntityIndex", "Alija")
+    await Db.Insert('./Database/DB.db',"EntityIndex", "Bossmundur")
+    #Db.Update('./Database/DB.db',"EntityIndex", 2, "Alija Cerimagic")
+    #Db.Delete('./Database/DB.db',"EntityIndex", 1)
+    await Db.SortDB('./Database/DB.db', "EntityIndex") #Sorting DB
+    entsFromDB = await Db.Read('./Database/DB.db',"EntityIndex") #Read returns array of tuples of each row of the table
     print("ENTS FROM DB")
     print(entsFromDB)
 
