@@ -54,12 +54,11 @@ async def main():
     #Db.Delete('./Database/DB.db',"EntityIndex", 1)
     await Db.SortDB('./Database/DB.db', "EntityIndex") #Sorting DB
     entsFromDB = await Db.Read('./Database/DB.db',"EntityIndex") #Read returns array of tuples of each row of the table
+    
     print("ENTS FROM DB")
     print(entsFromDB)
 
-    entLinks = await entitylinkerFunc(
-        ents
-    )  # Returns JSON object containing an array of entity links
+    entLinks = await entitylinkerFunc(ents) #Returns JSON object containing an array of entity links
 
     with open("entity_mentions.json", "w", encoding="utf8") as entityJson:
         json.dump(entMentions, entityJson, ensure_ascii=False)
