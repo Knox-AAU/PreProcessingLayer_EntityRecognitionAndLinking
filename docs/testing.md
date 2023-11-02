@@ -48,6 +48,14 @@ async def test_InitializeIndexDB():
     rmDB()
 ```
 
+### Running the tests
+
+To run the tests, you simply have to run the pytest command in the console when inside the root folder. As explained at the top, a `pyproject.toml` file has been made, which appends some parameters to the pytest command, making it show code coverage, and hide deprecation warnings.
+
+#### Output
+
+![](img/exampleoutput.png)
+
 ## Known issues
 
 ### Module not found
