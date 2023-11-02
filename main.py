@@ -40,19 +40,18 @@ async def main():
         "./Database/DB.db"
     )  # makes the DB containing the entities of KG
     # just to try out the CRUD below
-    # await Db.Insert('./Database/DB.db',"EntityIndex", "Martin Kjærs") #Inserts entity into "INDEX" table
-    # Db.Update('./Database/DB.db',"EntityIndex", 2, "Alija Cerimagic")
-    # Db.Delete('./Database/DB.db',"EntityIndex", 1)
-    entsFromDB = await Db.Read(
-        "./Database/DB.db", "EntityIndex"
-    )  # Read returns array of tuples of each row of the table
-
+    await Db.Insert('./Database/DB.db',"EntityIndex", "Martin Kjærs") #Inserts entity into "INDEX" table
+    await Db.Insert('./Database/DB.db',"EntityIndex", "Alija")
+    await Db.Insert('./Database/DB.db',"EntityIndex", "Bossmundur")
+    #Db.Update('./Database/DB.db',"EntityIndex", 2, "Alija Cerimagic")
+    #Db.Delete('./Database/DB.db',"EntityIndex", 1)
+    await Db.SortDB('./Database/DB.db', "EntityIndex") #Sorting DB
+    entsFromDB = await Db.Read('./Database/DB.db',"EntityIndex") #Read returns array of tuples of each row of the table
+    
     print("ENTS FROM DB")
     print(entsFromDB)
 
-    entLinks = await entitylinkerFunc(
-        ents
-    )  # Returns JSON object containing an array of entity links
+    entLinks = await entitylinkerFunc(ents) #Returns JSON object containing an array of entity links
 
-    with open("entity_mentions.json", "w", encoding="utf8") as entityJson:
-        json.dump(entMentions, entityJson, ensure_ascii=False)
+    with open('entity_mentions.json', 'w') as entityJson:
+        json.dump(entMentions, entityJson)
