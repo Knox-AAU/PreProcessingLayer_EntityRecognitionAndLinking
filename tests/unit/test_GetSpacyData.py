@@ -24,14 +24,14 @@ def test_GetText_fileNonExistent():
 # Testing that GetTokens returns the correct number of entities
 # and the needed data for the entities
 def test_GetTokens():
-    testDoc = GetSpacyData.GetTokens("Drake kan godt lide at sutte på lilletær")
+    testDoc = GetSpacyData.GetTokens("Drake likes to suck the toes of Donald Trump")
     assert len(testDoc.ents) == 2
     assert testDoc.ents[0].text == "Drake"
     assert testDoc.ents[0].start_char == 0
     assert testDoc.ents[0].end_char == 5
-    assert testDoc.ents[1].text == "lilletær"
+    assert testDoc.ents[1].text == "Donald Trump"
     assert testDoc.ents[1].start_char == 32
-    assert testDoc.ents[1].end_char == 40
+    assert testDoc.ents[1].end_char == 44
 
 
 # Testing that GetEntities returns all entities and their indexes
@@ -40,7 +40,7 @@ def test_GetEntities():
         "ents": [
             type('obj', (object,), {
                 "sent": type('obj', (object,), {
-                    "text": "Drake kan godt lide at sutte på lilletær",
+                    "text": "Drake is a music artist",
                     "start_char": 0,
                     "end_char": 40
                 }),
@@ -71,7 +71,7 @@ def test_GetEntities():
         if entities[i]["fileName"] == "Testing2023":
             testIndex = i
             break
-    assert entities[testIndex]["sentences"][0]["sentence"] == "Drake kan godt lide at sutte på lilletær"
+    assert entities[testIndex]["sentences"][0]["sentence"] == "Drake is a music artist"
     assert entities[testIndex]["sentences"][0]["entityMentions"][0]["name"] == "Drake"
     assert entities[testIndex]["sentences"][0]["entityMentions"][0]["startIndex"] == 0
     assert entities[testIndex]["sentences"][0]["entityMentions"][0]["endIndex"] == 5

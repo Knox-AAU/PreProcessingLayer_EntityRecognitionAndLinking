@@ -14,7 +14,7 @@
       "previewLimit": 50,
       "driver": "SQLite",
       "name": "Knox-DB",
-      "database": "${workspaceFolder:PreProcessingLayer_EntityRecognitionAndLinking}/Database/DB.db"
+      "database": "${workspaceFolder:ProcessingLayer_EntityRecognitionAndLinking}/Database/DB.db"
     }
   ]
 >>>>>>> 181dcd15b0eb952493730f6d4519dbd960dc5aeb
