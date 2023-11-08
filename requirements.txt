@@ -1,9 +1,10 @@
 fastapi==0.103.2
 setuptools==68.2.0
 wheel==0.41.2
-spacy==2.3.9
+spacy>=3.7.0, <3.8.0
 uvicorn==0.23.2
 levenshtein
+en_core_web_lg @ https://github.com/explosion/spacy-models/releases/download/en_core_web_lg-3.7.0/en_core_web_lg-3.7.0-py3-none-any.whl
 pytest==7.4.2
 pytest_sugar==0.9.7
 pytest-asyncio==0.21.1
