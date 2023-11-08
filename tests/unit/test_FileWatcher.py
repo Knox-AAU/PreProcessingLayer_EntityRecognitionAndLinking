@@ -33,6 +33,7 @@ class TestFileWatcher:
         time.sleep(self.TEST_INTERVAL * 2)  # Wait for watcher to detect changes
 
         assert callback_called
+        watcher.stop()
 
     def test_file_watcher_does_not_call_callback_if_no_change(self, test_file):
         callback_called = False
@@ -46,3 +47,4 @@ class TestFileWatcher:
 
         time.sleep(self.TEST_INTERVAL * 2)  # Wait for watcher to complete at least one cycle
         assert not callback_called
+        watcher.stop()
