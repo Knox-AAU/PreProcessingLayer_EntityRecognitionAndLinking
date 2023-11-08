@@ -9,7 +9,8 @@ dbPath = dbFolder + "/testdb.db"
 
 
 async def DBFolderInit():
-    os.mkdir(dbFolder)
+    if not os.path.isdir(dbFolder):
+        os.mkdir(dbFolder)
     await Db.InitializeIndexDB(dbPath)
 
 

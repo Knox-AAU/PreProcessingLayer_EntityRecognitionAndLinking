@@ -18,6 +18,44 @@ Asynchronous functions can be tested by utilizing the plugin `PyTest-Asyncio`. S
 All tests are located in the **_/tests_** folder. From this folder we branch out to the different types of testing; integration, unit etc.
 Simply create a test_XXX.py file, and import PyTest at the top level to begin testing.
 
+## Examples
+
+Here are some example tests:
+
+```PYTHON
+def test_GetText_fileExists():
+    with open("test_article_file.txt", "w") as testFile:
+        testFile.write("This is a testfile")
+
+    testText = GetSpacyData.GetText("test_article_file.txt")
+    assert testText == "This is a testfile"
+```
+
+### Async
+
+```PYTHON
+@pytest.mark.asyncio
+async def test_InitializeIndexDB():
+    # Arrange
+    dbFolder = "tests/unit/temp"
+    os.mkdir(dbFolder)
+    dbPath = dbFolder + "/testdb.db"
+    # Act
+    await Db.InitializeIndexDB(dbPath)
+    # Assert
+    assert os.path.isfile(dbPath) == True
+    # delete the file again
+    rmDB()
+```
+
+### Running the tests
+
+To run the tests, you simply have to run the pytest command in the console when inside the root folder. As explained at the top, a `pyproject.toml` file has been made, which appends some parameters to the pytest command, making it show code coverage, and hide deprecation warnings.
+
+#### Output
+
+![](img/exampleoutput.png)
+
 ## Known issues
 
 ### Module not found
