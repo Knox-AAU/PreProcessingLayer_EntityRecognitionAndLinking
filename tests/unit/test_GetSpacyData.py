@@ -66,7 +66,6 @@ def test_GetEntities():
     # Ensure the structure of docFile matches the expected format
 
     entities = GetSpacyData.GetEntities(docFile, filename)
-    print(entities)
     assert entities["sentences"][0]["sentence"] == "Drake kan godt lide at sutte på lilletær"
     assert entities["sentences"][0]["entityMentions"][0]["name"] == "Drake"
     assert entities["sentences"][0]["entityMentions"][0]["startIndex"] == 0

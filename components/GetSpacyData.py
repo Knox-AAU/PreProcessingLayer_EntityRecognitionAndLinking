@@ -1,4 +1,4 @@
-import spacy, json
+import spacy, json, os
 import sys
 
 sys.path.append(".")
@@ -17,12 +17,19 @@ def GetText(title):
 
 def GetTokens(text):
     doc = nlp(text)
-    print(type(doc))
     return doc
 
 #Method to fully extract entity mentions, find the sentences and calculate indexes and finally create a final JSON
 def GetEntities(doc, fileName):
     # Create a list of sentences with their entities in the desired JSON format
+    currentJson = open('./entity_mentions.json', 'r')
+    currentJson.seek(0, os.SEEK_END)
+    if currentJson.tell():
+        currentJson.seek(0)
+        currentJson = json.load(currentJson)
+    else:
+        currentJson = []
+
     sentences_json = []
 
     for entity in doc.ents:
@@ -61,8 +68,15 @@ def GetEntities(doc, fileName):
         "fileName": fileName,
         "sentences": sentences_json
     }
-
-    return final_json
+    if(len(currentJson) != 0):
+        for index in currentJson:
+            if index['fileName'] == final_json['fileName']:
+                return currentJson
+            else:
+                currentJson.append(final_json)
+    else:
+        currentJson.append(final_json)
+    return currentJson
 
 def entityMentionJson(ents):
     entityMentions = []

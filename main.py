@@ -20,7 +20,7 @@ async def getJson():
     
 
 async def main():
-    FileWatcher(filename = "Artikel.txt", interval = 5.0, callback=lambda :print("whatever")).start() #Starts fileWatcher
+    # FileWatcher(filename = "Artikel.txt", interval = 5.0, callback=lambda :print("whatever")).start() #Starts fileWatcher
     
     text = GetSpacyData.GetText("Artikel.txt") #Takes in title of article. Gets article text in string format
     doc = GetSpacyData.GetTokens(text) #finds entities in text, returns entities in doc object
@@ -33,9 +33,8 @@ async def main():
     await Db.Insert('./Database/DB.db',"EntityIndex", "Martin Kjærs") #Inserts entity into "INDEX" table
     await Db.Update('./Database/DB.db',"EntityIndex", 2, "Alija Cerimagic")
     await Db.Delete('./Database/DB.db',"EntityIndex", 1)
-    entsFromDB = Db.Read('./Database/DB.db',"EntityIndex") #Read returns array of tuples of each row of the table
+    entsFromDB = await Db.Read('./Database/DB.db',"EntityIndex") #Read returns array of tuples of each row of the table
     
-    print(entsFromDB)
 
     entLinks = entitylinkerFunc(entsJSON) #Returns JSON object containing an array of entity links
 
