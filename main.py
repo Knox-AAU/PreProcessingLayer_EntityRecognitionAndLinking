@@ -27,15 +27,14 @@ async def getentities(articlename: str):
     await main()
     with open('entity_mentions.json', 'r') as entityJson:
         entityMentions = json.load(entityJson)
-    entitiesfromarticle = []
     for elem in entityMentions:
         path = elem["fileName"]
         name = path.split('/');
         if(name[-1] == articlename):
-            entitiesfromarticle.append(elem)
+            return (elem)
  
 
-    return(entitiesfromarticle)
+    return([])
     
    
     
