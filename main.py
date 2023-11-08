@@ -23,6 +23,9 @@ async def getJson():
 
 
 async def main():
+    if not os.path.exists("entity_mentions.json"):
+        open("entity_mentions.json", 'w').close()
+    
     # FileWatcher(filename = "Artikel.txt", interval = 5.0, callback=lambda :print("whatever")).start() #Starts fileWatcher
 
     text = GetSpacyData.GetText(
@@ -44,8 +47,5 @@ async def main():
 
     #entLinks = await entitylinkerFunc(ents) #Returns JSON object containing an array of entity links
     #entLinks = entitylinkerFunc(entsJSON) #Returns JSON object containing an array of entity links
-    if not os.path.exists("entity_mentions.json"):
-        open("entity_mentions.json", 'w').close()
-    
     with open("entity_mentions.json", "w", encoding="utf8") as entityJson:
         json.dump(entsJSON, entityJson, ensure_ascii=False, indent = 4)
