@@ -1,6 +1,6 @@
 from components import *
 from components.EntityLinker import entitylinkerFunc
-import sys, json
+import sys, json, os
 from multiprocessing import Process
 from lib.FileWatcher import FileWatcher
 
@@ -38,13 +38,14 @@ async def main():
     entsJSON = GetSpacyData.GetEntities(doc, "Artikel.txt") #appends entities in list
     #To prevent appending challenges, the final JSON is created in GetEntities()
     #entMentions= GetSpacyData.entityMentionJson(ents)  #Returns JSON object containing an array of entity mentions
-
     await Db.InitializeIndexDB(
         "./Database/DB.db"
     )  # makes the DB containing the entities of KG
 
     #entLinks = await entitylinkerFunc(ents) #Returns JSON object containing an array of entity links
     #entLinks = entitylinkerFunc(entsJSON) #Returns JSON object containing an array of entity links
-
+    if not os.path.exists("entity_mentions.json"):
+        open("entity_mentions.json", 'w').close()
+    
     with open("entity_mentions.json", "w", encoding="utf8") as entityJson:
         json.dump(entsJSON, entityJson, ensure_ascii=False, indent = 4)
