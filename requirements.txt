@@ -4,7 +4,6 @@ wheel==0.41.2
 spacy==2.3.9
 uvicorn==0.23.2
 levenshtein
-en_core_web_md
 pytest==7.4.2
 pytest_sugar==0.9.7
 pytest-asyncio==0.21.1
