@@ -1,11 +1,14 @@
 import sqlite3
 import sys
-
+import os
 sys.path.append(".")
 
 
 async def InitializeIndexDB(dbPath):
     # Connect to sqlite database
+    folder = os.path.dirname(dbPath)
+    if not os.path.exists(folder):
+        os.mkdir(folder)
     conn = sqlite3.connect(dbPath)
     # cursor object
     cursor = conn.cursor()

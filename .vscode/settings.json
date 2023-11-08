@@ -5,6 +5,9 @@
   "python.formatting.provider": "none",
   "python.analysis.typeCheckingMode": "basic",
   "python.analysis.autoImportCompletions": true,
+<<<<<<< HEAD
+  "cSpell.words": ["uvicorn"]
+=======
   "sqltools.useNodeRuntime": true,
   "sqltools.connections": [
     {
@@ -14,4 +17,5 @@
       "database": "${workspaceFolder:PreProcessingLayer_EntityRecognitionAndLinking}/Database/DB.db"
     }
   ]
+>>>>>>> 181dcd15b0eb952493730f6d4519dbd960dc5aeb
 }
