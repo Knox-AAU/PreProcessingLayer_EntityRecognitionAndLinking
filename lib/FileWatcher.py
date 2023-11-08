@@ -8,6 +8,7 @@ class FileWatcher:
         self.filename = filename
         self.interval = interval
         self.callback = callback
+
         self.is_running = True
 
     def start(self):

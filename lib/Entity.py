@@ -1,6 +1,3 @@
-import json
-
-
 class Entity:
     def __init__(self, name, startIndex, endIndex, fileName):
         self.name = name
