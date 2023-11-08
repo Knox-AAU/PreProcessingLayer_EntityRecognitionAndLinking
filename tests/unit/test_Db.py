@@ -1,4 +1,5 @@
 import sys, sqlite3, pytest, os
+
 sys.path.append(".")
 from components import Db
 
@@ -26,7 +27,7 @@ async def test_InitializeIndexDB():
     # Act
     await Db.InitializeIndexDB(dbPath)
     # Assert
-    assert os.path.isfile(dbPath) == True
+    assert os.path.isfile(dbPath) is True
     # delete the file again
     rmDB()
 
@@ -51,14 +52,34 @@ async def test_Insert():
 
 @pytest.mark.asyncio
 async def test_Read():
-    # Arrrange
+    # Arrange
     await DBFolderInit()
     await Db.Insert(dbPath, "EntityIndex", "Morten")
+    await Db.Insert(dbPath, "EntityIndex", "Allan")
+    await Db.Insert(dbPath, "EntityIndex", "Vagn-Erik")
+    await Db.Insert(dbPath, "EntityIndex", "Anders")
     # Act
-    testRead = await Db.Read(dbPath, "EntityIndex")
+    testReadAll = await Db.Read(dbPath, "EntityIndex")
+    testReadPred = await Db.Read(dbPath, "EntityIndex", "a")
+    testReadPredCapital = await Db.Read(dbPath, "EntityIndex", "A")
     # Assert
-    assert testRead[0][0] == 1
-    assert testRead[0][1] == "Morten"
+    assert testReadAll[0][0] == 1
+    assert testReadAll[0][1] == "Morten"
+    assert testReadAll[1][0] == 2
+    assert testReadAll[1][1] == "Allan"
+    assert testReadAll[2][0] == 3
+    assert testReadAll[2][1] == "Vagn-Erik"
+    assert testReadAll[3][0] == 4
+    assert testReadAll[3][1] == "Anders"
+    assert testReadPred[0][0] == 2
+    assert testReadPred[0][1] == "Allan"
+    assert testReadPred[1][0] == 4
+    assert testReadPred[1][1] == "Anders"
+    assert testReadPredCapital[0][0] == 2
+    assert testReadPredCapital[0][1] == "Allan"
+    assert testReadPredCapital[1][0] == 4
+    assert testReadPredCapital[1][1] == "Anders"
+
     # delete the file again
     rmDB()
 
@@ -110,33 +131,34 @@ async def test_Delete():
         and tableBeforeDelete[1][1] == "Alija"
         and tableBeforeDelete[2][1] == "Peter"
     )
-    assert tableAfterDelete[0][1] == "Morten" and tableAfterDelete[1][1] == "Peter"
+    assert (
+        tableAfterDelete[0][1] == "Morten"
+        and tableAfterDelete[1][1] == "Peter"
+    )
     conn.commit()
     conn.close()
-    #delete the file again
+    # delete the file again
     rmDB()
 
 
 @pytest.mark.asyncio
 async def test_SortDB():
-    #Arrange
+    # Arrange
     await DBFolderInit()
-    await Db.Insert(dbPath, 'EntityIndex', 'Morten Kjær')
-    await Db.Insert(dbPath, 'EntityIndex', 'Alija')
-    await Db.Insert(dbPath, 'EntityIndex', 'Beter')
+    await Db.Insert(dbPath, "EntityIndex", "Morten Kjær")
+    await Db.Insert(dbPath, "EntityIndex", "Alija")
+    await Db.Insert(dbPath, "EntityIndex", "Beter")
     conn = sqlite3.connect(dbPath)
     cursor = conn.cursor()
-    #Act
-    await Db.SortDB(dbPath, 'EntityIndex')
+    # Act
+    await Db.SortDB(dbPath, "EntityIndex")
     cursor = conn.execute("SELECT * from EntityIndex")
     sortedTable = cursor.fetchall()
-    #Assert
-    assert sortedTable[0][1] == 'Alija'
-    assert sortedTable[1][1] == 'Beter'
-    assert sortedTable[2][1] == 'Morten Kjær'
+    # Assert
+    assert sortedTable[0][1] == "Alija"
+    assert sortedTable[1][1] == "Beter"
+    assert sortedTable[2][1] == "Morten Kjær"
     conn.commit()
     conn.close()
-    #delete the file again
+    # delete the file again
     rmDB()
-
-

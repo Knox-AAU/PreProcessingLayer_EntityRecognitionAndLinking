@@ -1,6 +1,7 @@
 import sqlite3
 import sys
 import os
+
 sys.path.append(".")
 
 
@@ -15,10 +16,11 @@ async def InitializeIndexDB(dbPath):
     # # drop query
     # cursor.execute("DROP TABLE IF EXISTS STUDENT")
     # create query
-    # IF NOT EXISTS checks whether table exists. Autoincrement increments the id of new rows automatically
+    # IF NOT EXISTS checks whether table exists.
+    # Autoincrement increments the id of new rows automatically
     query = """CREATE TABLE IF NOT EXISTS EntityIndex(
-            ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            NAME CHAR(20) NOT NULL
+            id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+            name CHAR(20) NOT NULL
             )"""
     cursor.execute(query)
 
@@ -33,8 +35,8 @@ async def Insert(dbPath, tableName, entity):
     # cursor object
     cursor = conn.cursor()
     # stuff that does query
-    query = ("INSERT INTO {} (NAME) " "VALUES (:NAME)").format(tableName)
-    params = {"NAME": entity}
+    query = ("INSERT INTO {} (name) " "VALUES (:name)").format(tableName)
+    params = {"name": entity}
 
     cursor.execute(query, params)
 
@@ -43,21 +45,27 @@ async def Insert(dbPath, tableName, entity):
     # commit and close
     conn.commit()
     conn.close()
-    
+
     return last_inserted_id
 
 
-async def Read(dbPath, tableName):
+async def Read(dbPath, tableName, searchPred=None):
     # Connect to sqlite database
     conn = sqlite3.connect(dbPath)
     # cursor object
     cursor = conn.cursor()
     # fetches all entries in table
-    cursor = conn.execute(("SELECT * from {}").format(tableName))
-    rowsInTable = (
-        cursor.fetchall()
-    )  # List of each row contained in tuples e.g. [(id, name), (id2, name2), ..., etc]
-    # commit and close
+    if searchPred is None:
+        cursor = conn.execute((f"SELECT * from {tableName}"))
+        rowsInTable = cursor.fetchall()
+        # List of each row contained in tuples
+        # e.g. [(id, name), (id2, name2), ..., etc]
+        # commit and close
+    else:
+        cursor = conn.execute(
+            (f"SELECT * from {tableName} WHERE name LIKE '{searchPred}%'")
+        )
+        rowsInTable = cursor.fetchall()
     conn.commit()
     conn.close()
     return rowsInTable
@@ -66,11 +74,10 @@ async def Read(dbPath, tableName):
 async def Update(dbPath, tableName, indexID, updatedName):
     # Connect to sqlite database
     conn = sqlite3.connect(dbPath)
-    # cursor object
-    cursor = conn.cursor()
+
     # updates row in table
-    cursor = conn.execute(
-        ("UPDATE {} set NAME = '{}' where ID = '{}'").format(
+    conn.execute(
+        ("UPDATE {} set name = '{}' where ID = '{}'").format(
             tableName, updatedName, indexID
         )
     )
@@ -82,31 +89,33 @@ async def Update(dbPath, tableName, indexID, updatedName):
 async def Delete(dbPath, tableName, indexID):
     # Connect to sqlite database
     conn = sqlite3.connect(dbPath)
-    # cursor object
-    cursor = conn.cursor()
+
     # deletes row from table
-    conn.execute(("DELETE from {} where ID = '{}';").format(tableName, indexID))
+    conn.execute(
+        ("DELETE from {} where ID = '{}';").format(tableName, indexID)
+    )
     # commit and close
     conn.commit()
     conn.close()
 
+
 async def SortDB(dbPath, tableName):
-# Connect to sqlite database
+    # Connect to sqlite database
     conn = sqlite3.connect(dbPath)
     # cursor object
     cursor = conn.cursor()
-    
-    # Query to fetch data sorted by NAME
-    query = "SELECT * FROM {} ORDER BY NAME".format(tableName)
+
+    # Query to fetch data sorted by name
+    query = "SELECT * FROM {} ORDER BY name".format(tableName)
     cursor.execute(query)
-    
+
     # Fetch all rows
     rows = cursor.fetchall()
-    
+
     # Query to drop the old table if it exists
     query = ("DROP TABLE IF EXISTS {}").format(tableName)
     cursor.execute(query)
-    #Creates the table anew to keep incrementing from 1, 2, 3 etc in ID
+    # Creates the table anew to keep incrementing from 1, 2, 3 etc in ID
     await InitializeIndexDB(dbPath)
     # commit and close
     conn.commit()
@@ -114,9 +123,13 @@ async def SortDB(dbPath, tableName):
 
     # Insert the sorted rows back into the table
     for row in rows:
-        await Insert(dbPath, tableName, row[1])  # assuming NAME is the second column
+        await Insert(
+            dbPath, tableName, row[1]
+        )  # assuming name is the second column
 
-# the following 15 lines of code can be replaced by "IF NOT EXISTS" in the sql query
+
+# the following 15 lines of code can be replaced by
+# "IF NOT EXISTS" in the sql query
 # def TableExists(tableName):
 #     conn = sqlite3.connect('DB.db')
 #     curr = conn.cursor()
