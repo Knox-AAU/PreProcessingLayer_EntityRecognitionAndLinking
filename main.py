@@ -22,6 +22,23 @@ async def getJson():
         return entityMentions
 
 
+@app.get('/{articlename}/entities')
+async def getentities(articlename: str):
+    await main()
+    with open('entity_mentions.json', 'r') as entityJson:
+        entityMentions = json.load(entityJson)
+    for elem in entityMentions:
+        path = elem["fileName"]
+        name = path.split('/');
+        if(name[-1] == articlename):
+            return (elem)
+ 
+
+    return([])
+    
+   
+    
+
 async def main():
     if not os.path.exists("entity_mentions.json"):
         open("entity_mentions.json", 'w').close()
