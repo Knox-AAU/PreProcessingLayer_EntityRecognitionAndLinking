@@ -77,9 +77,3 @@ def GetEntities(doc, fileName):
     else:
         currentJson.append(final_json)
     return currentJson
-
-def entityMentionJson(ents):
-    entityMentions = []
-    for ent in ents:
-        entityMentions.append(ent.getEntity())
-    return entityMentions

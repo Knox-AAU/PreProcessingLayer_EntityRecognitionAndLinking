@@ -1,6 +1,3 @@
-import json
-
-
 class Entity:
     def __init__(self, name, startIndex, endIndex, fileName):
         self.name = name
@@ -11,5 +8,8 @@ class Entity:
     #Not used - previously required appending, which was hard/unnecessary to implement
     def getEntity(self):
         return {
-            
+            "name": self.name,
+            "startIndex": self.startIndex,
+            "endIndex": self.endIndex,
+            "fileName": self.fileName,
         }

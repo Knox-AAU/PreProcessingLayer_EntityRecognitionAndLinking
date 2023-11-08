@@ -18,7 +18,7 @@ def test_GetText_fileExists():
 # Test that GetText returns an error if the file does not exist
 def test_GetText_fileNonExistent():
     with pytest.raises(FileNotFoundError):
-        testTet = GetSpacyData.GetText("NonExistentFile.txt")
+        GetSpacyData.GetText("NonExistentFile.txt")
 
 
 # Testing that GetTokens returns the correct number of entities
@@ -61,19 +61,24 @@ def test_GetEntities():
         ]
     })()
 
-    filename = "Nordjyske"
+    filename = "Testing2023"
 
     # Ensure the structure of docFile matches the expected format
 
     entities = GetSpacyData.GetEntities(docFile, filename)
-    assert entities["sentences"][0]["sentence"] == "Drake kan godt lide at sutte på lilletær"
-    assert entities["sentences"][0]["entityMentions"][0]["name"] == "Drake"
-    assert entities["sentences"][0]["entityMentions"][0]["startIndex"] == 0
-    assert entities["sentences"][0]["entityMentions"][0]["endIndex"] == 5
-    assert entities["fileName"] == "Nordjyske"
+    testIndex = None
+    for i in range(len(entities)):
+        if entities[i]["fileName"] == "Testing2023":
+            testIndex = i
+            break
+    assert entities[testIndex]["sentences"][0]["sentence"] == "Drake kan godt lide at sutte på lilletær"
+    assert entities[testIndex]["sentences"][0]["entityMentions"][0]["name"] == "Drake"
+    assert entities[testIndex]["sentences"][0]["entityMentions"][0]["startIndex"] == 0
+    assert entities[testIndex]["sentences"][0]["entityMentions"][0]["endIndex"] == 5
+    assert entities[testIndex]["fileName"] == "Testing2023"
 
-    assert entities["sentences"][1]["sentence"] == "Hello Buddyguy"
-    assert entities["sentences"][1]["entityMentions"][0]["name"] == "Buddyguy"
-    assert entities["sentences"][1]["entityMentions"][0]["startIndex"] == 6
-    assert entities["sentences"][1]["entityMentions"][0]["endIndex"] == 14
-    assert entities["fileName"] == "Nordjyske"
+    assert entities[testIndex]["sentences"][1]["sentence"] == "Hello Buddyguy"
+    assert entities[testIndex]["sentences"][1]["entityMentions"][0]["name"] == "Buddyguy"
+    assert entities[testIndex]["sentences"][1]["entityMentions"][0]["startIndex"] == 6
+    assert entities[testIndex]["sentences"][1]["entityMentions"][0]["endIndex"] == 14
+    assert entities[testIndex]["fileName"] == "Testing2023"

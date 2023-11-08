@@ -8,10 +8,16 @@ class FileWatcher:
         self.filename = filename
         self.interval = interval
         self.callback = callback
+        self.is_running = False
 
     def start(self):
-        threading.Timer(self.interval, self.start).start()
-        stamp = os.stat(self.filename).st_mtime
-        if stamp != self._cached_stamp:
-            self._cached_stamp = stamp
-            self.callback()
+        if not self.is_running:
+            threading.Timer(self.interval, self.start).start()
+            stamp = os.stat(self.filename).st_mtime
+            if stamp != self._cached_stamp:
+                self._cached_stamp = stamp
+                print("File changed")
+                self.callback()
+
+    def stop(self):
+        self.is_running = False
