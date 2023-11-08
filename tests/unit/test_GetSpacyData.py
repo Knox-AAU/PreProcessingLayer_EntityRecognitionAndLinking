@@ -18,7 +18,7 @@ def test_GetText_fileExists():
 # Test that GetText returns an error if the file does not exist
 def test_GetText_fileNonExistent():
     with pytest.raises(FileNotFoundError):
-        testTet = GetSpacyData.GetText("NonExistentFile.txt")
+        GetSpacyData.GetText("NonExistentFile.txt")
 
 
 # Testing that GetTokens returns the correct number of entities
@@ -35,46 +35,50 @@ def test_GetTokens():
 
 
 # Testing that GetEntities returns all entities and their indexes
-
-
 def test_GetEntities():
-    docFile = type(
-        "obj",
-        (object,),
-        {
-            "ents": [
-                type(
-                    "obj", (object,), {"text": "Drake", "start_char": 0, "end_char": 5}
-                ),
-                type(
-                    "obj",
-                    (object,),
-                    {"text": "Buddyguy", "start_char": 6, "end_char": 14},
-                ),
-            ]
-        },
-    )()
-    print(docFile.ents[0].text)
+    docFile = type('obj', (object,), {
+        "ents": [
+            type('obj', (object,), {
+                "sent": type('obj', (object,), {
+                    "text": "Drake kan godt lide at sutte på lilletær",
+                    "start_char": 0,
+                    "end_char": 40
+                }),
+                "text": "Drake",
+                "start_char": 0,
+                "end_char": 5
+            }),
+            type('obj', (object,), {
+                "sent": type('obj', (object,), {
+                    "text": "Hello Buddyguy",
+                    "start_char": 0,
+                    "end_char": 14
+                }),
+                "text": "Buddyguy",
+                "start_char": 6,
+                "end_char": 14
+            })
+        ]
+    })()
 
-    filename = "Nordjyske"
+    filename = "Testing2023"
+
+    # Ensure the structure of docFile matches the expected format
 
     entities = GetSpacyData.GetEntities(docFile, filename)
-    assert entities[0].name == "Drake"
-    assert entities[0].startIndex == 0
-    assert entities[0].endIndex == 5
-    assert entities[0].fileName == "Nordjyske"
+    testIndex = None
+    for i in range(len(entities)):
+        if entities[i]["fileName"] == "Testing2023":
+            testIndex = i
+            break
+    assert entities[testIndex]["sentences"][0]["sentence"] == "Drake kan godt lide at sutte på lilletær"
+    assert entities[testIndex]["sentences"][0]["entityMentions"][0]["name"] == "Drake"
+    assert entities[testIndex]["sentences"][0]["entityMentions"][0]["startIndex"] == 0
+    assert entities[testIndex]["sentences"][0]["entityMentions"][0]["endIndex"] == 5
+    assert entities[testIndex]["fileName"] == "Testing2023"
 
-    assert entities[1].name == "Buddyguy"
-    assert entities[1].startIndex == 6
-    assert entities[1].endIndex == 14
-    assert entities[1].fileName == "Nordjyske"
-
-
-# test that entityMentionsJson is correctly creating JSON array
-def test_entityMentionJson():
-    ents = [Entity("Drake", 0, 5, "Nordjyske"), Entity("Buddyguy", 6, 14, "Nordjyske")]
-    JSONArray = GetSpacyData.entityMentionJson(ents)
-    assert JSONArray == [
-        {"name": "Drake", "startIndex": 0, "endIndex": 5, "fileName": "Nordjyske"},
-        {"name": "Buddyguy", "startIndex": 6, "endIndex": 14, "fileName": "Nordjyske"},
-    ]
+    assert entities[testIndex]["sentences"][1]["sentence"] == "Hello Buddyguy"
+    assert entities[testIndex]["sentences"][1]["entityMentions"][0]["name"] == "Buddyguy"
+    assert entities[testIndex]["sentences"][1]["entityMentions"][0]["startIndex"] == 6
+    assert entities[testIndex]["sentences"][1]["entityMentions"][0]["endIndex"] == 14
+    assert entities[testIndex]["fileName"] == "Testing2023"

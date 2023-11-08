@@ -1,1 +1,290 @@
-[{"name": "Martin Kj\u00e6r", "startIndex": 47, "endIndex": 58, "fileName": "Artikel.txt"}, {"name": "last week", "startIndex": 59, "endIndex": 68, "fileName": "Artikel.txt"}, {"name": "Region North Jutland", "startIndex": 105, "endIndex": 125, "fileName": "Artikel.txt"}, {"name": "the super hospital", "startIndex": 275, "endIndex": 293, "fileName": "Artikel.txt"}, {"name": "Aalborg", "startIndex": 297, "endIndex": 304, "fileName": "Artikel.txt"}, {"name": "LinkedIn", "startIndex": 337, "endIndex": 345, "fileName": "Artikel.txt"}, {"name": "Martin Kj\u00e6r", "startIndex": 361, "endIndex": 372, "fileName": "Artikel.txt"}, {"name": "just a year and a half ago", "startIndex": 489, "endIndex": 515, "fileName": "Artikel.txt"}, {"name": "Martin Kj\u00e6r", "startIndex": 531, "endIndex": 542, "fileName": "Artikel.txt"}, {"name": "the Norwegian Working Environment Authority", "startIndex": 601, "endIndex": 644, "fileName": "Artikel.txt"}, {"name": "July", "startIndex": 693, "endIndex": 697, "fileName": "Artikel.txt"}, {"name": "two", "startIndex": 782, "endIndex": 785, "fileName": "Artikel.txt"}, {"name": "LinkedIn", "startIndex": 903, "endIndex": 911, "fileName": "Artikel.txt"}, {"name": "North Jutland", "startIndex": 921, "endIndex": 934, "fileName": "Artikel.txt"}, {"name": "Martin Kj\u00e6r", "startIndex": 1028, "endIndex": 1039, "fileName": "Artikel.txt"}, {"name": "North Jutland", "startIndex": 1283, "endIndex": 1296, "fileName": "Artikel.txt"}, {"name": "Martin Kj\u00e6r", "startIndex": 1299, "endIndex": 1310, "fileName": "Artikel.txt"}, {"name": "Region North Jutland", "startIndex": 1486, "endIndex": 1506, "fileName": "Artikel.txt"}, {"name": "the Norwegian Working Environment Authority", "startIndex": 1562, "endIndex": 1605, "fileName": "Artikel.txt"}, {"name": "Mariane Therkelsen", "startIndex": 1637, "endIndex": 1655, "fileName": "Artikel.txt"}, {"name": "Martin Kj\u00e6r", "startIndex": 1675, "endIndex": 1686, "fileName": "Artikel.txt"}, {"name": "NAU", "startIndex": 1956, "endIndex": 1959, "fileName": "Artikel.txt"}, {"name": "A few days", "startIndex": 2094, "endIndex": 2104, "fileName": "Artikel.txt"}, {"name": "Martin Kj\u00e6r", "startIndex": 2111, "endIndex": 2122, "fileName": "Artikel.txt"}, {"name": "Nordjyske", "startIndex": 2160, "endIndex": 2169, "fileName": "Artikel.txt"}, {"name": "early September", "startIndex": 2173, "endIndex": 2188, "fileName": "Artikel.txt"}, {"name": "Nordjyske", "startIndex": 2427, "endIndex": 2436, "fileName": "Artikel.txt"}, {"name": "LinkedIn", "startIndex": 2463, "endIndex": 2471, "fileName": "Artikel.txt"}, {"name": "NAU", "startIndex": 2546, "endIndex": 2549, "fileName": "Artikel.txt"}, {"name": "New Aalborg University Hospital", "startIndex": 2551, "endIndex": 2582, "fileName": "Artikel.txt"}, {"name": "ed.", "startIndex": 2584, "endIndex": 2587, "fileName": "Artikel.txt"}, {"name": "today", "startIndex": 2608, "endIndex": 2613, "fileName": "Artikel.txt"}, {"name": "today", "startIndex": 2661, "endIndex": 2666, "fileName": "Artikel.txt"}, {"name": "Martin Kj\u00e6r's", "startIndex": 2767, "endIndex": 2780, "fileName": "Artikel.txt"}, {"name": "Nordjyske", "startIndex": 2795, "endIndex": 2804, "fileName": "Artikel.txt"}, {"name": "earlier this month", "startIndex": 2805, "endIndex": 2823, "fileName": "Artikel.txt"}, {"name": "Danish", "startIndex": 3003, "endIndex": 3009, "fileName": "Artikel.txt"}, {"name": "Nordjyske", "startIndex": 3021, "endIndex": 3030, "fileName": "Artikel.txt"}, {"name": "Martin Kj\u00e6r", "startIndex": 3048, "endIndex": 3059, "fileName": "Artikel.txt"}, {"name": "Martin Kj\u00e6r", "startIndex": 3141, "endIndex": 3152, "fileName": "Artikel.txt"}, {"name": "last day", "startIndex": 3173, "endIndex": 3181, "fileName": "Artikel.txt"}, {"name": "Nordjyske", "startIndex": 3250, "endIndex": 3259, "fileName": "Artikel.txt"}, {"name": "Thursday last week", "startIndex": 3275, "endIndex": 3293, "fileName": "Artikel.txt"}, {"name": "much more than one minute", "startIndex": 3407, "endIndex": 3432, "fileName": "Artikel.txt"}, {"name": "Nordjyske", "startIndex": 3487, "endIndex": 3496, "fileName": "Artikel.txt"}, {"name": "Kim Mikkelsen", "startIndex": 3573, "endIndex": 3586, "fileName": "Artikel.txt"}, {"name": "Kim Mikkelsen", "startIndex": 3589, "endIndex": 3602, "fileName": "Artikel.txt"}, {"name": "New Aalborg University Hospital", "startIndex": 3826, "endIndex": 3857, "fileName": "Artikel.txt"}, {"name": "DKK 120 million", "startIndex": 3870, "endIndex": 3885, "fileName": "Artikel.txt"}, {"name": "the next four years", "startIndex": 3910, "endIndex": 3929, "fileName": "Artikel.txt"}, {"name": "regional council", "startIndex": 4198, "endIndex": 4214, "fileName": "Artikel.txt"}, {"name": "Mads Duedahl", "startIndex": 4224, "endIndex": 4236, "fileName": "Artikel.txt"}, {"name": "980", "startIndex": 4263, "endIndex": 4266, "fileName": "Artikel.txt"}, {"name": "Bredebro", "startIndex": 4282, "endIndex": 4290, "fileName": "Artikel.txt"}, {"name": "T\u00f8nder", "startIndex": 4296, "endIndex": 4302, "fileName": "Artikel.txt"}]
+[
+    {
+        "fileName": "Artikel.txt",
+        "sentences": [
+            {
+                "sentence": "Siden den omstridte topchef Martin Kjærs pludselige exit i sidste uge har både han og direktionen i Region Nordjylland været i flyverskjul. \n",
+                "startIndex": 0,
+                "endIndex": 141,
+                "entityMentions": [
+                    {
+                        "name": "Martin Kjærs",
+                        "startIndex": 28,
+                        "endIndex": 40
+                    },
+                    {
+                        "name": "Region Nordjylland",
+                        "startIndex": 100,
+                        "endIndex": 118
+                    }
+                ]
+            },
+            {
+                "sentence": "Men nu åbner projektdirektøren for det skandaleramte byggeri af supersygehuset i Aalborg en smule op i et opslag på det sociale medie LinkedIn. \n",
+                "startIndex": 202,
+                "endIndex": 347,
+                "entityMentions": [
+                    {
+                        "name": "Aalborg",
+                        "startIndex": 81,
+                        "endIndex": 88
+                    }
+                ]
+            },
+            {
+                "sentence": "Martin Kjær fortæller ikke direkte, hvorfor han har opsagt sin stilling, men han skriver, at han ikke har fortrudt, at han tog jobbet for blot halvandet år siden.\n",
+                "startIndex": 347,
+                "endIndex": 510,
+                "entityMentions": [
+                    {
+                        "name": "Martin Kjær",
+                        "startIndex": 0,
+                        "endIndex": 11
+                    }
+                ]
+            },
+            {
+                "sentence": "Ifølge Martin Kjær har det været \"surrealistisk\" at se sig selv i medierne, efter Arbejdstilsynet i juli skred ind over for den afdeling, han stod i spidsen for. \n",
+                "startIndex": 510,
+                "endIndex": 673,
+                "entityMentions": [
+                    {
+                        "name": "Martin Kjær",
+                        "startIndex": 7,
+                        "endIndex": 18
+                    },
+                    {
+                        "name": "Arbejdstilsynet",
+                        "startIndex": 82,
+                        "endIndex": 97
+                    },
+                    {
+                        "name": "juli",
+                        "startIndex": 100,
+                        "endIndex": 104
+                    }
+                ]
+            },
+            {
+                "sentence": "Region Nordjylland fik et påbud for det psykiske arbejdsmiljø, hvor medarbejdere kritiserede Martin Kjær for blandt andet overfusninger, og direktøren erkendte selv, at flere af hans ansatte bryder grædende sammen på jobbet. \n",
+                "startIndex": 882,
+                "endIndex": 1108,
+                "entityMentions": [
+                    {
+                        "name": "Martin Kjær",
+                        "startIndex": 93,
+                        "endIndex": 104
+                    }
+                ]
+            },
+            {
+                "sentence": "Efterfølgende kom han under voldsomt pres internt efter flere højst opsigtsvækkende udtalelser i Nordjyske. \n",
+                "startIndex": 1108,
+                "endIndex": 1217,
+                "entityMentions": [
+                    {
+                        "name": "Nordjyske",
+                        "startIndex": 97,
+                        "endIndex": 106
+                    }
+                ]
+            },
+            {
+                "sentence": "Martin Kjær sagde blandt andet, at arbejdsmiljøet kunne blive endnu værre i takt med, at der kom flere byggeskandaler frem, og han startede et offentligt slagsmål med HR-direktøren i Region Nordjylland, som han beskyldte for at afskære ham fra at svare Arbejdstilsynet. \n",
+                "startIndex": 1217,
+                "endIndex": 1488,
+                "entityMentions": [
+                    {
+                        "name": "Martin Kjær",
+                        "startIndex": 0,
+                        "endIndex": 11
+                    },
+                    {
+                        "name": "Region Nordjylland",
+                        "startIndex": 183,
+                        "endIndex": 201
+                    },
+                    {
+                        "name": "Arbejdstilsynet",
+                        "startIndex": 253,
+                        "endIndex": 268
+                    }
+                ]
+            },
+            {
+                "sentence": "Anklager, som HR-direktør Mariane Therkelsen har afvist. \n",
+                "startIndex": 1488,
+                "endIndex": 1546,
+                "entityMentions": [
+                    {
+                        "name": "Mariane Therkelsen",
+                        "startIndex": 26,
+                        "endIndex": 44
+                    }
+                ]
+            },
+            {
+                "sentence": "Men Martin Kjær mener, han er et offer.",
+                "startIndex": 1546,
+                "endIndex": 1585,
+                "entityMentions": [
+                    {
+                        "name": "Martin Kjær",
+                        "startIndex": 4,
+                        "endIndex": 15
+                    }
+                ]
+            },
+            {
+                "sentence": "- Jeg har lært, at prisen for at sætte sig i en direktørstol i det offentlige kan være rigtig høj, skriver han.\n",
+                "startIndex": 1697,
+                "endIndex": 1809,
+                "entityMentions": [
+                    {
+                        "name": "direktørstol",
+                        "startIndex": 48,
+                        "endIndex": 60
+                    }
+                ]
+            },
+            {
+                "sentence": "Få dage efter Martin Kjær havde gennemført et større interview med Nordjyske i begyndelsen af september, skrev han i en mail til sine medarbejdere, at han var \"dybt personligt berørt\", og at det var det \"mest modbydelige, jeg nogensinde har prøvet\". \n",
+                "startIndex": 1934,
+                "endIndex": 2185,
+                "entityMentions": [
+                    {
+                        "name": "Martin Kjær",
+                        "startIndex": 14,
+                        "endIndex": 25
+                    },
+                    {
+                        "name": "Nordjyske",
+                        "startIndex": 67,
+                        "endIndex": 76
+                    },
+                    {
+                        "name": "september",
+                        "startIndex": 94,
+                        "endIndex": 103
+                    }
+                ]
+            },
+            {
+                "sentence": "- Flere dele af interviewet husker jeg slet ikke, skriver han i mailen, som Nordjyske har set.\n",
+                "startIndex": 2185,
+                "endIndex": 2280,
+                "entityMentions": [
+                    {
+                        "name": "Nordjyske",
+                        "startIndex": 76,
+                        "endIndex": 85
+                    }
+                ]
+            },
+            {
+                "sentence": "- NAU (Nyt Aalborg Universitetshospital, red.) står et godt sted i dag, og selvom der er massive udfordringer, så sidder der i dag et særdeles kompetent hold af egne/eksterne ressourcer. \n",
+                "startIndex": 2368,
+                "endIndex": 2556,
+                "entityMentions": [
+                    {
+                        "name": "NAU",
+                        "startIndex": 2,
+                        "endIndex": 5
+                    },
+                    {
+                        "name": "Aalborg Universitetshospital",
+                        "startIndex": 11,
+                        "endIndex": 39
+                    }
+                ]
+            },
+            {
+                "sentence": "Den udmelding står i skarp kontrast til Martin Kjærs udtalelser i Nordjyske tidligere på måneden.\n",
+                "startIndex": 2556,
+                "endIndex": 2654,
+                "entityMentions": [
+                    {
+                        "name": "Martin Kjærs",
+                        "startIndex": 40,
+                        "endIndex": 52
+                    },
+                    {
+                        "name": "Nordjyske",
+                        "startIndex": 66,
+                        "endIndex": 75
+                    }
+                ]
+            },
+            {
+                "sentence": "Nordjyske har forsøgt at få Martin Kjær i tale, men han har ikke besvaret vores henvendelser.",
+                "startIndex": 2843,
+                "endIndex": 2936,
+                "entityMentions": [
+                    {
+                        "name": "Nordjyske",
+                        "startIndex": 0,
+                        "endIndex": 9
+                    },
+                    {
+                        "name": "Martin Kjær",
+                        "startIndex": 28,
+                        "endIndex": 39
+                    }
+                ]
+            },
+            {
+                "sentence": "Det er fortsat uvist, om Martin Kjær allerede har haft sidste arbejdsdag, eller om han skal arbejde i opsigelsesperioden. \n",
+                "startIndex": 2937,
+                "endIndex": 3060,
+                "entityMentions": [
+                    {
+                        "name": "Martin Kjær",
+                        "startIndex": 25,
+                        "endIndex": 36
+                    }
+                ]
+            },
+            {
+                "sentence": "Nordjyske erfarer, at han torsdag i sidste uge fortalte medarbejderne på et hasteindkaldt møde, at han havde opsagt sin stilling.",
+                "startIndex": 3060,
+                "endIndex": 3189,
+                "entityMentions": [
+                    {
+                        "name": "Nordjyske",
+                        "startIndex": 0,
+                        "endIndex": 9
+                    }
+                ]
+            },
+            {
+                "sentence": "Opsigelsen kommer, ifølge Nordjyskes oplysninger, efter flere møder med konstitueret koncernchef Kim Mikkelsen. \n",
+                "startIndex": 3265,
+                "endIndex": 3378,
+                "entityMentions": [
+                    {
+                        "name": "Nordjyskes",
+                        "startIndex": 26,
+                        "endIndex": 36
+                    },
+                    {
+                        "name": "Kim Mikkelsen",
+                        "startIndex": 97,
+                        "endIndex": 110
+                    }
+                ]
+            },
+            {
+                "sentence": "Kim Mikkelsen har afvist at svare på spørgsmål - både mundtligt og skriftligt.",
+                "startIndex": 3378,
+                "endIndex": 3456,
+                "entityMentions": [
+                    {
+                        "name": "Kim Mikkelsen",
+                        "startIndex": 0,
+                        "endIndex": 13
+                    }
+                ]
+            }
+        ]
+    }
+]

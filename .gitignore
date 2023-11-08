@@ -1,7 +1,12 @@
+Database/*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
+
+# DB.db
+Database/*.db
 
 # C extensions
 *.so

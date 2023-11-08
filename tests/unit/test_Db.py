@@ -3,13 +3,14 @@ sys.path.append(".")
 from components import Db
 
 
-dbFolder = "tests/unit/temp"
+dbFolder = "tests/unit/TestDatabases"
 
 dbPath = dbFolder + "/testdb.db"
 
 
 async def DBFolderInit():
-    os.mkdir(dbFolder)
+    if not os.path.isdir(dbFolder):
+        os.mkdir(dbFolder)
     await Db.InitializeIndexDB(dbPath)
 
 
@@ -21,9 +22,7 @@ def rmDB():
 @pytest.mark.asyncio
 async def test_InitializeIndexDB():
     # Arrange
-    dbFolder = "tests/unit/temp"
-    os.mkdir(dbFolder)
-    dbPath = dbFolder + "/testdb.db"
+    await DBFolderInit()
     # Act
     await Db.InitializeIndexDB(dbPath)
     # Assert
@@ -114,5 +113,30 @@ async def test_Delete():
     assert tableAfterDelete[0][1] == "Morten" and tableAfterDelete[1][1] == "Peter"
     conn.commit()
     conn.close()
-    # delete the file again
+    #delete the file again
     rmDB()
+
+
+@pytest.mark.asyncio
+async def test_SortDB():
+    #Arrange
+    await DBFolderInit()
+    await Db.Insert(dbPath, 'EntityIndex', 'Morten Kjær')
+    await Db.Insert(dbPath, 'EntityIndex', 'Alija')
+    await Db.Insert(dbPath, 'EntityIndex', 'Beter')
+    conn = sqlite3.connect(dbPath)
+    cursor = conn.cursor()
+    #Act
+    await Db.SortDB(dbPath, 'EntityIndex')
+    cursor = conn.execute("SELECT * from EntityIndex")
+    sortedTable = cursor.fetchall()
+    #Assert
+    assert sortedTable[0][1] == 'Alija'
+    assert sortedTable[1][1] == 'Beter'
+    assert sortedTable[2][1] == 'Morten Kjær'
+    conn.commit()
+    conn.close()
+    #delete the file again
+    rmDB()
+
+
