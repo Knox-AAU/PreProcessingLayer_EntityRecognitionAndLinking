@@ -34,7 +34,6 @@ class TestFileWatcher:
 
         assert callback_called
 
-
     def test_file_watcher_does_not_call_callback_if_no_change(self, test_file):
         callback_called = False
 
