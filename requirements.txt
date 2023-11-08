@@ -1,7 +1,13 @@
 --extra-index-url https://repos.knox.cs.aau.dk
 fastapi==0.103.2
-setuptools
-wheel
+setuptools==68.2.0
+wheel==0.41.2
 spacy==2.3.9
-uvicorn
+uvicorn==0.23.2
+levenshtein
 da_core_news_cstm
+pytest==7.4.2
+pytest_sugar==0.9.7
+pytest-asyncio==0.21.1
+pytest-cov==3.0.0
+httpx
