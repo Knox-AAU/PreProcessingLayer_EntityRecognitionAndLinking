@@ -183,19 +183,66 @@ async def test_Update():
     await Db.Insert(
         dbPath, "EntityIndex", queryInformation={"entity": "Morten"}
     )
+    sentence = "this is a string"
+    await Db.Insert(
+        dbPath,
+        "sentence",
+        queryInformation={
+            "filename": "artikel.txt",
+            "string": sentence,
+            "startindex": 0,
+            "endindex": 20,
+        },
+    )
+    await Db.Insert(
+        dbPath,
+        "entitymention",
+        queryInformation={
+            "string": sentence,
+            "mention": "this",
+            "filename": "artikel.txt",
+            "startindex": 0,
+            "endindex": 5,
+        },
+    )
     conn = sqlite3.connect(dbPath)
     cursor = conn.cursor()
     cursor = conn.execute("SELECT * from EntityIndex")
-    tableBeforeUpdate = cursor.fetchall()
+    tableBeforeUpdateEntityIndex = cursor.fetchall()
     # Act
     await Db.Update(dbPath, "EntityIndex", 1, "Soren")
     cursor = conn.execute("SELECT * from EntityIndex")
-    tableAfterUpdate = cursor.fetchall()
+    tableAfterUpdateEntityIndex = cursor.fetchall()
+    cursor = None
+    cursor = conn.execute("SELECT * from sentence")
+    tableBeforeUpdateSentence = cursor.fetchall()
+    # Act
+    await Db.Update(dbPath, "sentence", 1, "this is a different string")
+    cursor = conn.execute("SELECT * from sentence")
+    tableAfterUpdateSentence = cursor.fetchall()
+    cursor = None
+    cursor = conn.execute("SELECT * from entitymention")
+    tableBeforeUpdateMentions = cursor.fetchall()
+    # Act
+    await Db.Update(dbPath, "entitymention", 1, "Soren")
+    cursor = conn.execute("SELECT * from entitymention")
+    tableAfterUpdateMentions = cursor.fetchall()
+
     # Assert
-    assert tableBeforeUpdate[0][0] == 1
-    assert tableBeforeUpdate[0][1] == "Morten"
-    assert tableAfterUpdate[0][0] == 1
-    assert tableAfterUpdate[0][1] == "Soren"
+    assert tableBeforeUpdateEntityIndex[0][0] == 1
+    assert tableBeforeUpdateEntityIndex[0][1] == "Morten"
+    assert tableAfterUpdateEntityIndex[0][0] == 1
+    assert tableAfterUpdateEntityIndex[0][1] == "Soren"
+
+    assert tableBeforeUpdateSentence[0][0] == 1
+    assert tableBeforeUpdateSentence[0][1] == "this is a string"
+    assert tableAfterUpdateSentence[0][0] == 1
+    assert tableAfterUpdateSentence[0][1] == "this is a different string"
+
+    assert tableBeforeUpdateMentions[0][0] == 1
+    assert tableBeforeUpdateMentions[0][2] == "this"
+    assert tableAfterUpdateMentions[0][0] == 1
+    assert tableAfterUpdateMentions[0][2] == "Soren"
     conn.commit()
     conn.close()
     # delete the file again
@@ -205,37 +252,87 @@ async def test_Update():
 @pytest.mark.asyncio
 async def test_Delete():
     # Arrange
-    await DBFolderInit()
+    await DBFolderInit()  # Assuming this function initializes the database
+    await Db.Insert(dbPath, "EntityIndex", queryInformation={"entity": "Morten"})
+    await Db.Insert(dbPath, "EntityIndex", queryInformation={"entity": "Alija"})
+    await Db.Insert(dbPath, "EntityIndex", queryInformation={"entity": "Peter"})
+
+    sentence = "this is a string"
     await Db.Insert(
-        dbPath, "EntityIndex", queryInformation={"entity": "Morten"}
+        dbPath,
+        "sentence",
+        queryInformation={
+            "filename": "artikel.txt",
+            "string": sentence,
+            "startindex": 0,
+            "endindex": 20,
+        },
     )
     await Db.Insert(
-        dbPath, "EntityIndex", queryInformation={"entity": "Alija"}
+        dbPath,
+        "entitymention",
+        queryInformation={
+            "string": sentence,
+            "mention": "this",
+            "filename": "artikel.txt",
+            "startindex": 0,
+            "endindex": 5,
+        },
     )
-    await Db.Insert(
-        dbPath, "EntityIndex", queryInformation={"entity": "Peter"}
-    )
+
     conn = sqlite3.connect(dbPath)
     cursor = conn.cursor()
     cursor = conn.execute("SELECT * from EntityIndex")
-    tableBeforeDelete = cursor.fetchall()  # Gets table before deletion
+    tableBeforeDeleteEntityIndex = cursor.fetchall()  # Gets table before deletion
+
+    cursor = conn.execute("SELECT * from sentence")
+    tableBeforeDeleteSentence = cursor.fetchall()  # Gets table before deletion
+
+    cursor = conn.execute("SELECT * from entitymention")
+    tableBeforeDeleteEntityMention = cursor.fetchall()  # Gets table before deletion
+
     # Act
     await Db.Delete(dbPath, "EntityIndex", 2)
     cursor = conn.execute("SELECT * from EntityIndex")
-    tableAfterDelete = cursor.fetchall()  # Gets table after deletion
+    tableAfterDeleteEntityIndex = cursor.fetchall()  # Gets table after deletion
+
+    # Act
+    await Db.Delete(dbPath, "sentence", 1)
+    cursor = conn.execute("SELECT * from sentence")
+    tableAfterDeleteSentence = cursor.fetchall()  # Gets table after deletion
+
+    # Act
+    await Db.Delete(dbPath, "entitymention", 1)
+    cursor = conn.execute("SELECT * from entitymention")
+    tableAfterDeleteEntityMention = cursor.fetchall()  # Gets table after deletion
+
     # Assert
-    assert len(tableBeforeDelete) == 3
-    assert len(tableAfterDelete) == 2
+    assert len(tableBeforeDeleteEntityIndex) == 3
+    assert len(tableAfterDeleteEntityIndex) == 2
     assert (
-        tableBeforeDelete[0][1] == "Morten"
-        and tableBeforeDelete[1][1] == "Alija"
-        and tableBeforeDelete[2][1] == "Peter"
+        tableBeforeDeleteEntityIndex[0][1] == "Morten"
+        and tableBeforeDeleteEntityIndex[1][1] == "Alija"
+        and tableBeforeDeleteEntityIndex[2][1] == "Peter"
     )
     assert (
-        tableAfterDelete[0][1] == "Morten"
-        and tableAfterDelete[1][1] == "Peter"
+        tableAfterDeleteEntityIndex[0][1] == "Morten"
+        and tableAfterDeleteEntityIndex[1][1] == "Peter"
     )
+
+    assert len(tableBeforeDeleteSentence) == 1
+    assert len(tableAfterDeleteSentence) == 0
+    assert (
+        tableBeforeDeleteSentence[0] == (1, sentence, "artikel.txt", 0, 20)
+    )
+
+    assert len(tableBeforeDeleteEntityMention) == 1
+    assert len(tableAfterDeleteEntityMention) == 0
+    assert (
+        tableBeforeDeleteEntityMention[0] == (1, 1, "this", 0, 5, "artikel.txt")
+    )
+
     conn.commit()
     conn.close()
-    # delete the file again
+
+    # Clean up: delete the database file again
     rmDB()

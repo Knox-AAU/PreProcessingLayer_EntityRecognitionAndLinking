@@ -112,13 +112,19 @@ async def Read(dbPath, tableName, searchPred=None):
 async def Update(dbPath, tableName, indexID, updatedName):
     # Connect to sqlite database
     conn = sqlite3.connect(dbPath)
+    # cursor object
+    cursor = conn.cursor()
 
-    # updates row in table
-    conn.execute(
-        ("UPDATE {} set name = '{}' where ID = '{}'").format(
-            tableName, updatedName, indexID
-        )
-    )
+    # update row in table
+    if tableName == "sentence":
+        query = f"UPDATE {tableName} SET string = '{updatedName}' WHERE sid = '{indexID}'"
+    elif tableName == "entitymention":
+        query = f"UPDATE {tableName} SET mention = '{updatedName}' WHERE eid = '{indexID}'"
+    else:
+        query = f"UPDATE {tableName} SET name = '{updatedName}' WHERE id = '{indexID}'"
+
+    cursor.execute(query)
+
     # commit and close
     conn.commit()
     conn.close()
@@ -127,11 +133,19 @@ async def Update(dbPath, tableName, indexID, updatedName):
 async def Delete(dbPath, tableName, indexID):
     # Connect to sqlite database
     conn = sqlite3.connect(dbPath)
+    # cursor object
+    cursor = conn.cursor()
 
-    # deletes row from table
-    conn.execute(
-        ("DELETE from {} where ID = '{}';").format(tableName, indexID)
-    )
+    # delete row from table
+    if tableName == "sentence":
+        query = f"DELETE FROM {tableName} WHERE sid = '{indexID}'"
+    elif tableName == "entitymention":
+        query = f"DELETE FROM {tableName} WHERE eid = '{indexID}'"
+    else:
+        query = f"DELETE FROM {tableName} WHERE id = '{indexID}'"
+
+    cursor.execute(query)
+
     # commit and close
     conn.commit()
     conn.close()
