@@ -37,15 +37,53 @@ async def test_Insert():
     # Arrange
     await DBFolderInit()
     conn = sqlite3.connect(dbPath)
-    cursor = conn.cursor()
     # Act
-    await Db.Insert(dbPath, "EntityIndex", "Morten")
-    cursor = conn.execute("SELECT * from EntityIndex")
-    rowForComparison = cursor.fetchall()
+    await Db.Insert(
+        dbPath, "EntityIndex", queryInformation={"entity": "Morten"}
+    )
+    sentence = "this is a string"
+    await Db.Insert(
+        dbPath,
+        "sentence",
+        queryInformation={
+            "filename": "artikel.txt",
+            "string": sentence,
+            "startindex": 0,
+            "endindex": 20,
+        },
+    )
+    await Db.Insert(
+        dbPath,
+        "entitymention",
+        queryInformation={
+            "string": sentence,
+            "mention": "this",
+            "filename": "artikel.txt",
+            "startindex": 0,
+            "endindex": 5,
+        },
+    )
+
+    cursorSentence = conn.execute("SELECT * FROM sentence")
+    cursorEntityIndex = conn.execute("SELECT * from EntityIndex")
+    cursorMentions = conn.execute("SELECT * FROM entitymention")
+    rowForComparisonSentence = cursorSentence.fetchall()
+    rowForComparisonEntityIndex = cursorEntityIndex.fetchall()
+    rowForComparisonMentions = cursorMentions.fetchall()
+    print(rowForComparisonMentions[0])
     conn.commit()
     conn.close()
     # Assert
-    assert rowForComparison[0][1] == "Morten"
+    assert rowForComparisonEntityIndex[0][1] == "Morten"
+    assert rowForComparisonSentence[0] == (
+        1,
+        "this is a string",
+        "artikel.txt",
+        0,
+        20,
+    )
+    assert rowForComparisonMentions[0] == (1, 1, "this", 0, 5, "artikel.txt")
+
     # delete the file again
     rmDB()
 
@@ -54,31 +92,85 @@ async def test_Insert():
 async def test_Read():
     # Arrange
     await DBFolderInit()
-    await Db.Insert(dbPath, "EntityIndex", "Morten")
-    await Db.Insert(dbPath, "EntityIndex", "Allan")
-    await Db.Insert(dbPath, "EntityIndex", "Vagn-Erik")
-    await Db.Insert(dbPath, "EntityIndex", "Anders")
+    await Db.Insert(
+        dbPath, "EntityIndex", queryInformation={"entity": "Morten"}
+    )
+    await Db.Insert(
+        dbPath, "EntityIndex", queryInformation={"entity": "Allan"}
+    )
+    await Db.Insert(
+        dbPath, "EntityIndex", queryInformation={"entity": "Vagn-Erik"}
+    )
+    await Db.Insert(
+        dbPath, "EntityIndex", queryInformation={"entity": "Anders"}
+    )
+    sentence = "this is a string"
+    await Db.Insert(
+        dbPath,
+        "sentence",
+        queryInformation={
+            "filename": "artikel.txt",
+            "string": sentence,
+            "startindex": 0,
+            "endindex": 20,
+        },
+    )
+    await Db.Insert(
+        dbPath,
+        "entitymention",
+        queryInformation={
+            "string": sentence,
+            "mention": "this",
+            "filename": "artikel.txt",
+            "startindex": 0,
+            "endindex": 5,
+        },
+    )
     # Act
-    testReadAll = await Db.Read(dbPath, "EntityIndex")
-    testReadPred = await Db.Read(dbPath, "EntityIndex", "a")
-    testReadPredCapital = await Db.Read(dbPath, "EntityIndex", "A")
+    testReadEntityIndexAll = await Db.Read(dbPath, "EntityIndex")
+    testReadEntityIndexPred = await Db.Read(dbPath, "EntityIndex", "a")
+    testReadEntityIndexPredCapital = await Db.Read(dbPath, "EntityIndex", "A")
+    testReadSentenceAll = await Db.Read(dbPath, "sentence")
+    testReadSentencePred = await Db.Read(dbPath, "sentence", "a")
+    testReadSentencePredCapital = await Db.Read(dbPath, "sentence", "A")
     # Assert
-    assert testReadAll[0][0] == 1
-    assert testReadAll[0][1] == "Morten"
-    assert testReadAll[1][0] == 2
-    assert testReadAll[1][1] == "Allan"
-    assert testReadAll[2][0] == 3
-    assert testReadAll[2][1] == "Vagn-Erik"
-    assert testReadAll[3][0] == 4
-    assert testReadAll[3][1] == "Anders"
-    assert testReadPred[0][0] == 2
-    assert testReadPred[0][1] == "Allan"
-    assert testReadPred[1][0] == 4
-    assert testReadPred[1][1] == "Anders"
-    assert testReadPredCapital[0][0] == 2
-    assert testReadPredCapital[0][1] == "Allan"
-    assert testReadPredCapital[1][0] == 4
-    assert testReadPredCapital[1][1] == "Anders"
+    assert testReadEntityIndexAll[0][0] == 1
+    assert testReadEntityIndexAll[0][1] == "Morten"
+    assert testReadEntityIndexAll[1][0] == 2
+    assert testReadEntityIndexAll[1][1] == "Allan"
+    assert testReadEntityIndexAll[2][0] == 3
+    assert testReadEntityIndexAll[2][1] == "Vagn-Erik"
+    assert testReadEntityIndexAll[3][0] == 4
+    assert testReadEntityIndexAll[3][1] == "Anders"
+    assert testReadEntityIndexPred[0][0] == 2
+    assert testReadEntityIndexPred[0][1] == "Allan"
+    assert testReadEntityIndexPred[1][0] == 4
+    assert testReadEntityIndexPred[1][1] == "Anders"
+    assert testReadEntityIndexPredCapital[0][0] == 2
+    assert testReadEntityIndexPredCapital[0][1] == "Allan"
+    assert testReadEntityIndexPredCapital[1][0] == 4
+    assert testReadEntityIndexPredCapital[1][1] == "Anders"
+    assert testReadSentenceAll[0] == (
+        1,
+        "this is a string",
+        "artikel.txt",
+        0,
+        20,
+    )
+    assert testReadSentencePred[0] == (
+        1,
+        "this is a string",
+        "artikel.txt",
+        0,
+        20,
+    )
+    assert testReadSentencePredCapital[0] == (
+        1,
+        "this is a string",
+        "artikel.txt",
+        0,
+        20,
+    )
 
     # delete the file again
     rmDB()
@@ -88,7 +180,9 @@ async def test_Read():
 async def test_Update():
     # Arrange
     await DBFolderInit()
-    await Db.Insert(dbPath, "EntityIndex", "Morten")
+    await Db.Insert(
+        dbPath, "EntityIndex", queryInformation={"entity": "Morten"}
+    )
     conn = sqlite3.connect(dbPath)
     cursor = conn.cursor()
     cursor = conn.execute("SELECT * from EntityIndex")
@@ -112,9 +206,15 @@ async def test_Update():
 async def test_Delete():
     # Arrange
     await DBFolderInit()
-    await Db.Insert(dbPath, "EntityIndex", "Morten")
-    await Db.Insert(dbPath, "EntityIndex", "Alija")
-    await Db.Insert(dbPath, "EntityIndex", "Peter")
+    await Db.Insert(
+        dbPath, "EntityIndex", queryInformation={"entity": "Morten"}
+    )
+    await Db.Insert(
+        dbPath, "EntityIndex", queryInformation={"entity": "Alija"}
+    )
+    await Db.Insert(
+        dbPath, "EntityIndex", queryInformation={"entity": "Peter"}
+    )
     conn = sqlite3.connect(dbPath)
     cursor = conn.cursor()
     cursor = conn.execute("SELECT * from EntityIndex")
@@ -135,29 +235,6 @@ async def test_Delete():
         tableAfterDelete[0][1] == "Morten"
         and tableAfterDelete[1][1] == "Peter"
     )
-    conn.commit()
-    conn.close()
-    # delete the file again
-    rmDB()
-
-
-@pytest.mark.asyncio
-async def test_SortDB():
-    # Arrange
-    await DBFolderInit()
-    await Db.Insert(dbPath, "EntityIndex", "Morten Kjær")
-    await Db.Insert(dbPath, "EntityIndex", "Alija")
-    await Db.Insert(dbPath, "EntityIndex", "Beter")
-    conn = sqlite3.connect(dbPath)
-    cursor = conn.cursor()
-    # Act
-    await Db.SortDB(dbPath, "EntityIndex")
-    cursor = conn.execute("SELECT * from EntityIndex")
-    sortedTable = cursor.fetchall()
-    # Assert
-    assert sortedTable[0][1] == "Alija"
-    assert sortedTable[1][1] == "Beter"
-    assert sortedTable[2][1] == "Morten Kjær"
     conn.commit()
     conn.close()
     # delete the file again
