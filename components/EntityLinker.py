@@ -13,7 +13,6 @@ async def entitylinkerFunc(entMentions, threshold = 3):
     for mention in entMentions:
         # find candidates from DB
         entsFromDb = await Db.Read(dbPath, tableName, mention.name[0])
-        print(entsFromDb)
 
         # if no candidate is found, the entity is simply added to the DB (with a newly generated ID)
         if len(entsFromDb) == 0:
@@ -48,7 +47,7 @@ async def entitylinkerFunc(entMentions, threshold = 3):
             await Db.Insert(dbPath, tableName, mention.name)
             entLinks.append(EntityLinked(mention, mention.name))
         else:
-            entLinks.append(EntityLinked(mention, bestCandidate[0]))
+            entLinks.append(EntityLinked(mention, bestCandidate[1]))
     
     #print(entLinks)
     return entLinks

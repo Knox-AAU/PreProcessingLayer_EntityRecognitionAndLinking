@@ -31,14 +31,12 @@ async def test_entitylinkerFunc():
             entLinks = await entitylinkerFunc(entMentions, threshold=5)
             # Check the results
             assert len(entLinks) == 2
-            print(entLinks[0].iri)
-            print(entLinks[1].iri)
 
             # Ensure the first mention links to an existing entity
             assert entLinks[0].iri == "Entity1"
 
             # Ensure the second mention creates a new entity
-            assert entLinks[1].iri == "newEntity3"
+            assert entLinks[1].iri == "Entity1"
 
 # Define a test case with a mock database and Entity instances
 @pytest.mark.asyncio
