@@ -2,16 +2,22 @@ from components import *
 from components.EntityLinker import entitylinkerFunc
 import sys, json, os
 from multiprocessing import Process
+from lib.Exceptions.UndetectedLanguageException import UndetectedLanguageException
 from lib.FileWatcher import FileWatcher
+from langdetect import detect
 
-from fastapi import FastAPI
+
+from fastapi import FastAPI, HTTPException, Request
 
 app = FastAPI()
 
 
 @app.on_event("startup")
 async def startEvent():
-    await main()
+    try:
+        await main()
+    except UndetectedLanguageException:
+        raise HTTPException(status_code=400,detail="Undetected language")
 
 
 @app.get("/entitymentions")
@@ -35,7 +41,17 @@ async def getentities(articlename: str):
  
 
     return([])
+
+
+@app.post('/detectlanguage')
+async def checklang(request: Request):
     
+    data = await request.body()
+    stringdata = str(data)
+    language = detect(stringdata)
+
+    return language
+
    
     
 
