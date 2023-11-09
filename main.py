@@ -2,6 +2,7 @@ from components import *
 from components.EntityLinker import entitylinkerFunc
 import sys, json, os
 from multiprocessing import Process
+from lib.Entity import Entity
 from lib.FileWatcher import FileWatcher
 
 from fastapi import FastAPI
@@ -61,8 +62,8 @@ async def main():
     await Db.InitializeIndexDB(
         "./Database/DB.db"
     )  # makes the DB containing the entities of KG
-
-    #entLinks = await entitylinkerFunc(ents) #Returns JSON object containing an array of entity links
+    await Db.Insert("./Database/DB.db", "EntityIndex", "Alija")
+    entLinks = await entitylinkerFunc(Entity("Alders", 1, 6,"Dingleberries.txt")) #Returns JSON object containing an array of entity links
     #entLinks = entitylinkerFunc(entsJSON) #Returns JSON object containing an array of entity links
     with open("entity_mentions.json", "w", encoding="utf8") as entityJson:
         json.dump(entsJSON, entityJson, ensure_ascii=False, indent = 4)

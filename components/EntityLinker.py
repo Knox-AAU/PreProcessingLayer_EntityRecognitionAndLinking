@@ -5,14 +5,19 @@ from lib.EntityLinked import EntityLinked
 
 async def entitylinkerFunc(entMentions, threshold = 3):
     entLinks = []
+    dbPath = "./Database/DB.db"
+    tableName = "EntityIndex"
+    #Sorting DB for optimization reasons
+    await Db.SortDB(dbPath, tableName)
     # for all mentions in the text
     for mention in entMentions:
         # find candidates from DB
-        entsFromDb = await Db.Read('./Database/DB.db', "EntityIndex")
+        entsFromDb = await Db.Read(dbPath, tableName, mention.name[0])
+        print(entsFromDb)
 
         # if no candidate is found, the entity is simply added to the DB (with a newly generated ID)
         if len(entsFromDb) == 0:
-            entityIndex = await Db.Insert('./Database/DB.db', "EntityIndex", mention.name)
+            entityIndex = await Db.Insert(dbPath, tableName, mention.name)
             entLinks.append(EntityLinked(mention, entityIndex))
             continue
 
@@ -40,7 +45,7 @@ async def entitylinkerFunc(entMentions, threshold = 3):
 
         # if the best candidate is above some threshold, add the link otherwise create a new entity in the DB
         if bestCandidate is None:
-            entityIndex = await Db.Insert('./Database/DB.db', "EntityIndex", mention.name)
+            entityIndex = await Db.Insert(dbPath, tableName, mention.name)
             entLinks.append(EntityLinked(mention, entityIndex))
         else:
             entLinks.append(EntityLinked(mention, bestCandidate[0]))
