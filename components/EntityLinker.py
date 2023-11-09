@@ -17,8 +17,8 @@ async def entitylinkerFunc(entMentions, threshold = 3):
 
         # if no candidate is found, the entity is simply added to the DB (with a newly generated ID)
         if len(entsFromDb) == 0:
-            entityIndex = await Db.Insert(dbPath, tableName, mention.name)
-            entLinks.append(EntityLinked(mention, entityIndex))
+            await Db.Insert(dbPath, tableName, mention.name)
+            entLinks.append(EntityLinked(mention, mention.name))
             continue
 
         smallestDistance = 100000
@@ -45,8 +45,8 @@ async def entitylinkerFunc(entMentions, threshold = 3):
 
         # if the best candidate is above some threshold, add the link otherwise create a new entity in the DB
         if bestCandidate is None:
-            entityIndex = await Db.Insert(dbPath, tableName, mention.name)
-            entLinks.append(EntityLinked(mention, entityIndex))
+            await Db.Insert(dbPath, tableName, mention.name)
+            entLinks.append(EntityLinked(mention, mention.name))
         else:
             entLinks.append(EntityLinked(mention, bestCandidate[0]))
     

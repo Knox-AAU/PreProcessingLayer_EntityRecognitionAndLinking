@@ -16,7 +16,7 @@ async def test_entitylinkerFunc():
         return []
 
     async def mock_insert(db_path, table, entity_name):
-        return "3"  # Simulate a newly generated ID
+        return None
 
     # Patch the Db.Read and Db.Insert functions with the mock functions
     with patch("components.EntityLinker.Db.Read", side_effect=mock_read):
@@ -28,15 +28,17 @@ async def test_entitylinkerFunc():
             ]
 
             # Call the entitylinkerFunc
-            entLinks = await entitylinkerFunc(entMentions, threshold=3)
+            entLinks = await entitylinkerFunc(entMentions, threshold=5)
             # Check the results
             assert len(entLinks) == 2
+            print(entLinks[0].iri)
+            print(entLinks[1].iri)
 
             # Ensure the first mention links to an existing entity
-            assert entLinks[0].linkId == "1"
+            assert entLinks[0].iri == "Entity1"
 
             # Ensure the second mention creates a new entity
-            assert entLinks[1].linkId == "3"
+            assert entLinks[1].iri == "newEntity3"
 
 # Define a test case with a mock database and Entity instances
 @pytest.mark.asyncio
@@ -64,4 +66,4 @@ async def test_entitylinkerFuncFindsCandidatesThatStartWithE():
             assert len(entLinks) == 1
 
             # Ensure the first mention links to an existing entity
-            assert entLinks[0].linkId == "1"
+            assert entLinks[0].iri == "Entity1"
