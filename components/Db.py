@@ -25,7 +25,7 @@ async def InitializeIndexDB(dbPath):
     createSentenceTable = """CREATE TABLE IF NOT EXISTS sentence(
             "sid" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
             "string" varchar,
-            "filename" varchar,
+            "filename" varchar NOT NULL,
             "startindex" int NOT NULL,
             "endindex" int NOT NULL
             )"""
