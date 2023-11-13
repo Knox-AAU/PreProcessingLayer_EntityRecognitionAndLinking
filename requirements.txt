@@ -5,8 +5,10 @@ spacy>=3.7.0, <3.8.0
 uvicorn==0.23.2
 levenshtein
 en_core_web_lg @ https://github.com/explosion/spacy-models/releases/download/en_core_web_lg-3.7.0/en_core_web_lg-3.7.0-py3-none-any.whl
+da_core_news_lg @ https://github.com/explosion/spacy-models/releases/download/da_core_news_lg-3.7.0/da_core_news_lg-3.7.0-py3-none-any.whl
 pytest==7.4.2
 pytest_sugar==0.9.7
 pytest-asyncio==0.21.1
 pytest-cov==3.0.0
+langdetect==1.0.9
 httpx
