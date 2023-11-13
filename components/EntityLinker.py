@@ -1,6 +1,25 @@
 from Levenshtein import distance
 from components import Db
 from lib.EntityLinked import EntityLinked
+from lib.Entity import Entity
+
+
+def GetAllEntities(entityMentions):
+    allEntities = []
+    fileName = ""
+    for file in entityMentions:
+        fileName = file["fileName"]
+        for sentence in file["sentences"]:
+            for entity in sentence["entityMentions"]:
+                newEntity = Entity(
+                    name=entity["name"],
+                    startIndex=entity["startIndex"],
+                    endIndex=entity["endIndex"],
+                    fileName=fileName,
+                )
+                allEntities.append(newEntity)
+    print(allEntities)
+    return allEntities
 
 
 async def entitylinkerFunc(entMentions, threshold=3):
@@ -11,8 +30,9 @@ async def entitylinkerFunc(entMentions, threshold=3):
     # for all mentions in the text
     for mention in entMentions:
         # find candidates from DB
-        entsFromDb = await Db.Read(dbPath, tableName, mention.name[0])
-        print(entsFromDb)
+        predicate = mention.name
+        predicate = predicate[0]
+        entsFromDb = await Db.Read(dbPath, tableName, predicate)
 
         # if no candidate is found, the entity is simply added to the DB (with a newly generated ID)
         if len(entsFromDb) == 0:
@@ -49,7 +69,9 @@ async def entitylinkerFunc(entMentions, threshold=3):
 
         # if the best candidate is above some threshold, add the link otherwise create a new entity in the DB
         if bestCandidate is None:
-            await Db.Insert(dbPath, tableName, mention.name)
+            await Db.Insert(
+                dbPath, tableName, queryInformation={"entity": mention.name}
+            )
             entLinks.append(EntityLinked(mention, mention.name))
         else:
             entLinks.append(EntityLinked(mention, bestCandidate[1]))
