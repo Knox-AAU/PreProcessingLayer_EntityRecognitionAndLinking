@@ -49,6 +49,7 @@ def GetEntities(doc, fileName):
         currentJson = []
 
     sentences_json = []
+    
 
     for entity in doc.ents:
         # Use the 'start' and 'end' indexes of the entity to get its index within its sentence
@@ -75,11 +76,12 @@ def GetEntities(doc, fileName):
 
         if not found:
             sentences_json.append({
-                "sentence": sentence,
+                "sentence": sentence.replace("\n", ""), 
                 "startIndex": entity.sent.start_char,
                 "endIndex": entity.sent.end_char,
                 "entityMentions": [entity_info]
             })
+        
 
     # Create the final JSON structure
     final_json = {
