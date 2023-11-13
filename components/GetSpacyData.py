@@ -55,14 +55,19 @@ def GetEntities(doc, fileName):
         # Use the 'start' and 'end' indexes of the entity to get its index within its sentence
         entity_start_char = entity.start_char - entity.sent.start_char
         entity_end_char = entity.end_char - entity.sent.start_char
+     
 
         sentence = entity.sent.text
         name = entity.text
         start_index = entity_start_char
         end_index = entity_end_char
 
+        
+       
+
         entity_info = {
             "name": name,
+           
             "startIndex": start_index,
             "endIndex": end_index
         }
@@ -86,6 +91,7 @@ def GetEntities(doc, fileName):
     # Create the final JSON structure
     final_json = {
         "fileName": fileName,
+        "language": DetectLang(doc),
         "sentences": sentences_json
     }
     if(len(currentJson) != 0):
