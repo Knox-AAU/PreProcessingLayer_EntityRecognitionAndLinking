@@ -1,12 +1,17 @@
 from pydoc import replace
 import spacy, json, os
 import sys
+from langdetect import detect
+
+from lib.Exceptions.UndetectedLanguageException import UndetectedLanguageException
 
 sys.path.append(".")
 from lib.Entity import Entity
 import en_core_web_lg
+import da_core_news_lg
 
-nlp = en_core_web_lg.load()
+nlp_en = en_core_web_lg.load()
+nlp_da = da_core_news_lg.load()
 
 # GetText skal få text fra pipeline del A
 def GetText(title):
@@ -18,9 +23,21 @@ def GetText(title):
     return stringWithText
 
 def GetTokens(text):
-    doc = nlp(text)
-    return doc
+    result = DetectLang(text)
+    if(result == "da"):
+        return nlp_da(text)
+    elif(result == "en"):
+        return nlp_en(text)
+    else:
+        raise UndetectedLanguageException()
+    
 
+    
+
+def DetectLang(text):
+    stringdata = str(text)
+    language = detect(stringdata)
+    return language
 #Method to fully extract entity mentions, find the sentences and calculate indexes and finally create a final JSON
 def GetEntities(doc, fileName):
     # Create a list of sentences with their entities in the desired JSON format
