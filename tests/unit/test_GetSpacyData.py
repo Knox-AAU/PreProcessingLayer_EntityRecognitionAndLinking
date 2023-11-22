@@ -1,9 +1,12 @@
 import sys
 import pytest
 
+from lib import EntityLinked
+
 sys.path.append(".")
 from components import GetSpacyData
 from lib.Entity import Entity
+from lib.EntityLinked import EntityLinked
 
 
 # Test that GetText returns the correct text from the file
@@ -35,6 +38,7 @@ def test_GetTokens():
 
 
 # Testing that GetEntities returns all entities and their indexes
+@pytest.mark.asyncio
 def test_GetEntities():
     docFile = type('obj', (object,), {
         "ents": [
@@ -65,20 +69,37 @@ def test_GetEntities():
 
     # Ensure the structure of docFile matches the expected format
 
-    entities = GetSpacyData.GetEntities(docFile, filename)
-    testIndex = None
-    for i in range(len(entities)):
-        if entities[i]["fileName"] == "Testing2023":
+    entities = GetSpacyData.GetEntities(docFile)
+
+    entLinks = []
+    for entity in entities:
+        entLinks.append(
+            EntityLinked(
+                entity,
+                "knox.aau.dk/some_iri"
+            )
+        )
+
+    entsJSON = GetSpacyData.BuildJSONFromEntities(
+        entLinks,
+        docFile,
+        filename
+    )
+
+    testIndex = 0
+    for i in range(len(entsJSON)):
+        if entsJSON[i]["fileName"] == "Testing2023":
             testIndex = i
             break
-    assert entities[testIndex]["sentences"][0]["sentence"] == "Drake is a music artist"
-    assert entities[testIndex]["sentences"][0]["entityMentions"][0]["name"] == "Drake"
-    assert entities[testIndex]["sentences"][0]["entityMentions"][0]["startIndex"] == 0
-    assert entities[testIndex]["sentences"][0]["entityMentions"][0]["endIndex"] == 5
-    assert entities[testIndex]["fileName"] == "Testing2023"
 
-    assert entities[testIndex]["sentences"][1]["sentence"] == "Hello Buddyguy"
-    assert entities[testIndex]["sentences"][1]["entityMentions"][0]["name"] == "Buddyguy"
-    assert entities[testIndex]["sentences"][1]["entityMentions"][0]["startIndex"] == 6
-    assert entities[testIndex]["sentences"][1]["entityMentions"][0]["endIndex"] == 14
-    assert entities[testIndex]["fileName"] == "Testing2023"
+    assert entsJSON[testIndex]["sentences"][0]["sentence"] == "Drake is a music artist" 
+    assert entsJSON[testIndex]["sentences"][0]["entityMentions"][0]["name"] == "Drake"
+    assert entsJSON[testIndex]["sentences"][0]["entityMentions"][0]["startIndex"] == 0
+    assert entsJSON[testIndex]["sentences"][0]["entityMentions"][0]["endIndex"] == 5
+    assert entsJSON[testIndex]["fileName"] == "Testing2023"
+
+    assert entsJSON[testIndex]["sentences"][1]["sentence"] == "Hello Buddyguy"
+    assert entsJSON[testIndex]["sentences"][1]["entityMentions"][0]["name"] == "Buddyguy"
+    assert entsJSON[testIndex]["sentences"][1]["entityMentions"][0]["startIndex"] == 6
+    assert entsJSON[testIndex]["sentences"][1]["entityMentions"][0]["endIndex"] == 14
+    assert entsJSON[testIndex]["fileName"] == "Testing2023"

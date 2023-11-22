@@ -27,8 +27,8 @@ async def test_entitylinkerFunc():
         ):
             # Create some Entity instances
             entMentions = [
-                Entity("Entity1", 0, 6, "file1"),
-                Entity("newEntity3", 0, 6, "file2"),
+                Entity("Entity1", 0, 6, "Sentence1", 0, 9),
+                Entity("newEntity3", 0, 6, "Sentence2", 0, 9),
             ]
 
             # Call the entitylinkerFunc
@@ -62,7 +62,7 @@ async def test_entitylinkerFuncFindsCandidatesThatStartWithE():
         ):
             # Create some Entity instances
             entMentions = [
-                Entity("Entity1", 0, 6, "file1"),
+                Entity("Entity1", 0, 6, "Sentence1", 0, 9),
             ]
 
             # Call the entitylinkerFunc
@@ -95,7 +95,7 @@ async def test_CheckIfSpaceHasBeenReplacedWithUnderscore():
         ):
             # Create some Entity instances
             entMentions = [
-                Entity("Entity1", 0, 6, "file1"),
+                Entity("Entity1", 0, 6, "Sentence1", 0, 9),
             ]
 
             # Call the entitylinkerFunc
@@ -149,7 +149,7 @@ async def test_entitylinkeraccuracy():
             # Create some Entity instances
             TestingDataset = {
                 "test": [
-                    Entity(name, 0, 6, "file")
+                    Entity(name, 0, 6, "Sentence1", 0, 9)
                     for name in names_with_duplicates
                 ],
                 "GoldStandardNames": [

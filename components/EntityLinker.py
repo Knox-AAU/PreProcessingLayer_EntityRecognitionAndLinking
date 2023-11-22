@@ -16,7 +16,9 @@ def GetAllEntities(entityMentions):
                     name=entity["name"],
                     startIndex=entity["startIndex"],
                     endIndex=entity["endIndex"],
-                    fileName=fileName,
+                    sentence=sentence["sentence"],
+                    sentenceStartIndex=sentence["sentenceStartIndex"],
+                    sentenceEndIndex=sentence["sentenceEndIndex"],
                 )
                 allEntities.append(newEntity)
     return allEntities

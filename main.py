@@ -78,9 +78,10 @@ async def main():
     except UndetectedLanguageException:
         raise HTTPException(status_code=400, detail="Undetected language")
 
-    entsJSON = GetSpacyData.GetEntities(
-        doc, "Artikel.txt"
-    )  # appends entities in list
+    ents = GetSpacyData.GetEntities(
+        doc
+    )  # construct entities from text
+
     # To prevent appending challenges, the final JSON is created in GetEntities()
     # entMentions= GetSpacyData.entityMentionJson(ents)  #Returns JSON object containing an array of entity mentions
     await Db.InitializeIndexDB(
@@ -88,7 +89,14 @@ async def main():
     )  # makes the DB containing the entities of KG
     # Returns JSON object containing an array of entity links
     entLinks = await entitylinkerFunc(
-        GetAllEntities(entsJSON)
+        ents
     )  # Returns JSON object containing an array of entity links
+
+    entsJSON = GetSpacyData.BuildJSONFromEntities(
+        entLinks,
+        doc,
+        "Artikel.txt"
+    )
+
     with open("entity_mentions.json", "w", encoding="utf8") as entityJson:
         json.dump(entsJSON, entityJson, ensure_ascii=False, indent=4)
