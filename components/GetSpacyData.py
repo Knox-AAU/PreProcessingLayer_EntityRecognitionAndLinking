@@ -1,11 +1,16 @@
 import spacy, json, os
 import sys
+from langdetect import detect
+
+from lib.Exceptions.UndetectedLanguageException import UndetectedLanguageException
 
 sys.path.append(".")
 from lib.Entity import Entity
 import en_core_web_lg
+import da_core_news_lg
 
-nlp = en_core_web_lg.load()
+nlp_en = en_core_web_lg.load()
+nlp_da = da_core_news_lg.load()
 
 # GetText skal få text fra pipeline del A
 def GetText(title):
@@ -17,9 +22,21 @@ def GetText(title):
     return stringWithText
 
 def GetTokens(text):
-    doc = nlp(text)
-    return doc
+    result = DetectLang(text)
+    if(result == "da"):
+        return nlp_da(text)
+    elif(result == "en"):
+        return nlp_en(text)
+    else:
+        raise UndetectedLanguageException()
+    
 
+    
+
+def DetectLang(text):
+    stringdata = str(text)
+    language = detect(stringdata)
+    return language
 #Method to fully extract entity mentions, find the sentences and calculate indexes and finally create a final JSON
 def GetEntities(doc, fileName):
     # Create a list of sentences with their entities in the desired JSON format
@@ -32,19 +49,25 @@ def GetEntities(doc, fileName):
         currentJson = []
 
     sentences_json = []
+    
 
     for entity in doc.ents:
         # Use the 'start' and 'end' indexes of the entity to get its index within its sentence
         entity_start_char = entity.start_char - entity.sent.start_char
         entity_end_char = entity.end_char - entity.sent.start_char
+     
 
         sentence = entity.sent.text
         name = entity.text
         start_index = entity_start_char
         end_index = entity_end_char
 
+        
+       
+
         entity_info = {
             "name": name,
+           
             "startIndex": start_index,
             "endIndex": end_index
         }
@@ -58,15 +81,17 @@ def GetEntities(doc, fileName):
 
         if not found:
             sentences_json.append({
-                "sentence": sentence,
+                "sentence": sentence.replace("\n", ""), 
                 "startIndex": entity.sent.start_char,
                 "endIndex": entity.sent.end_char,
                 "entityMentions": [entity_info]
             })
+        
 
     # Create the final JSON structure
     final_json = {
         "fileName": fileName,
+        "language": DetectLang(doc),
         "sentences": sentences_json
     }
     if(len(currentJson) != 0):
