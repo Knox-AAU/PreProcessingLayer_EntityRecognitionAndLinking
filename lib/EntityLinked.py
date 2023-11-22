@@ -2,7 +2,7 @@ from lib.Entity import Entity
 
 
 class EntityLinked(Entity):
-    def __init__(self, entity, iri):
+    def __init__(self, entity: Entity, iri: str):
         super().__init__(
             entity.name, entity.startIndex, entity.endIndex, entity.sentence, entity.sentenceStartIndex, entity.sentenceEndIndex
         )

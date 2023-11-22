@@ -95,7 +95,7 @@ def BuildJSONFromEntities(entities: List[EntityLinked], doc, fileName: str):
         currentJson.append(final_json)
     return currentJson
 
-def GetEntities(doc):
+def GetEntities(doc) -> List[Entity]:
     entities = []
     for entity in doc.ents:
         entities.append(
