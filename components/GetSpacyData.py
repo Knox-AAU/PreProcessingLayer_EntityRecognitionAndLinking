@@ -1,6 +1,8 @@
 import spacy, json, os
 import sys
 from langdetect import detect
+from typing import List
+from lib.EntityLinked import EntityLinked
 
 from lib.Exceptions.UndetectedLanguageException import (
     UndetectedLanguageException,
@@ -42,7 +44,7 @@ def DetectLang(text):
 
 
 # Method to fully extract entity mentions, find the sentences and calculate indexes and finally create a final JSON
-def GetEntities(doc, fileName):
+def BuildJSONFromEntities(entities: List[EntityLinked], doc, fileName: str):
     # Create a list of sentences with their entities in the desired JSON format
     currentJson = open("./entity_mentions.json", "r")
     currentJson.seek(0, os.SEEK_END)
@@ -54,26 +56,16 @@ def GetEntities(doc, fileName):
 
     sentences_json = []
 
-    for entity in doc.ents:
+    for entity in entities:
         # Use the 'start' and 'end' indexes of the entity to get its index within its sentence
-        entity_start_char = entity.start_char - entity.sent.start_char
-        entity_end_char = entity.end_char - entity.sent.start_char
+        sentence = entity.sentence
 
-        sentence = entity.sent.text
-        name = entity.text
-        start_index = entity_start_char
-        end_index = entity_end_char
-
-        entity_info = {
-            "name": name,
-            "startIndex": start_index,
-            "endIndex": end_index,
-        }
+        entityJSON = entity.getEntityJSON()
 
         found = False
         for sentence_info in sentences_json:
             if sentence_info["sentence"] == sentence.replace("\n", ""):
-                sentence_info["entityMentions"].append(entity_info)
+                sentence_info["entityMentions"].append(entityJSON)
                 found = True
                 break
 
@@ -81,9 +73,9 @@ def GetEntities(doc, fileName):
             sentences_json.append(
                 {
                     "sentence": sentence.replace("\n", ""),
-                    "startIndex": entity.sent.start_char,
-                    "endIndex": entity.sent.end_char,
-                    "entityMentions": [entity_info],
+                    "sentenceStartIndex": entity.sentenceStartIndex,
+                    "sentenceEndIndex": entity.sentenceEndIndex,
+                    "entityMentions": [entityJSON],
                 }
             )
 
@@ -102,3 +94,20 @@ def GetEntities(doc, fileName):
     else:
         currentJson.append(final_json)
     return currentJson
+
+def GetEntities(doc):
+    entities = []
+    for entity in doc.ents:
+        entities.append(
+            Entity(
+                name=entity.text,
+                startIndex=entity.start_char,
+                endIndex=entity.end_char,
+                sentence=entity.sent.text,
+                sentenceStartIndex=entity.sent.start_char,
+                sentenceEndIndex=entity.sent.end_char,
+            )
+        )
+
+    return entities
+    

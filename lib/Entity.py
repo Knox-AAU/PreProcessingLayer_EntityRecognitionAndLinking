@@ -1,15 +1,8 @@
 class Entity:
-    def __init__(self, name, startIndex, endIndex, fileName):
+    def __init__(self, name: str, startIndex: int, endIndex: int, sentence: str, sentenceStartIndex: int, sentenceEndIndex: int):
         self.name = name
         self.startIndex = startIndex
         self.endIndex = endIndex
-        self.fileName = fileName
-    
-    #Not used - previously required appending, which was hard/unnecessary to implement
-    def getEntity(self):
-        return {
-            "name": self.name,
-            "startIndex": self.startIndex,
-            "endIndex": self.endIndex,
-            "fileName": self.fileName,
-        }
+        self.sentence = sentence
+        self.sentenceStartIndex = sentenceStartIndex
+        self.sentenceEndIndex = sentenceEndIndex
