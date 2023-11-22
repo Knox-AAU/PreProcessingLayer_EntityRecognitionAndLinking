@@ -12,3 +12,4 @@ pytest-asyncio==0.21.1
 pytest-cov==3.0.0
 langdetect==1.0.9
 httpx
+fuzzywuzzy

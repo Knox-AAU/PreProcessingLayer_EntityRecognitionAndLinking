@@ -1,58 +1,58 @@
 from Levenshtein import distance
 from components import Db
 from lib.EntityLinked import EntityLinked
+from lib.Entity import Entity
+from fuzzywuzzy import fuzz
 
 
-async def entitylinkerFunc(entMentions, threshold=3):
-    entLinks = []
-    dbPath = "./Database/DB.db"
-    tableName = "EntityIndex"
-    # Sorting DB for optimization reasons
-    # for all mentions in the text
-    for mention in entMentions:
-        # find candidates from DB
-        entsFromDb = await Db.Read(dbPath, tableName, mention.name[0])
-        print(entsFromDb)
+def GetAllEntities(entityMentions):
+    allEntities = []
+    fileName = ""
+    for file in entityMentions:
+        fileName = file["fileName"]
+        for sentence in file["sentences"]:
+            for entity in sentence["entityMentions"]:
+                newEntity = Entity(
+                    name=entity["name"],
+                    startIndex=entity["startIndex"],
+                    endIndex=entity["endIndex"],
+                    fileName=fileName,
+                )
+                allEntities.append(newEntity)
+    return allEntities
 
-        # if no candidate is found, the entity is simply added to the DB (with a newly generated ID)
-        if len(entsFromDb) == 0:
-            await Db.Insert(
-                dbPath, tableName, queryInformation={"entity": mention.name}
+
+async def entitylinkerFunc(entities, threshold=80):
+    iri_dict = {}
+    linked_entities = []
+    db_path = "./Database/DB.db"
+    for entity in entities:
+        # Use the Read function to get all entities starting with the same name
+        potential_matches = await Db.Read(
+            db_path, "EntityIndex", searchPred=entity.name
+        )
+
+        if potential_matches:
+            names_only = [match[1] for match in potential_matches]
+            # Sort the potential matches by length difference and select the first one
+            best_candidate_name = min(
+                names_only,
+                key=lambda x: abs(len(x[0]) - len(entity.name)),
             )
-            entLinks.append(EntityLinked(mention, mention.name))
-            continue
-
-        smallestDistance = 100000
-        bestCandidate = None
-        # for each candidate, calculate the levenshtein distance between the mention and the candidate
-        for candidate in entsFromDb:
-            # Give each a ranking with the levenshtein distance
-            # print("MENTION")
-            # print(candidate[1])
-            # print(mention)
-            levenshteinDistance = distance(mention.name, candidate[1])
-            # print("CANDIDATE RANKING")
-            # print(levenshteinDistance)
-            # print(candidate)
-
-            # if the levenshtein distance is below a threshold, the candidate is added to the list of candidates
-            if (
-                levenshteinDistance < threshold
-                and levenshteinDistance < smallestDistance
-            ):
-                smallestDistance = levenshteinDistance
-                # return the best candidate
-                bestCandidate = candidate
-
-        # print("BEST CANDIDATE")
-        # print(bestCandidate)
-
-        # if the best candidate is above some threshold, add the link otherwise create a new entity in the DB
-        if bestCandidate is None:
-            await Db.Insert(dbPath, tableName, mention.name)
-            entLinks.append(EntityLinked(mention, mention.name))
+            iri = best_candidate_name.replace(" ", "_")
+            iri_dict[entity] = EntityLinked(entity, iri)
         else:
-            entLinks.append(EntityLinked(mention, bestCandidate[1]))
+            # If not found in the database, add to the result and update the database
+            iri = entity.name.replace(" ", "_")
+            iri_dict[entity] = EntityLinked(entity, iri)
+            await Db.Insert(
+                db_path,
+                "EntityIndex",
+                queryInformation={"entity": entity.name},
+            )
 
-    # print(entLinks)
-    return entLinks
+    # Convert the result to an array of EntityLinked
+    for linked_entity in iri_dict.values():
+        linked_entities.append(linked_entity)
+
+    return linked_entities
