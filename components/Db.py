@@ -47,6 +47,7 @@ async def InitializeIndexDB(dbPath):
 
 
 async def Insert(dbPath, tableName, queryInformation):
+    print(queryInformation)
     # Connect to sqlite database
     conn = sqlite3.connect(dbPath)
     # cursor object
@@ -60,8 +61,8 @@ async def Insert(dbPath, tableName, queryInformation):
         query = f"INSERT INTO {tableName} (sid, mention, filename, startindex, endindex) VALUES ((SELECT sid FROM sentence WHERE string = '{queryInformation['string']}'), '{queryInformation['mention']}', '{queryInformation['filename']}', '{queryInformation['startindex']}', '{queryInformation['endindex']}')"
         cursor.execute(query)
     else:
-        query = f"INSERT INTO {tableName} (NAME) VALUES ('{queryInformation['entity']}')"
-        cursor.execute(query)
+        query = f"INSERT INTO {tableName} (NAME) VALUES (?)"
+        cursor.execute(query, (queryInformation["entity"],))
 
     last_inserted_id = cursor.lastrowid
 
@@ -72,7 +73,7 @@ async def Insert(dbPath, tableName, queryInformation):
     return last_inserted_id
 
 
-async def Read(dbPath, tableName, searchPred=None):
+async def Read(dbPath, tableName, searchPred=""):
     # Connect to sqlite database
     conn = sqlite3.connect(dbPath)
     # cursor object
@@ -89,7 +90,7 @@ async def Read(dbPath, tableName, searchPred=None):
         return rowsInTable
     if tableName == "EntityIndex" and searchPred is not None:
         cursor = conn.execute(
-            (f"SELECT * from {tableName} WHERE name LIKE '{searchPred}%'")
+            f"SELECT * from {tableName} WHERE name LIKE ?", (f"{searchPred}%",)
         )
         rowsInTable = cursor.fetchall()
         conn.commit()

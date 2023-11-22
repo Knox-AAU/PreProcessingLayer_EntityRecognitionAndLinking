@@ -12,7 +12,7 @@ from unittest.mock import patch
 @pytest.mark.asyncio
 async def test_entitylinkerFunc():
     # Mock the database Read and Insert methods
-    async def mock_read(db_path, table):
+    async def mock_read(db_path, table, searchPred):
         if table == "EntityIndex":
             return [("1", "Entity1"), ("2", "Entity2")]
         return []
@@ -47,7 +47,7 @@ async def test_entitylinkerFunc():
 @pytest.mark.asyncio
 async def test_entitylinkerFuncFindsCandidatesThatStartWithE():
     # Mock the database Read and Insert methods
-    async def mock_read(db_path, table):
+    async def mock_read(db_path, table, searchPred):
         if table == "EntityIndex":
             return [("1", "Entity1")]
         return []
@@ -79,7 +79,7 @@ async def test_entitylinkerFuncFindsCandidatesThatStartWithE():
 @pytest.mark.asyncio
 async def test_CheckIfSpaceHasBeenReplacedWithUnderscore():
     # Mock the database Read and Insert methods
-    async def mock_read(db_path, table):
+    async def mock_read(db_path, table, searchPred):
         if table == "EntityIndex":
             return [("1", "Entity 1")]
         return []
@@ -112,15 +112,21 @@ lastAddedID = 2
 
 @pytest.mark.asyncio
 async def test_entitylinkeraccuracy():
-    print("TESTING ACCURACY")
     # Mock the database Read and Insert methods
     mockDB = []
     mockDB.append((1, "Bob"))
 
-    async def mock_read(db_path, table):
-        if table == "EntityIndex":
-            return mockDB
-        return []
+    async def mock_read(dbPath, tableName, searchPred=None):
+        if tableName == "EntityIndex" and searchPred is not None:
+            # Filter and return all entries where mockDB[x][1] starts with searchPred
+            filtered_entries = [
+                (id, name)
+                for id, name in mockDB
+                if name.startswith(searchPred)
+            ]
+            return filtered_entries
+
+        return mockDB
 
     async def mock_insert(db_path, table, queryInformation):
         global lastAddedID
@@ -135,106 +141,10 @@ async def test_entitylinkeraccuracy():
             "components.EntityLinker.Db.Insert", side_effect=mock_insert
         ):
             names_with_duplicates = [
-                "John",
-                "Alice",
-                "Bob",
-                "Eva",
-                "Charlie",
-                "Olivia",
-                "David",
-                "Sophia",
-                "Michael",
-                "Emma",
-                "Daniel",
-                "Ava",
-                "William",
-                "Mia",
-                "Alexander",
-                "Emily",
-                "James",
-                "Abigail",
-                "Benjamin",
-                "Harper",
-                "Liam",
-                "Ella",
-                "Henry",
-                "Grace",
-                "Christopher",
-                "Avery",
-                "Andrew",
-                "Scarlett",
-                "Emma",
-                "Zoe",
-                "Nathan",
-                "Madison",
-                "Elijah",
-                "Lily",
-                "Ethan",
-                "Chloe",
-                "Isaac",
-                "Aria",
-                "Ryan",
-                "Hannah",
-                "Matthew",
-                "Amelia",
-                "Nicholas",
-                "Sofia",
-                "Joseph",
-                "Addison",
-                "Luke",
-                "Aubrey",
-                "Jack",
-                "Lillian",
-                "Samuel",
-                "Natalie",
-                "Sebastian",
-                "Evelyn",
-                "Logan",
-                "Victoria",
-                "Lucas",
-                "Aaliyah",
-                "Jackson",
-                "Brooklyn",
-                "Owen",
-                "Layla",
-                "Caleb",
-                "Scarlet",
-                "Gabriel",
-                "Aria",
-                "Dylan",
-                "Alexa",
-                "Mason",
-                "Katherine",
-                "Isaiah",
-                "Zoey",
-                "Brandon",
-                "Audrey",
-                "Julian",
-                "Bella",
-                "Cameron",
-                "Skylar",
+                "Barrack Obama",
+                "Barrack",
                 "Johnathan",
-                "Claire",
-                "Wyatt",
-                "Alyssa",
-                "Connor",
-                "Peyton",
-                "Isabel",
-                "Lauren",
-                "Alex",
-                "Sophie",
-                "Tyler",
-                "Mackenzie",
                 "John",
-                "Emma",
-                "Sophia",
-                "Liam",
-                "Olivia",
-                "Mia",
-                "Noah",
-                "Eva",
-                "Ava",
-                "Isabella",
             ]
             # Create some Entity instances
             TestingDataset = {
@@ -242,113 +152,22 @@ async def test_entitylinkeraccuracy():
                     Entity(name, 0, 6, "file")
                     for name in names_with_duplicates
                 ],
-                "GoldStandard": [
-                    "John",
-                    "Alice",
-                    "Bob",
-                    "Eva",
-                    "Charlie",
-                    "Olivia",
-                    "David",
-                    "Sophia",
-                    "Michael",
-                    "Emma",
-                    "Daniel",
-                    "Ava",
-                    "William",
-                    "Mia",
-                    "Alexander",
-                    "Emily",
-                    "James",
-                    "Abigail",
-                    "Benjamin",
-                    "Harper",
-                    "Liam",
-                    "Ella",
-                    "Henry",
-                    "Grace",
-                    "Christopher",
-                    "Avery",
-                    "Andrew",
-                    "Scarlett",
-                    "Emma",
-                    "Zoe",
-                    "Nathan",
-                    "Madison",
-                    "Elijah",
-                    "Lily",
-                    "Ethan",
-                    "Chloe",
-                    "Isaac",
-                    "Aria",
-                    "Ryan",
-                    "Hannah",
-                    "Matthew",
-                    "Amelia",
-                    "Nicholas",
-                    "Sofia",
-                    "Joseph",
-                    "Addison",
-                    "Luke",
-                    "Aubrey",
-                    "Jack",
-                    "Lillian",
-                    "Samuel",
-                    "Natalie",
-                    "Sebastian",
-                    "Evelyn",
-                    "Logan",
-                    "Victoria",
-                    "Lucas",
-                    "Aaliyah",
-                    "Jackson",
-                    "Brooklyn",
-                    "Owen",
-                    "Layla",
-                    "Caleb",
-                    "Scarlet",
-                    "Gabriel",
-                    "Aria",
-                    "Dylan",
-                    "Alexa",
-                    "Mason",
-                    "Katherine",
-                    "Isaiah",
-                    "Zoey",
-                    "Brandon",
-                    "Audrey",
-                    "Julian",
-                    "Bella",
-                    "Cameron",
-                    "Skylar",
+                "GoldStandardNames": [
+                    "Barrack Obama",
+                    "Barrack",
                     "Johnathan",
-                    "Claire",
-                    "Wyatt",
-                    "Alyssa",
-                    "Connor",
-                    "Peyton",
-                    "Isabel",
-                    "Lauren",
-                    "Alex",
-                    "Sophie",
-                    "Tyler",
-                    "Mackenzie",
                     "John",
-                    "Emma",
-                    "Sophia",
-                    "Liam",
-                    "Olivia",
-                    "Mia",
-                    "Noah",
-                    "Eva",
-                    "Ava",
-                    "Isabella",
+                ],
+                "GoldStandardIRIs": [
+                    "Barrack_Obama",
+                    "Barrack_Obama",
+                    "Johnathan",
+                    "Johnathan",
                 ],
             }
 
             # Call the entitylinkerFunc
-            print("calling entitylinker from accuracy test")
             entLinks = await entitylinkerFunc(TestingDataset["test"])
-            print("linker done")
             for index, link in enumerate(entLinks):
-                assert link.iri == TestingDataset["GoldStandard"][index]
+                assert link.name == TestingDataset["GoldStandardNames"][index]
+                assert link.iri == TestingDataset["GoldStandardIRIs"][index]
