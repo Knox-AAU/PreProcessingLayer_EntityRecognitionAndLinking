@@ -87,8 +87,8 @@ async def main():
         "./Database/DB.db"
     )  # makes the DB containing the entities of KG
     # Returns JSON object containing an array of entity links
-    entLinks = entitylinkerFunc(
-        entsJSON
+    entLinks = await entitylinkerFunc(
+        GetAllEntities(entsJSON)
     )  # Returns JSON object containing an array of entity links
     with open("entity_mentions.json", "w", encoding="utf8") as entityJson:
         json.dump(entsJSON, entityJson, ensure_ascii=False, indent=4)
