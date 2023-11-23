@@ -19,6 +19,8 @@ def GetAllEntities(entityMentions):
                     sentence=sentence["sentence"],
                     sentenceStartIndex=sentence["sentenceStartIndex"],
                     sentenceEndIndex=sentence["sentenceEndIndex"],
+                    label=entity["label"],
+                    type=entity["type"],
                 )
                 allEntities.append(newEntity)
     return allEntities
@@ -29,6 +31,9 @@ async def entitylinkerFunc(entities, threshold=80):
     linked_entities = []
     db_path = "./Database/DB.db"
     for entity in entities:
+        if entity.type is "Literal":
+            linked_entities.append(EntityLinked(entity, ""))          
+            continue
         # Use the Read function to get all entities starting with the same name
         potential_matches = await Db.Read(
             db_path, "EntityIndex", searchPred=entity.name

@@ -12,12 +12,27 @@ from lib.Exceptions.UndetectedLanguageException import (
 from lib.FileWatcher import FileWatcher
 from langdetect import detect
 from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
+
+app.mount("/public", StaticFiles(directory="public"), name="public")
+
 
 # @app.on_event("startup")
 # async def startEvent():
 #    await main()
+
+@app.get("/", response_class=HTMLResponse)
+async def mainpage():
+
+    return """
+        <link rel="stylesheet" href="/public/style.css">
+        <html>
+        <audio id="important" autoplay loop src="/public/boombastic.mp3"></audio>
+        </html>
+"""
 
 
 @app.get("/entitymentions")
