@@ -14,25 +14,30 @@ from langdetect import detect
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+from pathlib import Path
+from fastapi.templating import Jinja2Templates
 
-app = FastAPI()
-
-app.mount("/public", StaticFiles(directory="public"), name="public")
-
+templates = Jinja2Templates(directory="public")
+app = FastAPI(title="API")
 
 # @app.on_event("startup")
 # async def startEvent():
 #    await main()
 
-@app.get("/", response_class=HTMLResponse)
-async def mainpage():
+app.mount(
+    "/static",
+    StaticFiles(directory="static"),
+    name="static",
+)
 
-    return """
-        <link rel="stylesheet" href="/public/style.css">
-        <html>
-        <audio id="important" autoplay loop src="/public/boombastic.mp3"></audio>
-        </html>
-"""
+@app.get('/')
+async def root(request: Request):
+    return templates.TemplateResponse(
+        "index.html", {"request": request}
+    )
+
+    
 
 
 @app.get("/entitymentions")
