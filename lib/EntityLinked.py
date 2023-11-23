@@ -16,6 +16,6 @@ class EntityLinked(Entity):
             "type": self.type,
             "startIndex": self.startIndex,
             "endIndex": self.endIndex,
-            "iri": ("knox-kb01.srv.aau.dk/" + self.iri) if self.type is "Entity" else None
+            "iri": ("knox-kb01.srv.aau.dk/" + self.iri) if self.type == "Entity" else None
         }
 

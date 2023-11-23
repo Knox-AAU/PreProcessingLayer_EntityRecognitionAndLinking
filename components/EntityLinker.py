@@ -31,7 +31,7 @@ async def entitylinkerFunc(entities, threshold=80):
     linked_entities = []
     db_path = "./Database/DB.db"
     for entity in entities:
-        if entity.type is "Literal":
+        if entity.type == "Literal":
             linked_entities.append(EntityLinked(entity, ""))          
             continue
         # Use the Read function to get all entities starting with the same name
