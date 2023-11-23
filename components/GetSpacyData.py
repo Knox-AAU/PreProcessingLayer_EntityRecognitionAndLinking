@@ -106,8 +106,15 @@ def GetEntities(doc) -> List[Entity]:
                 sentence=entity.sent.text,
                 sentenceStartIndex=entity.sent.start_char,
                 sentenceEndIndex=entity.sent.end_char,
+                label=entity.label_,
+                type=isLiteral(entity),
             )
         )
 
     return entities
-    
+
+def isLiteral(entity):
+    if entity.label_ == "DATE" or entity.label_ == "TIME" or entity.label_ == "PERCENT" or entity.label_ == "MONEY" or entity.label_ == "QUANTITY" or entity.label_ == "ORDINAL" or entity.label_ == "CARDINAL":
+        return "Literal"
+    else:
+        return "Entity"

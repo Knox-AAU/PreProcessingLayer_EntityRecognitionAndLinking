@@ -48,6 +48,7 @@ def test_GetEntities():
                     "start_char": 0,
                     "end_char": 40
                 }),
+                "label_": "PERSON",
                 "text": "Drake",
                 "start_char": 0,
                 "end_char": 5
@@ -58,6 +59,7 @@ def test_GetEntities():
                     "start_char": 0,
                     "end_char": 14
                 }),
+                "label_": "PERSON",
                 "text": "Buddyguy",
                 "start_char": 6,
                 "end_char": 14

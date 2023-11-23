@@ -12,12 +12,32 @@ from lib.Exceptions.UndetectedLanguageException import (
 from lib.FileWatcher import FileWatcher
 from langdetect import detect
 from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+from pathlib import Path
+from fastapi.templating import Jinja2Templates
 
-app = FastAPI()
+templates = Jinja2Templates(directory="public")
+app = FastAPI(title="API")
 
 # @app.on_event("startup")
 # async def startEvent():
 #    await main()
+
+app.mount(
+    "/static",
+    StaticFiles(directory="static"),
+    name="static",
+)
+
+@app.get('/')
+async def root(request: Request):
+    return templates.TemplateResponse(
+        "index.html", {"request": request}
+    )
+
+    
 
 
 @app.get("/entitymentions")

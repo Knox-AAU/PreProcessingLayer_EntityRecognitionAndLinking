@@ -1,0 +1,21 @@
+<link href="{{ url_for('static', path='/style.css') }}" rel="stylesheet">
+<html>
+<body id="root" style='background-image: url("{{ url_for('static', path='/kurt.webp') }}"); background-position: center; background-repeat: no-repeat; background-size: cover;'>
+<div id="background">
+<audio allow="autoplay" id="important" autoplay loop src="{{ url_for('static', path='/boombastic.mp3') }}"></audio>
+</div>
+</body>
+</html>
+<script>
+    const background = document.getElementById('background')
+    const audio = document.getElementById("important")
+    let playing = false
+    background.onclick = () => {
+    if (playing) {
+        audio.pause()
+        playing = false
+    } else
+        audio.play()
+        playing = true
+    }
+</script>
