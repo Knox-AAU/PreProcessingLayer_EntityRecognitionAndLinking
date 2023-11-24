@@ -82,11 +82,13 @@ def test_GetEntities():
             )
         )
 
-    entsJSON = GetSpacyData.BuildJSONFromEntities(
+    entsJSONOutput = GetSpacyData.BuildJSONFromEntities(
         entLinks,
         docFile,
         filename
     )
+
+    entsJSON = entsJSONOutput.allFiles
 
     testIndex = 0
     for i in range(len(entsJSON)):

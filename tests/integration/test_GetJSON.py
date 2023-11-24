@@ -18,11 +18,20 @@ async def test_SlashEntityMentionsIsUp():
 
 
 @pytest.mark.asyncio
-async def test_SlashEntityMentionsReturnsJsonArray():
+async def test_SlashEntityMentionsAllReturnsJsonArray():
+    with TestClient(app) as client:
+        res = client.get("/entitymentions/all")
+        print(type(res.json()))
+        assert type(res.json()) == list
+        assert type(res.json()[0]) == dict
+        client.__exit__
+        client.close()
+
+@pytest.mark.asyncio
+async def test_SlashEntityMentionsReturnsJson():
     with patch('main.DIRECTORY_TO_WATCH', 'data_from_A/'):
         with TestClient(app) as client:
             res = client.get("/entitymentions?article=test.txt")
-            assert type(res.json()) == list
-            assert type(res.json()[0]) == dict
+            assert type(res.json()) == dict
             client.__exit__
             client.close()

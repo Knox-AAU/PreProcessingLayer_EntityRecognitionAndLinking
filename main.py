@@ -16,17 +16,20 @@ app = FastAPI(title="API")
 DIRECTORY_TO_WATCH = "data_from_A/"
 
 async def newFileCreated(file_path: str):
-    await main(file_path)
+    await processInput(file_path)
 
 dirWatcher = DirectoryWatcher(directory=DIRECTORY_TO_WATCH, async_callback=newFileCreated)
+
 
 @app.on_event("startup")
 async def startEvent():
     dirWatcher.start_watching()
 
+
 @app.on_event("shutdown")
 def shutdown_event():
     dirWatcher.stop_watching()
+
 
 app.mount(
     "/static",
@@ -34,12 +37,21 @@ app.mount(
     name="static",
 )
 
+
 @app.get('/')
 async def root(request: Request):
     return templates.TemplateResponse(
         "index.html", {"request": request}
     )
 
+@app.get("/entitymentions/all")
+async def get_all_json():
+    if not os.path.exists("entity_mentions.json"):
+        raise HTTPException(status_code=404, detail="mentions not found")
+    
+    with open("entity_mentions.json", "r") as entity_json:
+        entity_mentions = json.load(entity_json)
+        return entity_mentions
 
 @app.get("/entitymentions")
 async def get_json(article: str = Query(..., title="Article Filename")):
@@ -47,24 +59,8 @@ async def get_json(article: str = Query(..., title="Article Filename")):
     if not os.path.exists(path):
         raise HTTPException(status_code=404, detail="Article not found")
     
-    await main(path)  # Pass the article parameter to your main function
-    with open("entity_mentions.json", "r") as entity_json:
-        entity_mentions = json.load(entity_json)
-        return entity_mentions
-
-
-@app.get("/{articlename}/entities")
-async def getentities(articlename: str):
-    await main()
-    with open("entity_mentions.json", "r") as entityJson:
-        entityMentions = json.load(entityJson)
-    for elem in entityMentions:
-        path = elem["fileName"]
-        name = path.split("/")
-        if name[-1] == articlename:
-            return elem
-    raise HTTPException(status_code=404, detail="Article not found")
-
+    newFile = await processInput(path)
+    return newFile
 
 @app.post("/detectlanguage")
 async def checklang(request: Request):
@@ -79,8 +75,9 @@ async def checklang(request: Request):
     return language
 
 
-async def main(file_path: str = "Artikel.txt"):
-    open("entity_mentions.json", "w").close()
+async def processInput(file_path: str = "Artikel.txt"):
+    if not os.path.exists("entity_mentions.json"):
+        open("entity_mentions.json", "w").close()
 
     text = GetSpacyData.GetText(
         file_path
@@ -104,8 +101,6 @@ async def main(file_path: str = "Artikel.txt"):
         doc
     )  # construct entities from text
 
-    # To prevent appending challenges, the final JSON is created in GetEntities()
-    # entMentions= GetSpacyData.entityMentionJson(ents)  #Returns JSON object containing an array of entity mentions
     await Db.InitializeIndexDB(
         "./Database/DB.db"
     )  # makes the DB containing the entities of KG
@@ -122,4 +117,6 @@ async def main(file_path: str = "Artikel.txt"):
     )
 
     with open("entity_mentions.json", "w", encoding="utf8") as entityJson:
-        json.dump(entsJSON, entityJson, ensure_ascii=False, indent=4)
+        json.dump(entsJSON.allFiles, entityJson, ensure_ascii=False, indent=4)
+
+    return entsJSON.newFile
