@@ -1,36 +1,31 @@
-import string
 from components import *
 from components.EntityLinker import entitylinkerFunc
-from components.EntityLinker import GetAllEntities
-import sys, json, os
-from multiprocessing import Process
-from lib.Exceptions.ArticleNotFoundException import ArticleNotFoundException
-from lib.Exceptions.InputException import InputException
+import json, os
 from lib.Exceptions.UndetectedLanguageException import (
     UndetectedLanguageException,
 )
 from lib.DirectoryWatcher import DirectoryWatcher
 from langdetect import detect
-from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import HTMLResponse
+from fastapi import FastAPI, HTTPException, Request, Query
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
-from pathlib import Path
 from fastapi.templating import Jinja2Templates
 
 templates = Jinja2Templates(directory="public")
 app = FastAPI(title="API")
 
-dirWatcher = DirectoryWatcher(directory = "data_from_A", callback=lambda file_path :print("whatever" + file_path))
+DIRECTORY_TO_WATCH = "data_from_A/"
 
+async def newFileCreated(file_path: str):
+    await main(file_path)
+
+dirWatcher = DirectoryWatcher(directory=DIRECTORY_TO_WATCH, async_callback=newFileCreated)
 
 @app.on_event("startup")
 async def startEvent():
-    dirWatcher.start_watching() #Starts DirectoryWatcher
+    dirWatcher.start_watching()
 
 @app.on_event("shutdown")
 def shutdown_event():
-    print("Shutting down...")
     dirWatcher.stop_watching()
 
 app.mount(
@@ -45,15 +40,17 @@ async def root(request: Request):
         "index.html", {"request": request}
     )
 
-    
-
 
 @app.get("/entitymentions")
-async def getJson():
-    await main()
-    with open("entity_mentions.json", "r") as entityJson:
-        entityMentions = json.load(entityJson)
-        return entityMentions
+async def get_json(article: str = Query(..., title="Article Filename")):
+    path = DIRECTORY_TO_WATCH + article
+    if not os.path.exists(path):
+        raise HTTPException(status_code=404, detail="Article not found")
+    
+    await main(path)  # Pass the article parameter to your main function
+    with open("entity_mentions.json", "r") as entity_json:
+        entity_mentions = json.load(entity_json)
+        return entity_mentions
 
 
 @app.get("/{articlename}/entities")
@@ -82,19 +79,18 @@ async def checklang(request: Request):
     return language
 
 
-async def main():
-    if not os.path.exists("entity_mentions.json"):
-        open("entity_mentions.json", "w").close()
+async def main(file_path: str = "Artikel.txt"):
+    open("entity_mentions.json", "w").close()
 
     text = GetSpacyData.GetText(
-        "Artikel.txt"
+        file_path
     )  # Takes in title of article. Gets article text in string format
     doc = GetSpacyData.GetTokens(
         text
     )  # finds entities in text, returns entities in doc object
 
     text = GetSpacyData.GetText(
-        "Artikel.txt"
+        file_path
     )  # Takes in title of article. Gets article text in string format
 
     try:
@@ -114,6 +110,7 @@ async def main():
         "./Database/DB.db"
     )  # makes the DB containing the entities of KG
     # Returns JSON object containing an array of entity links
+
     entLinks = await entitylinkerFunc(
         ents
     )  # Returns JSON object containing an array of entity links
@@ -121,7 +118,7 @@ async def main():
     entsJSON = GetSpacyData.BuildJSONFromEntities(
         entLinks,
         doc,
-        "Artikel.txt"
+        file_path
     )
 
     with open("entity_mentions.json", "w", encoding="utf8") as entityJson:
