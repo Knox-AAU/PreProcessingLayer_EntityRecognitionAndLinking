@@ -9,7 +9,7 @@ from lib.Exceptions.InputException import InputException
 from lib.Exceptions.UndetectedLanguageException import (
     UndetectedLanguageException,
 )
-from lib.FileWatcher import FileWatcher
+from lib.DirectoryWatcher import DirectoryWatcher
 from langdetect import detect
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import HTMLResponse
@@ -21,9 +21,17 @@ from fastapi.templating import Jinja2Templates
 templates = Jinja2Templates(directory="public")
 app = FastAPI(title="API")
 
-# @app.on_event("startup")
-# async def startEvent():
-#    await main()
+dirWatcher = DirectoryWatcher(directory = "data_from_A", callback=lambda file_path :print("whatever" + file_path))
+
+
+@app.on_event("startup")
+async def startEvent():
+    dirWatcher.start_watching() #Starts DirectoryWatcher
+
+@app.on_event("shutdown")
+def shutdown_event():
+    print("Shutting down...")
+    dirWatcher.stop_watching()
 
 app.mount(
     "/static",
@@ -77,8 +85,6 @@ async def checklang(request: Request):
 async def main():
     if not os.path.exists("entity_mentions.json"):
         open("entity_mentions.json", "w").close()
-
-    # FileWatcher(filename = "Artikel.txt", interval = 5.0, callback=lambda :print("whatever")).start() #Starts fileWatcher
 
     text = GetSpacyData.GetText(
         "Artikel.txt"
