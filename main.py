@@ -16,6 +16,7 @@ app = FastAPI(title="API")
 DIRECTORY_TO_WATCH = "data_from_A/"
 
 async def newFileCreated(file_path: str):
+    await modifyTxt(file_path)
     await processInput(file_path)
 
 dirWatcher = DirectoryWatcher(directory=DIRECTORY_TO_WATCH, async_callback=newFileCreated)
@@ -23,12 +24,20 @@ dirWatcher = DirectoryWatcher(directory=DIRECTORY_TO_WATCH, async_callback=newFi
 
 @app.on_event("startup")
 async def startEvent():
-    dirWatcher.start_watching()
+    if not os.path.exists(DIRECTORY_TO_WATCH):
+        os.mkdir(DIRECTORY_TO_WATCH)
+
+    dirWatcher = DirectoryWatcher(
+        directory=DIRECTORY_TO_WATCH, async_callback=newFileCreated
+    )
+    if os.path.exists(DIRECTORY_TO_WATCH):
+        dirWatcher.start_watching()
 
 
 @app.on_event("shutdown")
 def shutdown_event():
-    dirWatcher.stop_watching()
+    if os.path.exists(DIRECTORY_TO_WATCH):
+        dirWatcher.stop_watching()
 
 
 app.mount(
@@ -59,8 +68,11 @@ async def get_json(article: str = Query(..., title="Article Filename")):
     if not os.path.exists(path):
         raise HTTPException(status_code=404, detail="Article not found")
     
-    newFile = await processInput(path)
-    return newFile
+    try:
+        newFile = await processInput(path)
+        return newFile
+    except Exception as e:
+        print(e)
 
 @app.post("/detectlanguage")
 async def checklang(request: Request):
@@ -73,6 +85,46 @@ async def checklang(request: Request):
     language = detect(stringdata)
 
     return language
+
+
+async def modifyTxt(file_path):
+    try:
+        content = None
+        
+        # Get the current directory
+        current_directory = os.getcwd()
+
+        # Specify the subdirectory
+        subdirectory = "data_from_A"
+
+        # Combine the current directory, subdirectory, and file name
+        file_path = os.path.join(current_directory, subdirectory, "Artikel.txt")
+
+        # Open the file in read mode
+        with open(file_path, 'r', encoding='utf-8') as file:
+            # Read the content of the file
+            content = file.read()
+
+        # Print the content before modification
+        print("Content before modification:")
+        print(content)
+
+        # Replace newline characters with "."
+        modified_content = content.replace('\n', '.')
+
+        # Open the file in write mode and write the modified content
+        with open(file_path, 'w', encoding='utf-8') as file:
+            file.write(modified_content)
+
+        print(f"Newlines replaced with '.' in {file_path}")
+
+    except FileNotFoundError:
+        print(f"Error: File not found at {file_path}")
+    except IOError as e:
+        print(f"IOError: {e}")
+    except Exception as e:
+        print(f"Error: {e}")
+
 
 
 async def processInput(file_path: str = "Artikel.txt"):
