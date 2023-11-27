@@ -1,6 +1,10 @@
 import sqlite3
 import sys
 import os
+from typing import List
+from lib.EntityLinked import EntityLinked
+
+from lib.Sentence import Sentence
 
 sys.path.append(".")
 
@@ -24,18 +28,20 @@ async def InitializeIndexDB(dbPath):
             )"""
     createSentenceTable = """CREATE TABLE IF NOT EXISTS sentence(
             "sid" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            "string" varchar,
-            "filename" varchar NOT NULL,
-            "startindex" int NOT NULL,
-            "endindex" int NOT NULL
+            "text" varchar,
+            "fileName" varchar NOT NULL,
+            "startIndex" int NOT NULL,
+            "endIndex" int NOT NULL
             )"""
     createEntityMentionsTable = """CREATE TABLE IF NOT EXISTS entitymention(
             "eid" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
             "sid" int references sentence(sid),
-            "mention" varchar,
-            "startindex" int NOT NULL,
-            "endindex" int NOT NULL,
-            "filename" varchar NOT NULL
+            "name" varchar,
+            "startIndex" int NOT NULL,
+            "endIndex" int NOT NULL,
+            "fileName" varchar NOT NULL,
+            "label" varchar NOT NULL,
+            "type" varchar NOT NULL
             )"""
     cursor.execute(createEntityIndexTable)
     cursor.execute(createEntityMentionsTable)
@@ -54,22 +60,24 @@ async def Insert(dbPath, tableName, queryInformation):
     # stuff that does query
 
     if tableName == "sentence":
-        query = f"INSERT INTO {tableName} (filename, string, startindex, endindex) VALUES (?, ?, ?, ?)"
+        query = f"INSERT INTO {tableName} (fileName, text, startIndex, endIndex) VALUES (?, ?, ?, ?)"
         queryInfo = (
-            queryInformation["filename"],
-            queryInformation["string"],
-            queryInformation["startindex"],
-            queryInformation["endindex"],
+            queryInformation.fileName,
+            queryInformation.text,
+            queryInformation.startIndex,
+            queryInformation.endIndex,
         )
         cursor.execute(query, queryInfo)
     elif tableName == "entitymention":
-        query = f"INSERT INTO {tableName} (sid, mention, filename, startindex, endindex) VALUES ((SELECT sid FROM sentence WHERE string = ?), ?, ?, ?, ?)"
+        query = f"INSERT INTO {tableName} (sid, name, fileName, startIndex, endIndex, label, type) VALUES (?, ?, ?, ?, ?, ?, ?)"
         queryInfo = (
-            queryInformation["string"],
-            queryInformation["mention"],
-            queryInformation["filename"],
-            queryInformation["startindex"],
-            queryInformation["endindex"],
+            queryInformation.sid,
+            queryInformation.name,
+            queryInformation.fileName,
+            queryInformation.startIndex,
+            queryInformation.endIndex,
+            queryInformation.label,
+            queryInformation.type,
         )
         cursor.execute(query, queryInfo)
     else:
@@ -112,9 +120,9 @@ async def Read(dbPath, tableName, searchPred=""):
         cursor = conn.execute(
             (f"SELECT * FROM {tableName} WHERE string LIKE '%{searchPred}%'")
         )
-    else:
+    elif tableName == "entitymention" and searchPred is not None:
         cursor = conn.execute(
-            (f"SELECT * FROM {tableName} WHERE mention LIKE '%{searchPred}%'")
+            (f"SELECT * FROM {tableName} WHERE filename = '%{searchPred}%'")
         )
     rowsInTable = cursor.fetchall()
     conn.commit()
@@ -162,3 +170,4 @@ async def Delete(dbPath, tableName, indexID):
     # commit and close
     conn.commit()
     conn.close()
+

@@ -1,6 +1,8 @@
+from typing import List
 from components import *
 from components.EntityLinker import entitylinkerFunc
 import json, os
+from lib.EntityLinked import EntityLinked
 from lib.Exceptions.UndetectedLanguageException import (
     UndetectedLanguageException,
 )
@@ -9,6 +11,7 @@ from langdetect import detect
 from fastapi import FastAPI, HTTPException, Request, Query
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from lib.Sentence import Sentence
 
 templates = Jinja2Templates(directory="public")
 app = FastAPI(title="API")
@@ -87,7 +90,7 @@ async def checklang(request: Request):
 
 
 async def processInput(file_path: str = "Artikel.txt"):
-    #await Db.Read(DB_PATH, "entitymention", "filename = ")
+    await checkDbForInput(file_path)
 
     text = GetSpacyData.GetText(
         file_path
@@ -111,17 +114,34 @@ async def processInput(file_path: str = "Artikel.txt"):
         doc
     )  # construct entities from text
 
+    sentences = GetSpacyData.GetSentences(
+        doc,
+        file_path
+    ) # construct sentences from text
+
     entLinks = await entitylinkerFunc(
         ents
     )  # Returns JSON object containing an array of entity links
 
-    entsJSON = GetSpacyData.BuildJSONFromEntities(
-        entLinks,
-        doc,
-        file_path
-    )
+    await insertEntitiesInDb(file_path, entLinks, sentences)
+    #fetchEntityMentions
 
-    with open("entity_mentions.json", "w", encoding="utf8") as entityJson:
-        json.dump(entsJSON.allFiles, entityJson, ensure_ascii=False, indent=4)
+# These functions should be moved somewhere else, but idk where :/
 
-    return entsJSON.newFile
+async def checkDbForInput(file_path: str):
+    existingMentions = await Db.Read(DB_PATH, "entitymention", file_path)
+    print(existingMentions)
+    #fetchEntityMentions
+
+
+async def insertEntitiesInDb(fileName: str, entityLinks: List[EntityLinked], sentences: List[Sentence]):
+    for sentence in sentences:
+        sentenceId = await Db.Insert(DB_PATH, "sentence", sentence)
+        print(sentenceId)
+        for entity in entityLinks:
+            setattr(entity, "sid", sentenceId)
+            setattr(entity, "fileName", fileName)
+            await Db.Insert(DB_PATH, "entitymention", entity)
+
+async def fetchEntityMentions():
+    entities = await Db.Read(DB_PATH, "e")
