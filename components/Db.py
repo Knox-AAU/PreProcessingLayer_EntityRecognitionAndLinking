@@ -1,10 +1,6 @@
 import sqlite3
 import sys
 import os
-from typing import List
-from lib.EntityLinked import EntityLinked
-
-from lib.Sentence import Sentence
 
 sys.path.append(".")
 
@@ -28,20 +24,21 @@ async def InitializeIndexDB(dbPath):
             )"""
     createSentenceTable = """CREATE TABLE IF NOT EXISTS sentence(
             "sid" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            "text" varchar,
             "fileName" varchar NOT NULL,
+            "text" varchar,
             "startIndex" int NOT NULL,
             "endIndex" int NOT NULL
             )"""
     createEntityMentionsTable = """CREATE TABLE IF NOT EXISTS entitymention(
             "eid" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
             "sid" int references sentence(sid),
+            "fileName" varchar NOT NULL,
             "name" varchar,
             "startIndex" int NOT NULL,
             "endIndex" int NOT NULL,
-            "fileName" varchar NOT NULL,
             "label" varchar NOT NULL,
-            "type" varchar NOT NULL
+            "type" varchar NOT NULL,
+            "iri" varchar
             )"""
     cursor.execute(createEntityIndexTable)
     cursor.execute(createEntityMentionsTable)
@@ -62,14 +59,14 @@ async def Insert(dbPath, tableName, queryInformation):
     if tableName == "sentence":
         query = f"INSERT INTO {tableName} (fileName, text, startIndex, endIndex) VALUES (?, ?, ?, ?)"
         queryInfo = (
-            queryInformation.fileName,
-            queryInformation.text,
-            queryInformation.startIndex,
-            queryInformation.endIndex,
+            queryInformation["fileName"],
+            queryInformation["text"],
+            queryInformation["startIndex"],
+            queryInformation["endIndex"],
         )
         cursor.execute(query, queryInfo)
     elif tableName == "entitymention":
-        query = f"INSERT INTO {tableName} (sid, name, fileName, startIndex, endIndex, label, type) VALUES (?, ?, ?, ?, ?, ?, ?)"
+        query = f"INSERT INTO {tableName} (sid, name, fileName, startIndex, endIndex, label, type, iri) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
         queryInfo = (
             queryInformation.sid,
             queryInformation.name,
@@ -78,6 +75,7 @@ async def Insert(dbPath, tableName, queryInformation):
             queryInformation.endIndex,
             queryInformation.label,
             queryInformation.type,
+            queryInformation.iri,
         )
         cursor.execute(query, queryInfo)
     else:
@@ -118,17 +116,32 @@ async def Read(dbPath, tableName, searchPred=""):
         return rowsInTable
     elif tableName == "sentence" and searchPred is not None:
         cursor = conn.execute(
-            (f"SELECT * FROM {tableName} WHERE string LIKE '%{searchPred}%'")
+            (f"SELECT * FROM {tableName} WHERE fileName = '%{searchPred}%'")
         )
     elif tableName == "entitymention" and searchPred is not None:
         cursor = conn.execute(
-            (f"SELECT * FROM {tableName} WHERE filename = '%{searchPred}%'")
+            (f"SELECT * FROM {tableName} WHERE fileName = '%{searchPred}%'")
         )
     rowsInTable = cursor.fetchall()
     conn.commit()
     conn.close()
     return rowsInTable
 
+async def JoinOnFileName(dbPath, selects, table1, table2, commonKey, fileName):
+    conn = sqlite3.connect(dbPath)
+    # cursor object
+    cursor = conn.cursor()
+
+    joinedSelects = ",".join(selects)
+
+    query = f"SELECT {joinedSelects} FROM {table1,table2} WHERE {table1}.{commonKey} = {table2}.{commonKey} AND {table1}.fileName = '{fileName}'"
+    
+    cursor = conn.execute(query)
+    
+    rowsInTable = cursor.fetchall()
+    conn.commit()
+    conn.close()
+    return rowsInTable
 
 async def Update(dbPath, tableName, indexID, updatedName):
     # Connect to sqlite database

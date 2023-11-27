@@ -3,7 +3,6 @@ import sys
 from langdetect import detect
 from typing import List
 from lib.EntityLinked import EntityLinked
-from lib.Sentence import Sentence
 
 from lib.Exceptions.UndetectedLanguageException import (
     UndetectedLanguageException,
@@ -51,25 +50,15 @@ def GetEntities(doc) -> List[Entity]:
                 name=entity.text,
                 startIndex=entity.start_char,
                 endIndex=entity.end_char,
+                sentence=entity.sent.text,
+                sentenceStartIndex=entity.sent.start_char,
+                sentenceEndIndex=entity.sent.end_char,
                 label=entity.label_,
                 type=isLiteral(entity),
             )
         )
+
     return entities
-
-def GetSentences(doc, fileName: str) -> List[Sentence]:
-    sentences = []
-
-    for sents in doc.sents:
-        sentences.append(
-            Sentence(
-                fileName=fileName,
-                text=sents.sent.text,
-                startIndex=sents.start_char,
-                endIndex=sents.sent.end_char,
-            )
-        )
-    return sentences
 
 def isLiteral(entity):
     if entity.label_ == "DATE" or entity.label_ == "TIME" or entity.label_ == "PERCENT" or entity.label_ == "MONEY" or entity.label_ == "QUANTITY" or entity.label_ == "ORDINAL" or entity.label_ == "CARDINAL":
