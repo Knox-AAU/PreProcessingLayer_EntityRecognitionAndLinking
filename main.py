@@ -23,12 +23,20 @@ dirWatcher = DirectoryWatcher(directory=DIRECTORY_TO_WATCH, async_callback=newFi
 
 @app.on_event("startup")
 async def startEvent():
-    dirWatcher.start_watching()
+    if not os.path.exists(DIRECTORY_TO_WATCH):
+        os.mkdir(DIRECTORY_TO_WATCH)
+
+    dirWatcher = DirectoryWatcher(
+        directory=DIRECTORY_TO_WATCH, async_callback=newFileCreated
+    )
+    if os.path.exists(DIRECTORY_TO_WATCH):
+        dirWatcher.start_watching()
 
 
 @app.on_event("shutdown")
 def shutdown_event():
-    dirWatcher.stop_watching()
+    if os.path.exists(DIRECTORY_TO_WATCH):
+        dirWatcher.stop_watching()
 
 
 app.mount(
@@ -58,8 +66,12 @@ async def get_json(article: str = Query(..., title="Article Filename")):
     path = DIRECTORY_TO_WATCH + article
     if not os.path.exists(path):
         raise HTTPException(status_code=404, detail="Article not found")
-    
-    newFile = await processInput(path)
+    try:
+        newFile = await processInput(path)
+    except Exception as e:
+        #Server does not need to freeze everytime an exeption is thrown
+        print(f"An exception occurred: {str(e)}")
+        return {"error": str(e)}
     return newFile
 
 @app.post("/detectlanguage")
