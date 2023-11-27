@@ -1,3 +1,4 @@
+from typing import List
 from Levenshtein import distance
 from components import Db
 from lib.EntityLinked import EntityLinked
@@ -5,28 +6,7 @@ from lib.Entity import Entity
 from fuzzywuzzy import fuzz
 
 
-def GetAllEntities(entityMentions):
-    allEntities = []
-    fileName = ""
-    for file in entityMentions:
-        fileName = file["fileName"]
-        for sentence in file["sentences"]:
-            for entity in sentence["entityMentions"]:
-                newEntity = Entity(
-                    name=entity["name"],
-                    startIndex=entity["startIndex"],
-                    endIndex=entity["endIndex"],
-                    sentence=sentence["sentence"],
-                    sentenceStartIndex=sentence["sentenceStartIndex"],
-                    sentenceEndIndex=sentence["sentenceEndIndex"],
-                    label=entity["label"],
-                    type=entity["type"],
-                )
-                allEntities.append(newEntity)
-    return allEntities
-
-
-async def entitylinkerFunc(entities, threshold=80):
+async def entitylinkerFunc(entities: List[Entity], threshold:int=80):
     iri_dict = {}
     linked_entities = []
     db_path = "./Database/DB.db"
