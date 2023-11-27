@@ -14,9 +14,12 @@ templates = Jinja2Templates(directory="public")
 app = FastAPI(title="API")
 
 DIRECTORY_TO_WATCH = "data_from_A/"
+DB_PATH = "./Database/DB.db"
 
 async def newFileCreated(file_path: str):
     await processInput(file_path)
+
+
 
 dirWatcher = DirectoryWatcher(directory=DIRECTORY_TO_WATCH, async_callback=newFileCreated)
 
@@ -24,6 +27,11 @@ dirWatcher = DirectoryWatcher(directory=DIRECTORY_TO_WATCH, async_callback=newFi
 @app.on_event("startup")
 async def startEvent():
     dirWatcher.start_watching()
+
+    await Db.InitializeIndexDB(
+        DB_PATH
+    )  # makes the DB containing the entities of KG
+    
 
 
 @app.on_event("shutdown")
@@ -49,6 +57,9 @@ async def get_all_json():
     if not os.path.exists("entity_mentions.json"):
         raise HTTPException(status_code=404, detail="mentions not found")
     
+    mentions = await Db.Read(DB_PATH, "entitymention")
+    print(mentions)
+
     with open("entity_mentions.json", "r") as entity_json:
         entity_mentions = json.load(entity_json)
         return entity_mentions
@@ -76,6 +87,8 @@ async def checklang(request: Request):
 
 
 async def processInput(file_path: str = "Artikel.txt"):
+    #await Db.Read(DB_PATH, "entitymention", "filename = ")
+
     text = GetSpacyData.GetText(
         file_path
     )  # Takes in title of article. Gets article text in string format
@@ -97,11 +110,6 @@ async def processInput(file_path: str = "Artikel.txt"):
     ents = GetSpacyData.GetEntities(
         doc
     )  # construct entities from text
-
-    await Db.InitializeIndexDB(
-        "./Database/DB.db"
-    )  # makes the DB containing the entities of KG
-    # Returns JSON object containing an array of entity links
 
     entLinks = await entitylinkerFunc(
         ents
