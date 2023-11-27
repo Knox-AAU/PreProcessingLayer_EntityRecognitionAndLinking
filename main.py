@@ -76,9 +76,6 @@ async def checklang(request: Request):
 
 
 async def processInput(file_path: str = "Artikel.txt"):
-    if not os.path.exists("entity_mentions.json"):
-        open("entity_mentions.json", "w").close()
-
     text = GetSpacyData.GetText(
         file_path
     )  # Takes in title of article. Gets article text in string format

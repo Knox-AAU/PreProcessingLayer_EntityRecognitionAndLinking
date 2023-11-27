@@ -46,6 +46,9 @@ def DetectLang(text: str):
 
 # Method to fully extract entity mentions, find the sentences and calculate indexes and finally create a final JSON
 def BuildJSONFromEntities(entities: List[EntityLinked], doc, fileName: str) -> JSONEntityOutput:
+    if not os.path.exists("entity_mentions.json"):
+        open("entity_mentions.json", "w").close()
+
     # Create a list of sentences with their entities in the desired JSON format
     currentJson = open("./entity_mentions.json", "r")
     currentJson.seek(0, os.SEEK_END)
