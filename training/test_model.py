@@ -3,6 +3,18 @@ import spacy
 # Load your trained model
 nlp = spacy.load("trainedmodel/updated_da_model")
 
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
+
 # Evaluation data
 eval_data = [
     (
@@ -106,11 +118,10 @@ for text, annotations in eval_data:
     for gold_entity in gold_entities:
         if gold_entity not in recognized_entities:
             eval_metrics["missed"] += 1
-    print("\n---\n")
     if recognized_entities == gold_entities:
-        print("PASSED")
+        print(f"{bcolors.OKGREEN}PASSED!{bcolors.ENDC}")
     else:
-        print("FAILED")
+        print(f"{bcolors.FAIL}FAILED{bcolors.ENDC}")
     print("\n---\n")
 
 # Calculate precision, recall, and F1 score
