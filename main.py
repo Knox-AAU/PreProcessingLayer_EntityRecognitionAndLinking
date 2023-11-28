@@ -1,6 +1,7 @@
+from socket import timeout
 from components import *
 from components.EntityLinker import entitylinkerFunc
-import json, os
+import json, os, time, string
 from lib.Exceptions.UndetectedLanguageException import (
     UndetectedLanguageException,
 )
@@ -16,6 +17,7 @@ app = FastAPI(title="API")
 DIRECTORY_TO_WATCH = "data_from_A/"
 
 async def newFileCreated(file_path: str):
+    time.sleep(1)
     await modifyTxt(file_path)
     await processInput(file_path)
 
@@ -89,42 +91,21 @@ async def checklang(request: Request):
 
 async def modifyTxt(file_path):
     try:
-        content = None
-        
-        # Get the current directory
-        current_directory = os.getcwd()
-
-        # Specify the subdirectory
-        subdirectory = "data_from_A"
-
-        # Combine the current directory, subdirectory, and file name
-        file_path = os.path.join(current_directory, subdirectory, "Artikel.txt")
-
-        # Open the file in read mode
-        with open(file_path, 'r', encoding='utf-8') as file:
-            # Read the content of the file
+        with open(file_path, 'r') as file:
             content = file.read()
-
-        # Print the content before modification
-        print("Content before modification:")
-        print(content)
-
-        # Replace newline characters with "."
-        modified_content = content.replace('\n', '.')
-
-        # Open the file in write mode and write the modified content
-        with open(file_path, 'w', encoding='utf-8') as file:
-            file.write(modified_content)
-
-        print(f"Newlines replaced with '.' in {file_path}")
-
+            if not content:
+                print("The file is empty.")
+            lines = content.split('\n\n')
+            # List comprehension that adds '. ' to lines not ending with punctuation, else adds a space.
+            modified_lines = [line + '. ' if not line.endswith(tuple(string.punctuation)) else line + ' ' for line in lines]
+            file.close()
+        with open(file_path, 'w') as file:
+            file.write(' '.join(modified_lines))
+            file.close()
     except FileNotFoundError:
-        print(f"Error: File not found at {file_path}")
-    except IOError as e:
-        print(f"IOError: {e}")
+        print(f"The file at {file_path} could not be found.")
     except Exception as e:
-        print(f"Error: {e}")
-
+        print(f"An error occurred: {e}")
 
 
 async def processInput(file_path: str = "Artikel.txt"):
