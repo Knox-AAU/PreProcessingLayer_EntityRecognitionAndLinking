@@ -25,6 +25,7 @@ if not os.path.exists(file_path):
 async def test_SlashEntityMentionsIsUp():
     with patch('main.DIRECTORY_TO_WATCH', directory_path):
         with TestClient(app) as client:
+            yield client
             res = client.get("/entitymentions?article=test.txt")
             assert res.status_code == 200
             client.__exit__
@@ -34,6 +35,7 @@ async def test_SlashEntityMentionsIsUp():
 @pytest.mark.asyncio
 async def test_SlashEntityMentionsAllReturnsJsonArray():
     with TestClient(app) as client:
+        yield client
         res = client.get("/entitymentions/all")
         print(type(res.json()))
         assert type(res.json()) == list
@@ -45,6 +47,7 @@ async def test_SlashEntityMentionsAllReturnsJsonArray():
 async def test_SlashEntityMentionsReturnsJson():
     with patch('main.DIRECTORY_TO_WATCH', directory_path):
         with TestClient(app) as client:
+            yield client
             res = client.get("/entitymentions?article=test.txt")
             assert type(res.json()) == dict
             client.__exit__
