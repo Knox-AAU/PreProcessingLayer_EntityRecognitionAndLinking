@@ -68,14 +68,14 @@ async def Insert(dbPath, tableName, queryInformation):
     elif tableName == "entitymention":
         query = f"INSERT INTO {tableName} (sid, name, fileName, startIndex, endIndex, label, type, iri) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
         queryInfo = (
-            queryInformation.sid,
-            queryInformation.name,
-            queryInformation.fileName,
-            queryInformation.startIndex,
-            queryInformation.endIndex,
-            queryInformation.label,
-            queryInformation.type,
-            queryInformation.iri,
+            queryInformation["sid"],
+            queryInformation["name"],
+            queryInformation["fileName"],
+            queryInformation["startIndex"],
+            queryInformation["endIndex"],
+            queryInformation["label"],
+            queryInformation["type"],
+            queryInformation["iri"],
         )
         cursor.execute(query, queryInfo)
     else:
@@ -151,9 +151,9 @@ async def Update(dbPath, tableName, indexID, updatedName):
 
     # update row in table
     if tableName == "sentence":
-        query = f"UPDATE {tableName} SET string = '{updatedName}' WHERE sid = '{indexID}'"
+        query = f"UPDATE {tableName} SET text = '{updatedName}' WHERE sid = '{indexID}'"
     elif tableName == "entitymention":
-        query = f"UPDATE {tableName} SET mention = '{updatedName}' WHERE eid = '{indexID}'"
+        query = f"UPDATE {tableName} SET name = '{updatedName}' WHERE eid = '{indexID}'"
     else:
         query = f"UPDATE {tableName} SET name = '{updatedName}' WHERE id = '{indexID}'"
 

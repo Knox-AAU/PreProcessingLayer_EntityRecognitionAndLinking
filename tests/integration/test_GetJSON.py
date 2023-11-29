@@ -41,9 +41,8 @@ async def test_SlashEntityMentionsAllReturnsJsonArray():
     seedTestData()
     with TestClient(app) as client:
         res = client.get("/entitymentions/all")
-        print(type(res.json()))
         assert type(res.json()) == list
-        assert type(res.json()[0]) == dict
+        assert type(res.json()[0]) == list
         client.__exit__
         client.close()
         unseedTestData()
@@ -54,7 +53,8 @@ async def test_SlashEntityMentionsReturnsJson():
     with patch('main.DIRECTORY_TO_WATCH', directory_path):
         with TestClient(app) as client:
             res = client.get("/entitymentions?article=test.txt")
-            assert type(res.json()) == dict
+            assert type(res.json()) == list
+            assert type(res.json()[0]) == dict
             client.__exit__
             client.close()
             unseedTestData()

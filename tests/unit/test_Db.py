@@ -42,25 +42,28 @@ async def test_Insert():
         dbPath, "EntityIndex", queryInformation={"entity": "Morten"}
     )
     sentence = "this is a string"
-    await Db.Insert(
+    sentenceId = await Db.Insert(
         dbPath,
         "sentence",
         queryInformation={
-            "filename": "artikel.txt",
-            "string": sentence,
-            "startindex": 0,
-            "endindex": 20,
+            "fileName": "artikel.txt",
+            "text": sentence,
+            "startIndex": 0,
+            "endIndex": 20,
         },
     )
     await Db.Insert(
         dbPath,
         "entitymention",
         queryInformation={
-            "string": sentence,
-            "mention": "this",
-            "filename": "artikel.txt",
-            "startindex": 0,
-            "endindex": 5,
+            "sid": sentenceId,
+            "name": "this",
+            "fileName": "artikel.txt",
+            "startIndex": 0,
+            "endIndex": 5,
+            "label": "PERSON",
+            "type": "Entity",
+            "iri": "knox.aau.dk/some_iri",
         },
     )
 
@@ -70,19 +73,18 @@ async def test_Insert():
     rowForComparisonSentence = cursorSentence.fetchall()
     rowForComparisonEntityIndex = cursorEntityIndex.fetchall()
     rowForComparisonMentions = cursorMentions.fetchall()
-    print(rowForComparisonMentions[0])
     conn.commit()
     conn.close()
     # Assert
     assert rowForComparisonEntityIndex[0][1] == "Morten"
     assert rowForComparisonSentence[0] == (
         1,
-        "this is a string",
         "artikel.txt",
+        "this is a string",
         0,
         20,
     )
-    assert rowForComparisonMentions[0] == (1, 1, "this", 0, 5, "artikel.txt")
+    assert rowForComparisonMentions[0] == (1, 1, 'artikel.txt','this', 0, 5, 'PERSON', 'Entity', 'knox.aau.dk/some_iri')
 
     # delete the file again
     rmDB()
@@ -105,32 +107,39 @@ async def test_Read():
         dbPath, "EntityIndex", queryInformation={"entity": "Anders"}
     )
     sentence = "this is a string"
-    await Db.Insert(
+    sentenceId = await Db.Insert(
         dbPath,
         "sentence",
         queryInformation={
-            "filename": "artikel.txt",
-            "string": sentence,
-            "startindex": 0,
-            "endindex": 20,
+            "fileName": "artikel.txt",
+            "text": sentence,
+            "startIndex": 0,
+            "endIndex": 20,
         },
     )
     await Db.Insert(
         dbPath,
         "entitymention",
         queryInformation={
-            "string": sentence,
-            "mention": "this",
-            "filename": "artikel.txt",
-            "startindex": 0,
-            "endindex": 5,
+            "sid": sentenceId,
+            "name": "this",
+            "fileName": "artikel.txt",
+            "startIndex": 0,
+            "endIndex": 5,
+            "label": "PERSON",
+            "type": "Entity",
+            "iri": "knox.aau.dk/some_iri",
         },
     )
     # Act
     testReadEntityIndexAll = await Db.Read(dbPath, "EntityIndex")
     testReadEntityIndexPred = await Db.Read(dbPath, "EntityIndex", "a")
     testReadEntityIndexPredCapital = await Db.Read(dbPath, "EntityIndex", "A")
-    testReadSentenceAll = await Db.Read(dbPath, "sentence")
+    testReadSentenceAll = await Db.Read(dbPath, "sentence", "artikel.txt")
+    print("HELWLO")
+    print(testReadEntityIndexAll)
+    print(testReadSentenceAll[0])
+
     testReadSentencePred = await Db.Read(dbPath, "sentence", "a")
     testReadSentencePredCapital = await Db.Read(dbPath, "sentence", "A")
     # Assert
@@ -184,25 +193,28 @@ async def test_Update():
         dbPath, "EntityIndex", queryInformation={"entity": "Morten"}
     )
     sentence = "this is a string"
-    await Db.Insert(
+    sentenceId = await Db.Insert(
         dbPath,
         "sentence",
         queryInformation={
-            "filename": "artikel.txt",
-            "string": sentence,
-            "startindex": 0,
-            "endindex": 20,
+            "fileName": "artikel.txt",
+            "text": sentence,
+            "startIndex": 0,
+            "endIndex": 20,
         },
     )
     await Db.Insert(
         dbPath,
         "entitymention",
         queryInformation={
-            "string": sentence,
-            "mention": "this",
-            "filename": "artikel.txt",
-            "startindex": 0,
-            "endindex": 5,
+            "sid": sentenceId,
+            "name": "this",
+            "fileName": "artikel.txt",
+            "startIndex": 0,
+            "endIndex": 5,
+            "label": "PERSON",
+            "type": "Entity",
+            "iri": "knox.aau.dk/some_iri",
         },
     )
     conn = sqlite3.connect(dbPath)
@@ -258,25 +270,28 @@ async def test_Delete():
     await Db.Insert(dbPath, "EntityIndex", queryInformation={"entity": "Peter"})
 
     sentence = "this is a string"
-    await Db.Insert(
+    sentenceId = await Db.Insert(
         dbPath,
         "sentence",
         queryInformation={
-            "filename": "artikel.txt",
-            "string": sentence,
-            "startindex": 0,
-            "endindex": 20,
+            "fileName": "artikel.txt",
+            "text": sentence,
+            "startIndex": 0,
+            "endIndex": 20,
         },
     )
     await Db.Insert(
         dbPath,
         "entitymention",
         queryInformation={
-            "string": sentence,
-            "mention": "this",
-            "filename": "artikel.txt",
-            "startindex": 0,
-            "endindex": 5,
+            "sid": sentenceId,
+            "name": "this",
+            "fileName": "artikel.txt",
+            "startIndex": 0,
+            "endIndex": 5,
+            "label": "PERSON",
+            "type": "Entity",
+            "iri": "knox.aau.dk/some_iri",
         },
     )
 

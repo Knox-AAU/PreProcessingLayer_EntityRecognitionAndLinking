@@ -21,8 +21,6 @@ DB_PATH = "./Database/DB.db"
 async def newFileCreated(file_path: str):
     await processInput(file_path)
 
-
-
 dirWatcher = DirectoryWatcher(directory=DIRECTORY_TO_WATCH, async_callback=newFileCreated)
 
 
