@@ -1,11 +1,12 @@
 import os
-import spacy
 import da_core_news_lg
 import random
 from spacy.training.example import Example
 import shutil
 from training_data import training_data
+import time
 
+starttime = time.time()
 # Evaluate the model's predictions
 if os.path.exists("trainedmodel/updated_da_model"):
     shutil.rmtree("trainedmodel")
@@ -40,6 +41,30 @@ for epoch in range(epochs):
         nlp.update([example], drop=dropout_rate, losses=losses)
     print(f"Ended Epoch {epoch} with loss: {losses['ner']}")
 
+# Stop the timer
+end_time = time.time()
+
+# Calculate the elapsed time
+elapsed_time_seconds = end_time - starttime
+
+# Convert seconds to days, hours, minutes, and seconds
+days, remainder = divmod(elapsed_time_seconds, 86400)
+hours, remainder = divmod(remainder, 3600)
+minutes, seconds = divmod(remainder, 60)
+
+# Print the training time
+if days >= 1:
+    print(
+        f"Training finished in {int(days)} days, {int(hours)} hours, {int(minutes)} minutes, and {int(seconds)} seconds!"
+    )
+elif hours >= 1:
+    print(
+        f"Training finished in {int(hours)} hours, {int(minutes)} minutes, and {int(seconds)} seconds!"
+    )
+else:
+    print(
+        f"Training finished in {int(minutes)} minutes and {int(seconds)} seconds!"
+    )
 
 with nlp.disable_pipes(
     *other_pipes
