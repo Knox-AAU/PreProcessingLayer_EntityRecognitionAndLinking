@@ -46,4 +46,3 @@ class DirectoryWatcher:
     def stop_watching(self):
         self.is_watching = False
         self.observer.stop()
-        self.observer.join()

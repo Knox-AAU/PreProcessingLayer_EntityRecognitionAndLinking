@@ -4,6 +4,7 @@ import sys
 from unittest.mock import patch
 import os
 
+
 sys.path.append(".")
 from main import app, DIRECTORY_TO_WATCH
 import os
@@ -19,7 +20,6 @@ os.makedirs(directory_path, exist_ok=True)
 if not os.path.exists(file_path):
     with open(file_path, 'w') as file:
         file.write(text_to_write)
-
 
 @pytest.mark.asyncio
 async def test_SlashEntityMentionsIsUp():
