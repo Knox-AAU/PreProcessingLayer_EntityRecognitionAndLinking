@@ -66,10 +66,4 @@ else:
         f"Training finished in {int(minutes)} minutes and {int(seconds)} seconds!"
     )
 
-with nlp.disable_pipes(
-    *other_pipes
-):  # temporarily disable other pipelines during evaluation
-    for text, annotations in gold_standard:
-        doc = nlp(text)
-
 nlp.to_disk("trainedmodel/updated_da_model")
