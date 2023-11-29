@@ -1,6 +1,7 @@
+from socket import timeout
 from components import *
 from components.EntityLinker import entitylinkerFunc
-import json, os
+import json, os, time, string
 from lib.Exceptions.UndetectedLanguageException import (
     UndetectedLanguageException,
 )
@@ -16,6 +17,8 @@ app = FastAPI(title="API")
 DIRECTORY_TO_WATCH = "data_from_A/"
 
 async def newFileCreated(file_path: str):
+    time.sleep(1)
+    await modifyTxt(file_path)
     await processInput(file_path)
 
 dirWatcher = DirectoryWatcher(directory=DIRECTORY_TO_WATCH, async_callback=newFileCreated)
@@ -23,12 +26,20 @@ dirWatcher = DirectoryWatcher(directory=DIRECTORY_TO_WATCH, async_callback=newFi
 
 @app.on_event("startup")
 async def startEvent():
-    dirWatcher.start_watching()
+    if not os.path.exists(DIRECTORY_TO_WATCH):
+        os.mkdir(DIRECTORY_TO_WATCH)
+
+    dirWatcher = DirectoryWatcher(
+        directory=DIRECTORY_TO_WATCH, async_callback=newFileCreated
+    )
+    if os.path.exists(DIRECTORY_TO_WATCH):
+        dirWatcher.start_watching()
 
 
 @app.on_event("shutdown")
 def shutdown_event():
-    dirWatcher.stop_watching()
+    if os.path.exists(DIRECTORY_TO_WATCH):
+        dirWatcher.stop_watching()
 
 
 app.mount(
@@ -59,8 +70,11 @@ async def get_json(article: str = Query(..., title="Article Filename")):
     if not os.path.exists(path):
         raise HTTPException(status_code=404, detail="Article not found")
     
-    newFile = await processInput(path)
-    return newFile
+    try:
+        newFile = await processInput(path)
+        return newFile
+    except Exception as e:
+        print(e)
 
 @app.post("/detectlanguage")
 async def checklang(request: Request):
@@ -73,6 +87,25 @@ async def checklang(request: Request):
     language = detect(stringdata)
 
     return language
+
+
+async def modifyTxt(file_path):
+    try:
+        with open(file_path, 'r') as file:
+            content = file.read()
+            if not content:
+                print("The file is empty.")
+            lines = content.split('\n\n')
+            # List comprehension that adds '. ' to lines not ending with punctuation, else adds a space.
+            modified_lines = [line + '. ' if not line.endswith(tuple(string.punctuation)) else line + ' ' for line in lines]
+            file.close()
+        with open(file_path, 'w') as file:
+            file.write(' '.join(modified_lines))
+            file.close()
+    except FileNotFoundError:
+        print(f"The file at {file_path} could not be found.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
 
 async def processInput(file_path: str = "Artikel.txt"):
