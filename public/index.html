@@ -9,13 +9,10 @@
 <script>
     const background = document.getElementById('background')
     const audio = document.getElementById("important")
-    let playing = false
-    background.onclick = () => {
-    if (playing) {
+    background.addEventListener("click", function() {
+    if (!audio.paused) {
         audio.pause()
-        playing = false
     } else
         audio.play()
-        playing = true
-    }
+    })
 </script>

@@ -1,4 +1,4 @@
-import spacy, json, os
+import json, os
 import sys
 from langdetect import detect
 from typing import List
@@ -7,6 +7,7 @@ from lib.EntityLinked import EntityLinked
 from lib.Exceptions.UndetectedLanguageException import (
     UndetectedLanguageException,
 )
+from lib.JSONEntityOutput import JSONEntityOutput
 
 sys.path.append(".")
 from lib.Entity import Entity
@@ -17,8 +18,8 @@ nlp_en = en_core_web_lg.load()
 nlp_da = da_core_news_lg.load()
 
 
-# GetText skal få text fra pipeline del A
-def GetText(title):
+# GetText shall get text from pipeline del A
+def GetText(title: str):
     file = open(title, "r")
 
     stringWithText = file.read()
@@ -27,7 +28,7 @@ def GetText(title):
     return stringWithText
 
 
-def GetTokens(text):
+def GetTokens(text: str):
     result = DetectLang(text)
     if result == "da":
         return nlp_da(text)
@@ -37,14 +38,17 @@ def GetTokens(text):
         raise UndetectedLanguageException()
 
 
-def DetectLang(text):
+def DetectLang(text: str):
     stringdata = str(text)
     language = detect(stringdata)
     return language
 
 
 # Method to fully extract entity mentions, find the sentences and calculate indexes and finally create a final JSON
-def BuildJSONFromEntities(entities: List[EntityLinked], doc, fileName: str):
+def BuildJSONFromEntities(entities: List[EntityLinked], doc, fileName: str) -> JSONEntityOutput:
+    if not os.path.exists("entity_mentions.json"):
+        open("entity_mentions.json", "w").close()
+
     # Create a list of sentences with their entities in the desired JSON format
     currentJson = open("./entity_mentions.json", "r")
     currentJson.seek(0, os.SEEK_END)
@@ -88,12 +92,12 @@ def BuildJSONFromEntities(entities: List[EntityLinked], doc, fileName: str):
     if len(currentJson) != 0:
         for index in currentJson:
             if index["fileName"] == final_json["fileName"]:
-                return currentJson
+                return JSONEntityOutput(final_json, currentJson)
             else:
                 currentJson.append(final_json)
     else:
         currentJson.append(final_json)
-    return currentJson
+    return JSONEntityOutput(final_json, currentJson)
 
 def GetEntities(doc) -> List[Entity]:
     entities = []
