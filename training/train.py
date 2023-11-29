@@ -16,7 +16,7 @@ if not os.path.exists("trainedmodel/updated_da_model"):
 # Load your pre-trained model
 nlp = da_core_news_lg.load()
 
-epochs = 22
+epochs = 500
 dropout_rate = 0.35
 
 gold_standard = [

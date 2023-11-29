@@ -42,6 +42,10 @@ eval_data = [
         {"entities": [(0, 5, "LITERAL"), (21, 30, "LITERAL")]},
     ),
     (
+        "Bussen kommer 13:00.",
+        {"entities": [(14, 19, "LITERAL")]},
+    ),
+    (
         "Vi skal aflevere d. 21/12/2023.",
         {"entities": [(17, 30, "LITERAL")]},
     ),

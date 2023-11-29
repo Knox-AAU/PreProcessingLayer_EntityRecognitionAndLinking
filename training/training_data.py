@@ -100,6 +100,14 @@ training_data = [
         {"entities": [(0, 7, "PERSON")]},
     ),
     (
+        "Peter så Epstein gøre det.",
+        {"entities": [(0, 5, "PERSON"), (9, 16, "PERSON")]},
+    ),
+    (
+        "Ingen har set Epstein gøre det.",
+        {"entities": [(14, 21, "PERSON")]},
+    ),
+    (
         "Man ved endnu ikke hvem der er skyld i 9/11.",
         {"entities": [(39, 43, "LITERAL")]},
     ),
@@ -507,4 +515,79 @@ training_data = [
         "Projektet skal afsluttes senest d. 6/6/2024.",
         {"entities": [(32, 43, "LITERAL")]},
     ),
+    (
+        "Mødet er planlagt til d. 20/12.",
+        {"entities": [(22, 30, "LITERAL")]},
+    ),
+    (
+        "I dag er det mandag 11/01",
+        {"entities": [(0, 5, "LITERAL"), (20, 25, "LITERAL")]},
+    ),
+    (
+        "Bussen kommer 15:00",
+        {"entities": [(14, 19, "LITERAL")]},
+    ),
+    (
+        "11:20 er det frokost",
+        {"entities": [(0, 5, "LITERAL")]},
+    ),
+    (
+        "Jeg skal d. 2/9 til fødselsdag",
+        {"entities": [(9, 16, "LITERAL")]},
+    ),
+    (
+        "Jeg skal d. 3/4/2023 til fødselsdag",
+        {"entities": [(9, 21, "LITERAL")]},
+    ),
+    (
+        "Jeg skal d. 7/11/23 til fødselsdag",
+        {"entities": [(9, 19, "LITERAL")]},
+    ),
+    (
+        "Jeg har en aftale d. 7/11/2023",
+        {"entities": [(18, 30, "LITERAL")]},
+    ),
+    (
+        "Næste år er det d. 29/11/2024",
+        {"entities": [(16, 29, "LITERAL")]},
+    ),
+    (
+        "1/3/2024 skal jeg til bryllup",
+        {"entities": [(0, 8, "LITERAL")]},
+    ),
+    (
+        "Jeg skal til bryllup d. 1/3/2024",
+        {"entities": [(21, 32, "LITERAL")]},
+    ),
+    (
+        "Vi har 5 æbler i kurven", 
+        {"entities": [(7, 8, "LITERAL")]}
+    ),
+    ("Prisen er 399 kr.", {"entities": [(10, 17, "LITERAL")]}),
+    ("Mødet starter kl. 14:30", {"entities": [(14, 23, "LITERAL")]}),
+    ("Hun købte billetterne den 5/10/2023", {"entities": [(22, 35, "LITERAL")]}),
+    ("Temperaturen er 25 grader", {"entities": [(16, 25, "LITERAL")]}),
+    ("Bogen koster 49.99 kr.", {"entities": [(13, 22, "LITERAL")]}),
+    ("Der er 3 hunde i haven", {"entities": [(7, 8, "LITERAL")]}),
+    ("Der er 7 dage i en uge", {"entities": [(7, 13, "LITERAL")]}),
+    ("Temperaturen faldt til -10 grader", {"entities": [(23, 33, "LITERAL")]}),
+    ("Hun løb 10 kilometer på en time", {"entities": [(8, 20, "LITERAL")]}),
+    ("Prisen på huset er 1.5 millioner kroner", {"entities": [(19, 39, "LITERAL")]}),
+    ("Han scorede 3 mål i kampen", {"entities": [(12, 13, "LITERAL")]}),
+    ("Antallet af studerende er 250", {"entities": [(26, 29, "LITERAL")]}),
+    ("Jeg har reserveret bord til 4 personer", {"entities": [(28, 29, "LITERAL")]}),
+    ("Hun blev født den 12. maj 1990", {"entities": [(14, 16, "LITERAL")]}),
+    ("Hastighedsgrænsen er 100 km/t", {"entities": [(21, 29, "LITERAL")]}),
+    ("Bogen indeholder 500 sider", {"entities": [(17, 20, "LITERAL")]}),
+    ("Prisen steg med 15%", {"entities": [(16, 19, "LITERAL")]}),
+    ("25 personer deltog i arrangementet", {"entities": [(0, 2, "LITERAL")]}),
+    ("3.14 er værdien af pi", {"entities": [(0, 4, "LITERAL")]}),
+    ("100 kroner er prisen for billetten", {"entities": [(0, 10, "LITERAL")]}),
+    ("2022 er året for det næste store event", {"entities": [(0, 4, "LITERAL")]}),
+    ("10 grader er den aktuelle temperatur", {"entities": [(0, 9, "LITERAL")]}),
+    ("5 kilometer er distancen til målet", {"entities": [(0, 11, "LITERAL")]}),
+    ("7 dage er varigheden af ferien", {"entities": [(0, 6, "LITERAL")]}),
+    ("49.99 kr. er prisen for produktet", {"entities": [(0, 9, "LITERAL")]}),
+    ("12 point blev scoret i kampen", {"entities": [(0, 2, "LITERAL")]}),
+    ("-15 grader er den laveste temperatur", {"entities": [(0, 10, "LITERAL")]}),
 ]
