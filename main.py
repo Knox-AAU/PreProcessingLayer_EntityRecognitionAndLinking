@@ -1,6 +1,7 @@
+from socket import timeout
 from components import *
 from components.EntityLinker import entitylinkerFunc
-import json, os
+import json, os, time, string
 from lib.Exceptions.UndetectedLanguageException import (
     UndetectedLanguageException,
 )
@@ -17,6 +18,8 @@ DIRECTORY_TO_WATCH = "data_from_A/"
 
 
 async def newFileCreated(file_path: str):
+    time.sleep(1)
+    await modifyTxt(file_path)
     await processInput(file_path)
 
 
@@ -70,11 +73,11 @@ async def get_json(article: str = Query(..., title="Article Filename")):
     path = DIRECTORY_TO_WATCH + article
     print(path)
     if not os.path.exists(path):
-        raise HTTPException(status_code=404, detail="Article not found")
-
-    newFile = await processInput(path)
-    return newFile
-
+    try:
+        newFile = await processInput(path)
+        return newFile
+    except Exception as e:
+        print(e)
 
 @app.post("/detectlanguage")
 async def checklang(request: Request):
@@ -87,6 +90,25 @@ async def checklang(request: Request):
     language = detect(stringdata)
 
     return language
+
+
+async def modifyTxt(file_path):
+    try:
+        with open(file_path, 'r') as file:
+            content = file.read()
+            if not content:
+                print("The file is empty.")
+            lines = content.split('\n\n')
+            # List comprehension that adds '. ' to lines not ending with punctuation, else adds a space.
+            modified_lines = [line + '. ' if not line.endswith(tuple(string.punctuation)) else line + ' ' for line in lines]
+            file.close()
+        with open(file_path, 'w') as file:
+            file.write(' '.join(modified_lines))
+            file.close()
+    except FileNotFoundError:
+        print(f"The file at {file_path} could not be found.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
 
 async def processInput(file_path: str = "Artikel.txt"):
