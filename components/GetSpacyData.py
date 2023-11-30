@@ -89,6 +89,7 @@ def BuildJSONFromEntities(entities: List[EntityLinked], doc, fileName: str) -> J
     final_json = {
         "fileName": fileName,
         "language": DetectLang(doc),
+        "metadataId":"7467628c-ad77-4bd7-9810-5f3930796fb5",
         "sentences": sentences_json,
     }
     if len(currentJson) != 0:
@@ -107,8 +108,8 @@ def GetEntities(doc) -> List[Entity]:
         entities.append(
             Entity(
                 name=entity.text,
-                startIndex=entity.start_char,
-                endIndex=entity.end_char,
+                startIndex=entity.start_char-entity.sent.start_char,
+                endIndex=entity.end_char-entity.sent.start_char,
                 sentence=entity.sent.text,
                 sentenceStartIndex=entity.sent.start_char,
                 sentenceEndIndex=entity.sent.end_char,
