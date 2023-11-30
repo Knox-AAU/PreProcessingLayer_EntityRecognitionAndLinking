@@ -89,6 +89,7 @@ def BuildJSONFromEntities(entities: List[EntityLinked], doc, fileName: str) -> J
     final_json = {
         "fileName": fileName,
         "language": DetectLang(doc),
+        "metadataId":"7467628c-ad77-4bd7-9810-5f3930796fb5",
         "sentences": sentences_json,
     }
     if len(currentJson) != 0:
