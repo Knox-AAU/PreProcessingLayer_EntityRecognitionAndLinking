@@ -1,8 +1,7 @@
 [tool.pytest.ini_options]
 minversion = "6.0"
 addopts = "-W ignore::DeprecationWarning --cov ."
-testpaths =
-  tests
+testpaths = ["tests"]
 
 [tool.black]
 line-length = 79
