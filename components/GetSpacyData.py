@@ -64,6 +64,8 @@ def BuildJSONFromEntities(entities: List[EntityLinked], doc, fileName: str) -> J
         # Use the 'start' and 'end' indexes of the entity to get its index within its sentence
         sentence = entity.sentence
 
+        print("sentence: ",sentence)
+
         entityJSON = entity.getEntityJSON()
 
         found = False
