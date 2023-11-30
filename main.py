@@ -16,12 +16,16 @@ app = FastAPI(title="API")
 
 DIRECTORY_TO_WATCH = "data_from_A/"
 
+
 async def newFileCreated(file_path: str):
     time.sleep(1)
     await modifyTxt(file_path)
     await processInput(file_path)
 
-dirWatcher = DirectoryWatcher(directory=DIRECTORY_TO_WATCH, async_callback=newFileCreated)
+
+dirWatcher = dirWatcher = DirectoryWatcher(
+    directory=DIRECTORY_TO_WATCH, async_callback=newFileCreated
+)
 
 
 @app.on_event("startup")
@@ -49,27 +53,27 @@ app.mount(
 )
 
 
-@app.get('/')
+@app.get("/")
 async def root(request: Request):
-    return templates.TemplateResponse(
-        "index.html", {"request": request}
-    )
+    return templates.TemplateResponse("index.html", {"request": request})
+
 
 @app.get("/entitymentions/all")
 async def get_all_json():
     if not os.path.exists("entity_mentions.json"):
         raise HTTPException(status_code=404, detail="mentions not found")
-    
+
     with open("entity_mentions.json", "r") as entity_json:
         entity_mentions = json.load(entity_json)
         return entity_mentions
 
+
 @app.get("/entitymentions")
 async def get_json(article: str = Query(..., title="Article Filename")):
     path = DIRECTORY_TO_WATCH + article
+    print(path)
     if not os.path.exists(path):
         raise HTTPException(status_code=404, detail="Article not found")
-
     try:
         newFile = await processInput(path)
     except Exception as e:
@@ -129,9 +133,7 @@ async def processInput(file_path: str = "Artikel.txt"):
     except UndetectedLanguageException:
         raise HTTPException(status_code=400, detail="Undetected language")
 
-    ents = GetSpacyData.GetEntities(
-        doc
-    )  # construct entities from text
+    ents = GetSpacyData.GetEntities(doc)  # construct entities from text
 
     await Db.InitializeIndexDB(
         "./Database/DB.db"
@@ -142,11 +144,7 @@ async def processInput(file_path: str = "Artikel.txt"):
         ents
     )  # Returns JSON object containing an array of entity links
 
-    entsJSON = GetSpacyData.BuildJSONFromEntities(
-        entLinks,
-        doc,
-        file_path
-    )
+    entsJSON = GetSpacyData.BuildJSONFromEntities(entLinks, doc, file_path)
 
     with open("entity_mentions.json", "w", encoding="utf8") as entityJson:
         json.dump(entsJSON.allFiles, entityJson, ensure_ascii=False, indent=4)

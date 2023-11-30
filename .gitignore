@@ -1,5 +1,8 @@
+# Ignore Database file
 Database/*
-
+# Ignore trained SpaCy models
+training/model_packages/*
+training/trainedmodel/*
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

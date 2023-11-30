@@ -1,6 +1,7 @@
 [tool.pytest.ini_options]
 minversion = "6.0"
-addopts = "-W ignore::DeprecationWarning --cov ."
+addopts = "-W ignore::DeprecationWarning --cov"
+testpaths = ["tests/unit", "tests/integration"]
 
 [tool.black]
 line-length = 79
