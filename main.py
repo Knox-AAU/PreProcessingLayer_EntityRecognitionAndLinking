@@ -69,12 +69,14 @@ async def get_json(article: str = Query(..., title="Article Filename")):
     path = DIRECTORY_TO_WATCH + article
     if not os.path.exists(path):
         raise HTTPException(status_code=404, detail="Article not found")
-    
+
     try:
         newFile = await processInput(path)
-        return newFile
     except Exception as e:
-        print(e)
+        #Server does not need to freeze everytime an exeption is thrown
+        print(f"An exception occurred: {str(e)}")
+        return {"error": str(e)}
+    return newFile
 
 @app.post("/detectlanguage")
 async def checklang(request: Request):
