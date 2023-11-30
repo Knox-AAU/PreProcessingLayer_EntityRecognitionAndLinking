@@ -96,3 +96,17 @@ Here is an example of an output from the endpoint when getting for  <span style=
     }
 ]
 ```
+
+
+
+## detectlanguage <sup><span style="color:lightgreen">POST</span></sup>
+
+This endpoint will check the language in the given text.
+Send the text in the request body and it will return the language.
+The given text has to be longer than 4 characters.
+The function will return the lanugage in 2 charaters.
+
+### Example
+<span style="color:lightgreen">Request body: </span> The man was walking down the street
+<span style="color:lightgreen">Response: </span> en
+
