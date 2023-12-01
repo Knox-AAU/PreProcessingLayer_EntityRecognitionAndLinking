@@ -1,4 +1,3 @@
-from socket import timeout
 from components import *
 from components.EntityLinker import entitylinkerFunc
 import json, os, time, string
@@ -10,17 +9,26 @@ from langdetect import detect
 from fastapi import FastAPI, HTTPException, Request, Query
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-
+import requests
+from dotenv import load_dotenv
 templates = Jinja2Templates(directory="public")
 app = FastAPI(title="API")
 
-DIRECTORY_TO_WATCH = "data_from_A/"
+load_dotenv()
 
+DIRECTORY_TO_WATCH = str(os.getenv("DIRECTORY_TO_WATCH"))
+PIPELINE_C_URL = str(os.getenv("PIPELINE_C_URL"))
+PIPELINE_C_AUTHORIZATION = str(os.getenv("PIPELINE_C_AUTHORIZATION"))
+ACCESS_API_AUTHORIZATION = str(os.getenv("ACCESS_API_AUTHORIZATION"))
 
 async def newFileCreated(file_path: str):
     time.sleep(1)
     await modifyTxt(file_path)
-    await processInput(file_path)
+    outputJSON = await processInput(file_path)
+
+    Headers = { "Authorization" : PIPELINE_C_AUTHORIZATION, "Access-Authorization": ACCESS_API_AUTHORIZATION }
+    status = requests.post(PIPELINE_C_URL, json=outputJSON, headers=Headers)
+    print(status.text)
 
 
 dirWatcher = dirWatcher = DirectoryWatcher(
