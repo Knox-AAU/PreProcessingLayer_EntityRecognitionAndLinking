@@ -87,7 +87,7 @@ def BuildJSONFromEntities(entities: List[EntityLinked], doc, fileName: str) -> J
 
     # Create the final JSON structure
     final_json = {
-        "fileName": fileName,
+        "fileName": fileName.split("/")[-1],
         "language": DetectLang(doc),
         "metadataId":"7467628c-ad77-4bd7-9810-5f3930796fb5",
         "sentences": sentences_json,
