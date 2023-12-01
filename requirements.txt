@@ -11,5 +11,5 @@ pytest-cov==3.0.0
 langdetect==1.0.9
 httpx
 fuzzywuzzy
-watchdog
-python-dotenv
+watchdog==3.0.0
+python-dotenv==1.0.0
