@@ -35,7 +35,13 @@ Uploading requires no authentication as the repository is only available when on
 When the domain is eventually up, the following twine command is also applicable
 
 ```BASH
-twine upload -r http://pypi.knox.cs.aau.dk --sign PACKAGENAME.whl
+twine upload -r http://pypi.knox.cs.aau.dk:443 --sign PACKAGENAME.whl
+```
+
+If you are working from another campus, like CREATE, the following command should also work:
+
+```BASH
+twine upload -r http://knox-web01.srv.aau.dk:443 --sign PACKAGENAME.whl
 ```
 
 ## Installing through the repository
@@ -58,7 +64,7 @@ pip3 install --index-url http://localhost:8081/simple PACKAGE-NAME
 If the domain is available simply replace the localhost:8081 with the domain:
 
 ```BASH
-pip3 install --index-url http://pypi.knox.cs.aau.dk/simle PACKAGE-NAME
+pip3 install --index-url http://knox-web01.srv.aau.dk:443/simle PACKAGE-NAME
 ```
 
 ## Creating a whl package from Spacy
