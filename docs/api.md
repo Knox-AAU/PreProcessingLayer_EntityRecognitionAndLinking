@@ -38,7 +38,7 @@ Here is an example of an output from the endpoint `/entitymentions?article=test.
 
 ```JSON
 {
-    "fileName": "data_from_A/test.txt",
+    "fileName": "test.txt",
     "language": "en",
     "sentences": [
         {
@@ -98,7 +98,7 @@ Here is an example of an output from the endpoint when getting all articles. For
 ```JSON
 [
     {
-        "fileName": "data_from_A/test.txt",
+        "fileName": "test.txt",
         "language": "en",
         "sentences": [
             {
@@ -119,7 +119,7 @@ Here is an example of an output from the endpoint when getting all articles. For
         ]
     },
     {
-        "fileName": "data_from_A/test2.txt",
+        "fileName": "test2.txt",
         "language": "en",
         "sentences": [
             {
