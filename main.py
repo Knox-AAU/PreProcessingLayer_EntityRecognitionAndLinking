@@ -11,6 +11,8 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 import requests
 from dotenv import load_dotenv
+import uvicorn
+
 templates = Jinja2Templates(directory="public")
 app = FastAPI(title="API")
 
@@ -22,30 +24,26 @@ PIPELINE_C_AUTHORIZATION = str(os.getenv("PIPELINE_C_AUTHORIZATION"))
 ACCESS_API_AUTHORIZATION = str(os.getenv("ACCESS_API_AUTHORIZATION"))
 
 async def newFileCreated(file_path: str):
-    time.sleep(1)
-    await modifyTxt(file_path)
-    outputJSON = await processInput(file_path)
+    try:
+        newFileProcessed = await processInput(file_path)
+        print(newFileProcessed)
+        Headers = { "Authorization" : PIPELINE_C_AUTHORIZATION, "Access-Authorization": ACCESS_API_AUTHORIZATION }
+        r = requests.post(PIPELINE_C_URL, json=[newFileProcessed], headers=Headers)
+        print(r.content)
+        print(r)
+        print(r.json())
+    except Exception as e:
+        #Server does not need to freeze everytime an exeption is thrown
+        print(f"An exception occurred: {str(e)}")
+        return {"error": str(e)}
 
-    Headers = { "Authorization" : PIPELINE_C_AUTHORIZATION, "Access-Authorization": ACCESS_API_AUTHORIZATION }
-    status = requests.post(PIPELINE_C_URL, json=outputJSON, headers=Headers)
-    print(status.text)
-
-
-dirWatcher = dirWatcher = DirectoryWatcher(
+dirWatcher = DirectoryWatcher(
     directory=DIRECTORY_TO_WATCH, async_callback=newFileCreated
 )
 
-
 @app.on_event("startup")
 async def startEvent():
-    if not os.path.exists(DIRECTORY_TO_WATCH):
-        os.mkdir(DIRECTORY_TO_WATCH)
-
-    dirWatcher = DirectoryWatcher(
-        directory=DIRECTORY_TO_WATCH, async_callback=newFileCreated
-    )
-    if os.path.exists(DIRECTORY_TO_WATCH):
-        dirWatcher.start_watching()
+    dirWatcher.start_watching()
 
 
 @app.on_event("shutdown")
@@ -79,7 +77,6 @@ async def get_all_json():
 @app.get("/entitymentions")
 async def get_json(article: str = Query(..., title="Article Filename")):
     path = DIRECTORY_TO_WATCH + article
-    print(path)
     if not os.path.exists(path):
         raise HTTPException(status_code=404, detail="Article not found")
     try:
@@ -94,33 +91,12 @@ async def get_json(article: str = Query(..., title="Article Filename")):
 async def checklang(request: Request):
     data = await request.body()
     stringdata = str(data)
-    print(len(stringdata))
     if len(stringdata) < 4:
         raise HTTPException(status_code=400, detail="Text is too short")
 
     language = detect(stringdata)
 
     return language
-
-
-async def modifyTxt(file_path):
-    try:
-        with open(file_path, 'r') as file:
-            content = file.read()
-            if not content:
-                print("The file is empty.")
-            lines = content.split('\n\n')
-            # List comprehension that adds '. ' to lines not ending with punctuation, else adds a space.
-            modified_lines = [line + '. ' if not line.endswith(tuple(string.punctuation)) else line + ' ' for line in lines]
-            file.close()
-        with open(file_path, 'w') as file:
-            file.write(' '.join(modified_lines))
-            file.close()
-    except FileNotFoundError:
-        print(f"The file at {file_path} could not be found.")
-    except Exception as e:
-        print(f"An error occurred: {e}")
-
 
 async def processInput(file_path: str = "Artikel.txt"):
     text = GetSpacyData.GetText(
@@ -158,3 +134,8 @@ async def processInput(file_path: str = "Artikel.txt"):
         json.dump(entsJSON.allFiles, entityJson, ensure_ascii=False, indent=4)
 
     return entsJSON.newFile
+
+# Allows this file to be run like so: "python main.py"
+# Useful for debugging
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
