@@ -22,6 +22,7 @@ DIRECTORY_TO_WATCH = str(os.getenv("DIRECTORY_TO_WATCH"))
 PIPELINE_C_URL = str(os.getenv("PIPELINE_C_URL"))
 PIPELINE_C_AUTHORIZATION = str(os.getenv("PIPELINE_C_AUTHORIZATION"))
 ACCESS_API_AUTHORIZATION = str(os.getenv("ACCESS_API_AUTHORIZATION"))
+DB_PATH = str(os.getenv("DB_PATH"))
 
 async def newFileCreated(file_path: str):
     try:
@@ -120,12 +121,13 @@ async def processInput(file_path: str = "Artikel.txt"):
     ents = GetSpacyData.GetEntities(doc)  # construct entities from text
 
     await Db.InitializeIndexDB(
-        "./Database/DB.db"
+        DB_PATH
     )  # makes the DB containing the entities of KG
     # Returns JSON object containing an array of entity links
 
     entLinks = await entitylinkerFunc(
-        ents
+        ents,
+        DB_PATH
     )  # Returns JSON object containing an array of entity links
 
     entsJSON = GetSpacyData.BuildJSONFromEntities(entLinks, doc, file_path)

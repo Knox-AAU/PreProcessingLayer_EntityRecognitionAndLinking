@@ -5,11 +5,9 @@ from lib.EntityLinked import EntityLinked
 from lib.Entity import Entity
 from fuzzywuzzy import fuzz
 
-
-async def entitylinkerFunc(entities: List[Entity], threshold:int=80):
+async def entitylinkerFunc(entities: List[Entity], db_path: str, threshold:int=80):
     iri_dict = {}
     linked_entities = []
-    db_path = "./Database/DB.db"
     for entity in entities:
         if entity.type == "Literal":
             linked_entities.append(EntityLinked(entity, ""))          
