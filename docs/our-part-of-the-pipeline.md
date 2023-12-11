@@ -12,7 +12,7 @@ Our part of the pipeline is concerned with Entity Recognition and Entity Linking
 See the [Getting started](https://github.com/Knox-AAU/PreProcessingLayer_EntityRecognitionAndLinking/blob/main/docs/gettingstarted.md) guide.
 
 ## The input that the solution takes
-See the [input](https://github.com/Knox-AAU/PreProcessingLayer_EntityRecognitionAndLinking/blob/main/docs/our-part-of-the-pipeline/pipeline-input.md) explanation
+See the [input](https://github.com/Knox-AAU/PreProcessingLayer_EntityRecognitionAndLinking/blob/main/docs/our-part-of-the-pipeline/pipeline-input.md) explanation.
 
 ## Entity Recognition
 Check out the [Entity Recognition documentation](https://github.com/Knox-AAU/PreProcessingLayer_EntityRecognitionAndLinking/blob/main/docs/entityrecognition.md)
@@ -21,8 +21,13 @@ Check out the [Entity Recognition documentation](https://github.com/Knox-AAU/Pre
 Check out the [Entity Linker documentation](https://github.com/Knox-AAU/PreProcessingLayer_EntityRecognitionAndLinking/blob/main/docs/entitylinker.md)
 
 ## The output it produces
-See the [output](https://github.com/Knox-AAU/PreProcessingLayer_EntityRecognitionAndLinking/blob/main/docs/our-part-of-the-pipeline/pipeline-output.md) explanation
+See the [output](https://github.com/Knox-AAU/PreProcessingLayer_EntityRecognitionAndLinking/blob/main/docs/our-part-of-the-pipeline/pipeline-output.md) explanation.
 
+## Deployment
+See the [Docker Watchtower](https://github.com/Knox-AAU/PreProcessingLayer_EntityRecognitionAndLinking/blob/main/docs/docker-watchtower.md) guide.
+
+## Writing Tests
+See the [Testing](https://github.com/Knox-AAU/PreProcessingLayer_EntityRecognitionAndLinking/blob/main/docs/testing.md) guide.
 
 ## Other components
 - The [DirectoryWatcher](https://github.com/Knox-AAU/PreProcessingLayer_EntityRecognitionAndLinking/blob/main/docs/DirectoryWatcher.md)
