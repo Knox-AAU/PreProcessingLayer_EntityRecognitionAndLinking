@@ -32,7 +32,7 @@ async def test_entitylinkerFunc():
             ]
 
             # Call the entitylinkerFunc
-            entLinks = await entitylinkerFunc(entMentions)
+            entLinks = await entitylinkerFunc(entMentions, db_path="DB_PATH")
             # Check the results
             assert len(entLinks) == 2
 
@@ -66,7 +66,7 @@ async def test_entitylinkerFuncFindsCandidatesThatStartWithE():
             ]
 
             # Call the entitylinkerFunc
-            entLinks = await entitylinkerFunc(entMentions)
+            entLinks = await entitylinkerFunc(entMentions, db_path="DB_PATH")
             # Check the results
             assert len(entLinks) == 1
 
@@ -99,7 +99,7 @@ async def test_CheckIfSpaceHasBeenReplacedWithUnderscore():
             ]
 
             # Call the entitylinkerFunc
-            entLinks = await entitylinkerFunc(entMentions)
+            entLinks = await entitylinkerFunc(entMentions, db_path="DB_PATH")
             # Check the results
             assert len(entLinks) == 1
 
@@ -167,7 +167,7 @@ async def test_entitylinkeraccuracy():
             }
 
             # Call the entitylinkerFunc
-            entLinks = await entitylinkerFunc(TestingDataset["test"])
+            entLinks = await entitylinkerFunc(TestingDataset["test"], db_path="DB_PATH")
             for index, link in enumerate(entLinks):
                 assert link.name == TestingDataset["GoldStandardNames"][index]
                 assert link.iri == TestingDataset["GoldStandardIRIs"][index]

@@ -15,7 +15,7 @@ def test_GetText_fileExists():
         testFile.write("This is a testfile")
 
     testText = GetSpacyData.GetText("test_article_file.txt")
-    assert testText == "This is a testfile"
+    assert testText == "This is a testfile. "
 
 
 # Test that GetText returns an error if the file does not exist

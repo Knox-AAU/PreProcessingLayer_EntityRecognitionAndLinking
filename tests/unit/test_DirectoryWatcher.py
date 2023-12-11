@@ -12,10 +12,10 @@ async def test_on_created():
     # Mock asyncio.run to avoid the RuntimeError
     with patch('asyncio.run'):
         # Simulate an on_created event
-        event_mock = MagicMock(is_directory=False, src_path='/path/to/file.txt')
+        event_mock = MagicMock(is_directory=False, src_path='/path/to/watch/file.txt')
         watcher.on_created(event_mock)
     # Ensure that async_callback is called with the correct parameters
-    async_callback_mock.assert_called_once_with('/path/to/file.txt')
+    async_callback_mock.assert_called_once_with('/path/to/watch/file.txt')
 
 @pytest.mark.asyncio
 async def test_start_and_stop_watching():

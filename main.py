@@ -44,7 +44,11 @@ dirWatcher = DirectoryWatcher(
 
 @app.on_event("startup")
 async def startEvent():
-    dirWatcher.start_watching()
+    if not os.path.exists(DIRECTORY_TO_WATCH):
+        os.mkdir(DIRECTORY_TO_WATCH)
+
+    if os.path.exists(DIRECTORY_TO_WATCH):
+        dirWatcher.start_watching()
 
 
 @app.on_event("shutdown")
