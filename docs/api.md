@@ -12,6 +12,7 @@ The `/entitymentions` endpoint is a <span style="color:lightgreen">**GET**</span
 {
     "fileName": STRING,
     "language": STRING,
+    "metadataId": UUID (STRING),
     "sentences": [
         {
             "sentence": STRING,
@@ -24,7 +25,7 @@ The `/entitymentions` endpoint is a <span style="color:lightgreen">**GET**</span
                     "label": STRING,
                     "startIndex": INT,
                     "endIndex": INT,
-                    "iri": STRING
+                    "iri": STRING?
                 }
             ]
         }
@@ -40,6 +41,7 @@ Here is an example of an output from the endpoint `/entitymentions?article=test.
 {
     "fileName": "test.txt",
     "language": "en",
+    "metadataId": "790261e8-b8ec-4801-9cbd-00263bcc666a",
     "sentences": [
         {
             "sentence": "Hi my name is marc",
@@ -70,6 +72,7 @@ The `/entitymentions/all` endpoint is a <span style="color:lightgreen">**GET**</
     {
         "fileName": STRING,
         "language": STRING,
+        "metadataId": UUID (STRING),
         "sentences": [
             {
                 "sentence": STRING,
@@ -82,7 +85,7 @@ The `/entitymentions/all` endpoint is a <span style="color:lightgreen">**GET**</
                         "label": STRING,
                         "startIndex": INT,
                         "endIndex": INT,
-                        "iri": STRING
+                        "iri": STRING?
                     }
                 ]
             }
@@ -100,6 +103,7 @@ Here is an example of an output from the endpoint when getting all articles. For
     {
         "fileName": "test.txt",
         "language": "en",
+        "metadataId": "790261e8-b8ec-4801-9cbd-00263bcc666d",
         "sentences": [
             {
                 "sentence": "Hi my name is marc",
@@ -121,6 +125,7 @@ Here is an example of an output from the endpoint when getting all articles. For
     {
         "fileName": "test2.txt",
         "language": "en",
+        "metadataId": "790261e8-b8ec-4801-9cbd-00263bcc666c",
         "sentences": [
             {
                 "sentence": "Hi my name is joe",
