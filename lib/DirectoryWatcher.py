@@ -2,7 +2,7 @@ import threading
 import asyncio
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
-
+import os
 
 class DirectoryWatcher:
     def __init__(self, directory, async_callback):

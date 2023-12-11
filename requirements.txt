@@ -9,6 +9,7 @@ pytest_sugar==0.9.7
 pytest-asyncio==0.21.1
 pytest-cov==3.0.0
 langdetect==1.0.9
-httpx
-fuzzywuzzy
-watchdog
+httpx==0.25.2
+fuzzywuzzy==0.18.0
+watchdog==3.0.0
+python-dotenv==1.0.0

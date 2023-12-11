@@ -1,4 +1,5 @@
 import json, os
+import string
 import sys
 from langdetect import detect
 from typing import List
@@ -21,11 +22,13 @@ nlp_da = da_core_news_lg.load()
 # GetText shall get text from pipeline del A
 def GetText(title: str):
     file = open(title, "r")
-
-    stringWithText = file.read()
-
+    content = file.read()
     file.close
-    return stringWithText
+
+    lines = content.split('\n\n')
+    modified_lines = [line + '. ' if not line.endswith(tuple(string.punctuation)) else line + ' ' for line in lines]
+
+    return ' '.join(modified_lines)
 
 
 def GetTokens(text: str):
@@ -64,13 +67,11 @@ def BuildJSONFromEntities(entities: List[EntityLinked], doc, fileName: str) -> J
         # Use the 'start' and 'end' indexes of the entity to get its index within its sentence
         sentence = entity.sentence
 
-        print("sentence: ",sentence)
-
         entityJSON = entity.getEntityJSON()
 
         found = False
         for sentence_info in sentences_json:
-            if sentence_info["sentence"] == sentence.replace("\n", ""):
+            if sentence_info["sentence"] == sentence:
                 sentence_info["entityMentions"].append(entityJSON)
                 found = True
                 break
@@ -78,7 +79,7 @@ def BuildJSONFromEntities(entities: List[EntityLinked], doc, fileName: str) -> J
         if not found:
             sentences_json.append(
                 {
-                    "sentence": sentence.replace("\n", ""),
+                    "sentence": sentence,
                     "sentenceStartIndex": entity.sentenceStartIndex,
                     "sentenceEndIndex": entity.sentenceEndIndex,
                     "entityMentions": [entityJSON],
