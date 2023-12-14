@@ -17,7 +17,7 @@ async def test_entitylinkerFunc():
             return [("1", "Entity1"), ("2", "Entity2")]
         return []
 
-    async def mock_insert(db_path, table, entity_name):
+    async def mock_insert(db_path, table, queryInformation):
         return None
 
     # Patch the Db.Read and Db.Insert functions with the mock functions
@@ -28,7 +28,9 @@ async def test_entitylinkerFunc():
             # Create some Entity instances
             entMentions = [
                 Entity("Entity1", 0, 6, "Sentence1", 0, 9, "PERSON", "Entity"),
-                Entity("newEntity3", 0, 6, "Sentence2", 0, 9, "PERSON", "Entity"),
+                Entity(
+                    "newEntity3", 0, 6, "Sentence2", 0, 9, "PERSON", "Entity"
+                ),
             ]
 
             # Call the entitylinkerFunc
@@ -40,7 +42,7 @@ async def test_entitylinkerFunc():
             assert entLinks[0].iri == "Entity1"
 
             # Ensure the second mention creates a new entity
-            assert entLinks[1].iri == "Entity1"
+            assert entLinks[1].iri == "newEntity3"
 
 
 # Define a test case with a mock database and Entity instances
@@ -52,7 +54,7 @@ async def test_entitylinkerFuncFindsCandidatesThatStartWithE():
             return [("1", "Entity1")]
         return []
 
-    async def mock_insert(db_path, table, entity_name):
+    async def mock_insert(db_path, table, queryInformation):
         return None
 
     # Patch the Db.Read and Db.Insert functions with the mock functions
@@ -84,7 +86,7 @@ async def test_CheckIfSpaceHasBeenReplacedWithUnderscore():
             return [("1", "Entity 1")]
         return []
 
-    async def mock_insert(db_path, table, entity_name):
+    async def mock_insert(db_path, table, queryInformation):
         return None
 
         # Patch the Db.Read and Db.Insert functions with the mock functions
@@ -167,7 +169,9 @@ async def test_entitylinkeraccuracy():
             }
 
             # Call the entitylinkerFunc
-            entLinks = await entitylinkerFunc(TestingDataset["test"], db_path="DB_PATH")
+            entLinks = await entitylinkerFunc(
+                TestingDataset["test"], db_path="DB_PATH"
+            )
             for index, link in enumerate(entLinks):
                 assert link.name == TestingDataset["GoldStandardNames"][index]
                 assert link.iri == TestingDataset["GoldStandardIRIs"][index]
