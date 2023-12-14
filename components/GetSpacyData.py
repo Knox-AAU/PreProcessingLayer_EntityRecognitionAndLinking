@@ -23,7 +23,7 @@ nlp_da = da_core_news_lg.load()
 def GetText(title: str):
     file = open(title, "r")
     content = file.read()
-    file.close
+    file.close()
 
     lines = content.split('\n\n')
     modified_lines = [line + '. ' if not line.endswith(tuple(string.punctuation)) else line + ' ' for line in lines]
