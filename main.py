@@ -107,14 +107,7 @@ async def processInput(file_path: str = "Artikel.txt"):
     text = GetSpacyData.GetText(
         file_path
     )  # Takes in title of article. Gets article text in string format
-    doc = GetSpacyData.GetTokens(
-        text
-    )  # finds entities in text, returns entities in doc object
-
-    text = GetSpacyData.GetText(
-        file_path
-    )  # Takes in title of article. Gets article text in string format
-
+    
     try:
         doc = GetSpacyData.GetTokens(
             text
